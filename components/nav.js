@@ -1,29 +1,14 @@
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
+const WalletConnectButton = dynamic(() => import('components/WalletConnectButton'), { ssr: false })
 
-const links = [
-  // { href: 'https://github.com/vercel/next.js', label: 'GitHub' },
-  // { href: 'https://nextjs.org/docs', label: 'Docs' },
-]
+import Link from 'next/link'
 
 export default function Nav() {
   return (
     <nav>
-      <ul className='flex items-center justify-between p-8'>
-        <li>
-          <Link href='/'>
-            <a className='text-blue-500 no-underline'>Home</a>
-          </Link>
-        </li>
-        <h1 className='text-2xl text-center'>QDH</h1>
-        <ul className='flex items-center justify-between space-x-4'>
-          {links.map(({ href, label }) => (
-            <li key={`${href}${label}`}>
-              <a href={href} className='no-underline btn-blue'>
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <ul className='flex items-center justify-between p-4'>
+        <h1 className='text-2xl'>Quadratic Dollar Homepage</h1>
+        <WalletConnectButton />
       </ul>
     </nav>
   )

@@ -16,8 +16,8 @@ h4 {
 /* Stop purging. */
 
 /* Write you own custom component styles here */
-.btn-blue {
-  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+.button {
+  @apply px-4 py-2 font-bold text-white border border-white rounded rounded-full cursor-pointer;
 }
 
 /* Start purging... */
