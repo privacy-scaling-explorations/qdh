@@ -1,4 +1,4 @@
-# Quadratic Dollar Home Page
+# Quadratic Dollar Homepage
 
 ## How to use
 

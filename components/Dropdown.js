@@ -1,8 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Transition } from '@tailwindui/react'
 
 export default function Dropdown({ trigger, children }) {
+  const ref = useRef()
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen])
+
+  const handleClickOutside = e => {
+    if (ref.current.contains(e.target)) return
+    setIsOpen(false) // outside click
+  }
+
   if (!trigger) {
     trigger = (
       <span className='rounded-md shadow-sm'>
@@ -26,9 +44,8 @@ export default function Dropdown({ trigger, children }) {
   }
 
   return (
-    <div className='relative inline-block text-left'>
+    <div ref={ref} className='relative inline-block text-left'>
       <div onClick={() => setIsOpen(v => !v)}>{trigger}</div>
-
       <Transition
         show={isOpen}
         enter='transition ease-out duration-75'
