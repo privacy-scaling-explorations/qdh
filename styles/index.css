@@ -17,7 +17,8 @@ h4 {
 
 /* Write you own custom component styles here */
 .button {
-  @apply px-4 py-2 font-bold text-white border border-white rounded rounded-full cursor-pointer;
+  @apply px-4 py-2 font-bold border rounded rounded-full cursor-pointer text-cyan border-cyan;
+  filter: drop-shadow(0px 0px 10px cyan);
 }
 
 /* Start purging... */

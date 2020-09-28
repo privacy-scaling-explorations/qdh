@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindui/react": "^0.1.1",
     "@walletconnect/web3-provider": "^1.2.2",
     "@web3-react/injected-connector": "^6.0.7",
     "dayjs": "^1.9.0",
