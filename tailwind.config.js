@@ -8,7 +8,9 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    zIndex: ['responsive', 'hover'],
+  },
   plugins: [],
   future: {
     removeDeprecatedGapUtilities: true,
