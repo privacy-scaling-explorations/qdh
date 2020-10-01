@@ -17,13 +17,25 @@ export default function HamburgerMenu() {
           </svg>
         </a>
       }>
-      <Link href='/'>
-        <a
-          className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-          role='menuitem'>
-          About
-        </a>
-      </Link>
+      <Modal
+        title='About Quadratic Dollar Homepage'
+        trigger={
+          <a
+            className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+            role='menuitem'>
+            About
+          </a>
+        }>
+        <p className='text-sm leading-5 text-gray-600'>
+          The inspiration for this project is the Million Dollar Homepage. MDH allowed anyone to purchase pixels on an
+          image on a website and use said pixels to display anything they wanted.
+          <br />
+          <br /> The Quadratic Dollar Homepage is a spin on the MDH. While it also features a space for images on a
+          webpage, it allows users to vote on how much space each image takes up. Moreover, it employs a quadratic and
+          collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion Infrastructure (MACI) to
+          prevent bribery and scale images quadratically.
+        </p>
+      </Modal>
       <Link href='https://github.com/ksaitor/qdh'>
         <a
           target='_blank'
@@ -32,15 +44,6 @@ export default function HamburgerMenu() {
           Github
         </a>
       </Link>
-      <Modal
-        trigger={
-          <a
-            className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-            role='menuitem'>
-            Modal
-          </a>
-        }
-      />
     </Dropdown>
   )
 }
