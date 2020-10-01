@@ -54,7 +54,7 @@ export default function Dropdown({ trigger, children }) {
         leave='transition ease-in duration-150'
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'
-        className='absolute right-0 w-56 mt-4 origin-top-right rounded-md shadow-lg'>
+        className='absolute right-0 w-32 mt-4 origin-top-right rounded-md shadow-lg'>
         <div className='bg-white rounded-md shadow-xs'>
           <div className='py-1' role='menu' aria-orientation='vertical' aria-labelledby='options-menu'>
             {children}

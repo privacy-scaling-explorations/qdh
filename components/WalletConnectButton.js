@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
-
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import ENS from 'ethereum-ens'
+import Ens from 'ethereum-ens'
+import Dropdown from 'components/Dropdown'
 
 const web3Modal = new Web3Modal({
   network: 'mainnet', // optional
@@ -39,6 +39,7 @@ export default function WalletConnectButton() {
     provider.on('accountsChanged', accounts => {
       console.log('accountsChanged', accounts)
       setAddress(accounts[0])
+      getEnsName({ address: accounts[0], provider })
     })
 
     // Subscribe to chainId change
@@ -60,8 +61,21 @@ export default function WalletConnectButton() {
   const connect = async _ => {
     const provider = await web3Modal.connect()
     const web3 = new Web3(provider)
-    const ens = new ENS(provider)
     const [address] = await web3.eth.getAccounts()
+    setWeb3(web3)
+    setProvider(provider)
+    setAddress(address)
+    getEnsName({ address, provider })
+  }
+
+  const logout = async _ => {
+    setWeb3(null)
+    setAddress(null)
+    setEnsName(null)
+  }
+
+  const getEnsName = async ({ address, provider }) => {
+    const ens = new Ens(provider)
     let ensName = null
     try {
       ensName = await ens.reverse(address).name()
@@ -69,25 +83,32 @@ export default function WalletConnectButton() {
         ensName = null
       }
     } catch (err) {}
-
-    setWeb3(web3)
-    setProvider(provider)
-    setAddress(address)
     setEnsName(ensName)
+    return ensName
   }
 
-  if (web3Modal.cachedProvider && !web3) {
+  if (web3Modal.cachedProvider && !web3 && !provider) {
     connect()
   }
 
   if (address) {
     return (
-      <a className='px-6 button'>
-        <span className='inline-block mr-2 -ml-2 align-middle'>
-          <Jazzicon diameter={25} seed={jsNumberForAddress(address)} />
-        </span>
-        {ensName || formatAccAddress(address)}
-      </a>
+      <Dropdown
+        trigger={
+          <a className='px-6 pl-10 button'>
+            <span className='absolute' style={{ top: '2px', left: '14px' }}>
+              <Jazzicon diameter={20} seed={jsNumberForAddress(address)} />
+            </span>
+            {ensName || formatAccAddress(address)}
+          </a>
+        }>
+        <a
+          className='block px-4 py-2 text-sm leading-5 text-gray-700 text-red-600 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+          role='menuitem'
+          onClick={logout}>
+          Log out
+        </a>
+      </Dropdown>
     )
   } else {
     return (
