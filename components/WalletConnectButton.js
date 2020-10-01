@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Ens from 'ethereum-ens'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Dropdown from 'components/Dropdown'
 
 const web3Modal = new Web3Modal({
