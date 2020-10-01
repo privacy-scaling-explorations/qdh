@@ -29,7 +29,6 @@ export default function pack(boxes, algo = 'potpack') {
         }))
       )
       packer.next()
-      console.log(packer.bins[0].rects)
       boxes = packer.bins[0].rects
       return {
         canvas: { w: _width },
