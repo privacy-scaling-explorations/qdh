@@ -1,5 +1,6 @@
 import useVoting from 'hooks/useVoting'
 import classnames from 'classnames'
+import NominateImageModal from 'components/NominateImage'
 
 const Row = ({ children, className, ...props }) => <div className={classnames('space-x-2', className)}>{children}</div>
 
@@ -25,7 +26,7 @@ export default function VotingControls() {
             </a>
           </Row>
           <Row className='inline-block min-w-full'>
-            <a className='inline-block min-w-full px-6 text-center leading-1 button'>Cast a Vote</a>
+            <a className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button'>Cast a Vote</a>
           </Row>
         </>
       ) : (
@@ -36,7 +37,7 @@ export default function VotingControls() {
             </a>
           </Row>
           <Row>
-            <a className='px-6 button'>Nominate Image</a>
+            <NominateImageModal trigger={<a className='px-6 button'>Nominate an Image</a>} />
           </Row>
         </>
       )}

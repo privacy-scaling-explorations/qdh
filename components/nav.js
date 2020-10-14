@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'

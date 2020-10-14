@@ -48,23 +48,25 @@ export default function Modal({ trigger, title, children, allowEasyClose = true,
             aria-modal='true'
             aria-labelledby='modal-headline'>
             <div className='px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4'>
-              <div className='sm:flex sm:items-start'>
-                <div className='flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10'>
-                  <svg
-                    className='w-6 h-6 text-green-600'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-                    />
-                  </svg>
-                </div>
-                <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
+              <div className='sm:flex sm:items-start '>
+                {props.icon && (
+                  <div className='flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10'>
+                    <svg
+                      className='w-6 h-6 text-green-600'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'>
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                      />
+                    </svg>
+                  </div>
+                )}
+                <div className='w-full mt-3 text-center sm:mt-0 sm:text-left'>
                   <h3 className='text-lg font-medium leading-6 text-gray-900' id='modal-headline'>
                     {title || 'Title goes here'}
                   </h3>
@@ -74,7 +76,7 @@ export default function Modal({ trigger, title, children, allowEasyClose = true,
                 </div>
               </div>
             </div>
-            <div className='px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse'>
+            <div className='px-4 py-3 pb-5 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse'>
               {/* <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
                 <button onClick={() => setIsOpen(v => !v)} type='button' className='btn-red sm:text-sm sm:leading-5'>
                   Deactivate
