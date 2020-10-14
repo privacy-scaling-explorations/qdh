@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Transition } from '@tailwindui/react'
+import { Transition } from '@headlessui/react'
 
 export default function Dropdown({ trigger, children }) {
   const ref = useRef()

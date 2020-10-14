@@ -7,7 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tailwindui/react": "^0.1.1",
+    "@headlessui/react": "^0.2.0",
     "@vanchelo/maxrects-packer": "^2.7.0",
     "@walletconnect/web3-provider": "^1.2.2",
     "@web3-react/injected-connector": "^6.0.7",
@@ -22,6 +22,8 @@
     "potpack": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.0",
+    "react-hook-form": "^6.9.2",
     "react-jazzicon": "^0.1.3",
     "use-global-hook": "^0.2.1",
     "web3": "^1.3.0",

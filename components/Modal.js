@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Transition } from '@tailwindui/react'
+import classnames from 'classnames'
+import { Transition } from '@headlessui/react'
 
 export default function Modal({ trigger, title, children, allowEasyClose = true, ...props }) {
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
