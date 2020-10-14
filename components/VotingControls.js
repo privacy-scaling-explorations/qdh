@@ -9,10 +9,10 @@ export default function VotingControls() {
   const { imBeingBribed, incVote, decVote } = actions
 
   return (
-    <div className='space-y-3 text-right'>
+    <div className='space-y-6 text-right'>
       {selected !== false ? (
         <>
-          <Row className='text-center'>
+          <Row className='-mb-2 text-center'>
             <span className='text-center text-cyan min-width-'>Vote for #{selected}:</span>
           </Row>
           <Row>
