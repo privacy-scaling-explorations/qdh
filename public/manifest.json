@@ -1,0 +1,15 @@
+{
+  "name": "Quadratic Dollar Homepage",
+  "icons": [
+    {
+      "src": "/ballot-box-emoji.png",
+      "sizes": "160x160",
+      "type": "image/png"
+    },
+    {
+      "src": "/ballot-box-emoji.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

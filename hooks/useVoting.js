@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
+import globalHook from 'use-global-hook'
 import random from 'lodash/random'
 import pack from 'libs/binpack'
 
@@ -10,17 +11,30 @@ const BOXES = Array.from(Array(10)).map(_ => {
     color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
   }
 })
+const { canvas, boxes } = pack(BOXES, 'maxrects')
 
-export default function useVotes(options = {}) {
-  const [box, setWeb3] = useState(false)
-  const [selected, setSelected] = useState()
-  const { canvas, boxes } = pack(BOXES, 'maxrects')
-
-  return {
-    canvas,
-    boxes,
-    selected,
-    setSelected,
-    vote: id => {},
-  }
+const initialState = {
+  canvas,
+  boxes,
+  selected: false,
+  voteCredits: 110,
+  voteRootValue: 1,
+  voteSquare: 1,
 }
+
+const actions = {
+  setSelected: (store, value) => {
+    store.setState({ selected: value })
+  },
+  incVote: (store, value) => {
+    store.setState({ voteRootValue: store.state.voteRootValue + 1 })
+  },
+  decVote: (store, value) => {
+    if (store.state.voteRootValue <= 1) return
+    store.setState({ voteRootValue: store.state.voteRootValue - 1 })
+  },
+  vote: (store, value) => {},
+  imBeingBribed: (store, value) => {},
+}
+
+export default globalHook(React, initialState, actions)

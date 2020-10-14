@@ -6,7 +6,7 @@ export function Box({ style, isSelected, onClick, ...props }) {
     <a
       onClick={onClick}
       className={classnames('box absolute z-0 rounded cursor-pointer hover:shadow-outline hover:z-10', {
-        'shadow-outline z-10 isSelected': isSelected,
+        'shadow-outline z-auto isSelected': isSelected,
       })}
       style={style}
     />
@@ -14,7 +14,9 @@ export function Box({ style, isSelected, onClick, ...props }) {
 }
 
 export default function Canvas() {
-  const { selected, setSelected, canvas, boxes } = useVoting()
+  const [state, actions] = useVoting()
+  const { selected, canvas, boxes } = state
+  const { setSelected } = actions
 
   return (
     <div className='relative mx-auto' style={{ width: canvas.w }}>
@@ -24,7 +26,7 @@ export default function Canvas() {
           isSelected={selected === key}
           onClick={_ => {
             if (selected === key) {
-              setSelected(null)
+              setSelected(false)
             } else {
               setSelected(key)
             }

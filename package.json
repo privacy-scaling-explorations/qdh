@@ -18,10 +18,12 @@
     "guillotine-packer": "^1.0.2",
     "lodash": "^4.17.20",
     "next": "^9.5.3",
+    "next-seo": "^4.11.0",
     "potpack": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-jazzicon": "^0.1.3",
+    "use-global-hook": "^0.2.1",
     "web3": "^1.3.0",
     "web3modal": "^1.9.0"
   },
