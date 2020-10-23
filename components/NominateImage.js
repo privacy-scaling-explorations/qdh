@@ -4,10 +4,19 @@ import { useForm } from 'react-hook-form'
 import Modal from 'components/Modal'
 import Button from './Button'
 
-export function ImageDropZone() {
-  const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
+export function ImageDropZone({ formControls, ...props }) {
+  const { setValue } = formControls
+  const [picture, setPicture] = useState(null)
+  const onDrop = useCallback(files => {
+    const reader = new FileReader()
+    reader.onload = e => {
+      setValue('picture', e.target.result, { shouldDirty: true })
+      setPicture(e.target.result)
+    }
+    reader.onerror = err => console.error(err)
+    reader.readAsDataURL(files[0])
   }, [])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: 'image/jpeg, image/png',
@@ -16,17 +25,25 @@ export function ImageDropZone() {
 
   return (
     <a
-      className='flex flex-wrap content-center block h-48 p-5 text-center border-2 rounded cursor-pointer hover:border-gray-400'
+      className='relative flex flex-wrap content-center block h-48 p-5 overflow-hidden text-center border-2 rounded cursor-pointer hover:border-gray-400'
       {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? <p className='w-full'>Drop it!</p> : <p className='w-full'>Drag 'n' drop a picture here</p>}
+      <p className='z-10 w-full' style={{ textShadow: '0px 0px 2px white' }}>
+        {isDragActive ? 'Drop it!' : "Drag 'n' drop a picture here"}
+      </p>
+      {Boolean(picture) && <img className='absolute top-0 left-0 w-full -z-10' src={picture} />}
     </a>
   )
 }
 
 export default function NominateImage({ ...props }) {
+  const { register, errors, handleSubmit, setValue } = useForm()
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
-  const nominate = () => {}
+
+  const nominate = formData => {
+    console.log(formData)
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -34,15 +51,20 @@ export default function NominateImage({ ...props }) {
       className='space-y-2'
       title='Nominate an Image'
       trigger={props.trigger}>
-      <ImageDropZone />
+      <ImageDropZone formControls={{ setValue }} />
       <input
         className='block w-full px-4 py-2 mt-3 border-2 border-gray-300 rounded hover:border-gray-400'
+        name='title'
         placeholder='Title'
+        ref={register({ required: true, minLength: 2 })}
       />
       <input
         className='block w-full px-4 py-2 mt-3 border-2 border-gray-300 rounded hover:border-gray-400'
+        name='link'
         placeholder='Link'
+        ref={register({ minLength: 2 })}
       />
+      <input type='hidden' name='picture' ref={register({ required: true })} />
       <Modal.Actions>
         <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>
           <Button onClick={setIsOpen.bind(false, this)}>Cancel</Button>
@@ -50,7 +72,7 @@ export default function NominateImage({ ...props }) {
         <span className='flex self-end w-full mt-3 sm:mt-0 sm:w-auto'>
           <button
             type='button'
-            onClick={nominate}
+            onClick={handleSubmit(nominate)}
             className='inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-green-600 rounded-md shadow-sm hover:text-green-200 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue sm:text-sm sm:leading-5'>
             Nominate
           </button>
