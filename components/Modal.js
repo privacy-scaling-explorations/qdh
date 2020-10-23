@@ -1,13 +1,30 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
 import { Transition } from '@headlessui/react'
+import Button from 'components/Button'
+import find from 'lodash/find'
+import pull from 'lodash/pull'
 
-export default function Modal({ trigger, title, children, allowEasyClose = true, ...props }) {
+function Modal({ trigger, title, children, allowEasyClose = true, onOpenStateChange, ...props }) {
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
 
-  // useEffect(() => {
-  //   setIsOpen(props.isOpen || false)
-  // }, [props.isOpen])
+  useEffect(() => {
+    setIsOpen(props.isOpen || false)
+  }, [props.isOpen])
+
+  useEffect(() => {
+    onOpenStateChange && onOpenStateChange(isOpen)
+  }, [isOpen])
+
+  const childrenArr = React.Children.toArray(children)
+  const actions = find(childrenArr, child => child.type === Actions) || (
+    <Actions>
+      <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>
+        <Button onClick={() => setIsOpen(v => !v)} />
+      </span>
+    </Actions>
+  )
+  children = pull(childrenArr, actions)
 
   return (
     <>
@@ -76,24 +93,21 @@ export default function Modal({ trigger, title, children, allowEasyClose = true,
                 </div>
               </div>
             </div>
-            <div className='px-4 py-3 pb-5 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse'>
-              {/* <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
-                <button onClick={() => setIsOpen(v => !v)} type='button' className='btn-red sm:text-sm sm:leading-5'>
-                  Deactivate
-                </button>
-              </span> */}
-              <span className='flex w-full mt-3 rounded-md shadow-sm sm:mt-0 sm:w-auto'>
-                <button
-                  onClick={() => setIsOpen(v => !v)}
-                  type='button'
-                  className='inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-gray-700 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue sm:text-sm sm:leading-5'>
-                  Ok. Nice!
-                </button>
-              </span>
-            </div>
+            {actions}
           </Transition>
         </div>
       </Transition>
     </>
   )
 }
+
+export function Actions({ children, className, ...props }) {
+  return (
+    <div className={classnames('px-4 py-3 justify-between pb-5 space-x-2 bg-gray-50 sm:px-6 sm:flex', className)}>
+      {children}
+    </div>
+  )
+}
+
+Modal.Actions = Actions
+export default Modal

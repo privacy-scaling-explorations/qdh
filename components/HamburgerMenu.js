@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import Dropdown from 'components/Dropdown'
 import Modal from 'components/Modal'
+import Button from 'components/Button'
 
 export default function HamburgerMenu() {
+  const [modalOpen, setModalOpen] = useState(false)
   return (
     <Dropdown
       trigger={
@@ -18,6 +21,8 @@ export default function HamburgerMenu() {
         </a>
       }>
       <Modal
+        isOpen={modalOpen}
+        onOpenStateChange={state => setModalOpen(state)}
         title='About Quadratic Dollar Homepage'
         trigger={
           <a
@@ -35,6 +40,12 @@ export default function HamburgerMenu() {
           collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion Infrastructure (MACI) to
           prevent bribery and scale images quadratically.
         </p>
+        <Modal.Actions>
+          <span>{/* Dummy span to align "Nice" button to the right */}</span>
+          <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>
+            <Button onClick={setModalOpen.bind(false, this)} content='Nice!' />
+          </span>
+        </Modal.Actions>
       </Modal>
       <Link href='https://github.com/ksaitor/qdh'>
         <a
