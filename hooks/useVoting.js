@@ -20,6 +20,7 @@ const initialState = {
   voteCredits: 110,
   voteRootValue: 1,
   voteSquare: 1,
+  bribedMode: false,
 }
 
 const actions = {
@@ -34,7 +35,9 @@ const actions = {
     store.setState({ voteRootValue: store.state.voteRootValue - 1 })
   },
   vote: (store, value) => {},
-  imBeingBribed: (store, value) => {},
+  imBeingBribed: (store, value) => {
+    store.setState({ bribedMode: !store.state.bribedMode })
+  },
 }
 
 export default globalHook(React, initialState, actions)

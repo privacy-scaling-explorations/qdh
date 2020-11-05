@@ -6,7 +6,7 @@ const Row = ({ children, className, ...props }) => <div className={classnames('s
 
 export default function VotingControls() {
   const [state, actions] = useVoting()
-  const { selected, voteRootValue } = state
+  const { selected, voteRootValue, bribedMode } = state
   const { imBeingBribed, incVote, decVote } = actions
 
   return (
@@ -33,7 +33,7 @@ export default function VotingControls() {
         <>
           <Row>
             <a onClick={imBeingBribed} className='px-6 text-yellow-400 border-yellow-400 button'>
-              "I'm being bribed" mode
+              {bribedMode ? `⚠️ "I'm being bribed" mode is ON` : `"I'm being bribed" mode`}
             </a>
           </Row>
           <Row>
