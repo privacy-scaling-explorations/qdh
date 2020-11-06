@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Ens from 'ethereum-ens'
+import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
 
 export default function useWeb3(options = {}) {
   const web3Modal = new Web3Modal({
@@ -51,10 +52,17 @@ export default function useWeb3(options = {}) {
     })
   }, [provider])
 
+  useEffect(async () => {
+    if (address && provider) {
+      const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
+      console.log({ hasEligiblePOAPtokens })
+    }
+  }, [address, provider])
+
   const connect = async _ => {
     const provider = await web3Modal.connect()
     const web3 = new Web3(provider)
-    const [address] = await web3.eth.getAccounts()
+    const [address, ...otherAdrresses] = await web3.eth.getAccounts()
     setWeb3(web3)
     setProvider(provider)
     setAddress(address)
