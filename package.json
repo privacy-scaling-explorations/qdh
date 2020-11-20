@@ -17,6 +17,8 @@
     "ethereum-ens": "^0.8.0",
     "guillotine-packer": "^1.0.2",
     "lodash": "^4.17.20",
+    "maci-crypto": "^0.4.11",
+    "maci-domainobjs": "^0.4.11",
     "next": "^10.0.1",
     "next-seo": "^4.15.0",
     "potpack": "^1.0.1",

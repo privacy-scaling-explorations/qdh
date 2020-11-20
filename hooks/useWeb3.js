@@ -55,7 +55,7 @@ export default function useWeb3(options = {}) {
   useEffect(async () => {
     if (address && provider) {
       const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
-      console.log({ hasEligiblePOAPtokens })
+      console.log('hasEligiblePOAPtokens', hasEligiblePOAPtokens)
     }
   }, [address, provider])
 

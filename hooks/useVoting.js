@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import globalHook from 'use-global-hook'
 import random from 'lodash/random'
 import pack from 'libs/binpack'
+import { Keypair, PrivKey } from 'maci-domainobjs'
 
 const BOXES = Array.from(Array(10)).map(_ => {
   const _size = (2 ^ random(1, 10)) * 20
@@ -21,6 +22,21 @@ const initialState = {
   voteRootValue: 1,
   voteSquare: 1,
   bribedMode: false,
+  keyPair: (() => {
+    if (typeof window !== 'undefined') {
+      const macisk = localStorage.getItem('macisk')
+      if (macisk == null) {
+        const keyPair = new Keypair()
+        localStorage.setItem('macisk', keyPair.privKey.serialize())
+        console.log('MACI key generated', keyPair.pubKey.serialize())
+        return keyPair
+      } else {
+        const keyPair = new Keypair(PrivKey.unserialize(macisk))
+        console.log('MACI key loaded', keyPair.pubKey.serialize())
+        return keyPair
+      }
+    }
+  })(),
 }
 
 const actions = {
@@ -37,6 +53,12 @@ const actions = {
   vote: (store, value) => {},
   imBeingBribed: (store, value) => {
     store.setState({ bribedMode: !store.state.bribedMode })
+  },
+  changeKey: (store, value) => {
+    const keyPair = new Keypair()
+    localStorage.setItem('macisk', keyPair.privKey.serialize())
+    store.setState({ keyPair: keyPair })
+    console.log('MACI key changed', keyPair.pubKey.serialize())
   },
 }
 
