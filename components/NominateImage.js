@@ -2,7 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import Modal from 'components/Modal'
-import Button from './Button'
+import Button from 'components/Button'
+import { sha256 } from 'libs/crypto'
 
 export function ImageDropZone({ formControls, ...props }) {
   const { setValue } = formControls
@@ -14,6 +15,7 @@ export function ImageDropZone({ formControls, ...props }) {
       setPicture(e.target.result)
     }
     reader.onerror = err => console.error(err)
+    console.log('files[0]', files[0], sha256(files[0]))
     reader.readAsDataURL(files[0])
   }, [])
 
@@ -40,8 +42,11 @@ export default function NominateImage({ ...props }) {
   const { register, errors, handleSubmit, setValue } = useForm()
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
 
-  const nominate = formData => {
-    console.log(formData)
+  const nominate = async formData => {
+    const res = await fetch('/api/imageUpload', {
+      method: 'POST',
+      body: JSON.stringify(formData),
+    })
   }
 
   return (
