@@ -17,6 +17,7 @@ const { canvas, boxes } = pack(BOXES, 'maxrects')
 const initialState = {
   canvas,
   boxes,
+  balance: 100,
   selected: false,
   voteCredits: 110,
   voteRootValue: 1,
@@ -58,6 +59,7 @@ const actions = {
     const keyPair = new Keypair()
     localStorage.setItem('macisk', keyPair.privKey.serialize())
     store.setState({ keyPair: keyPair })
+    alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
     console.log('MACI key changed', keyPair.pubKey.serialize())
   },
 }
