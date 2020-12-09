@@ -31,7 +31,7 @@ export async function attendedEligiblePOAPEvents(address, provider) {
   let eligible = false
 
   events.forEach(event => {
-    if (event.year > 2018) {
+    if (event.year >= 2018) {
       eligible = true
     }
   })

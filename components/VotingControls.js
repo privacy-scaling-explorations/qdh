@@ -7,7 +7,7 @@ const Row = ({ children, className, ...props }) => <div className={classnames('s
 export default function VotingControls() {
   const [state, actions] = useVoting()
   const { selected, voteRootValue, bribedMode } = state
-  const { imBeingBribed, incVote, decVote } = actions
+  const { imBeingBribed, incVote, decVote, vote } = actions
 
   return (
     <div className='space-y-6 text-right'>
@@ -26,7 +26,9 @@ export default function VotingControls() {
             </a>
           </Row>
           <Row className='inline-block min-w-full'>
-            <a className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button'>Cast a Vote</a>
+            <a className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button' onClick={vote}>
+              Cast a Vote
+            </a>
           </Row>
         </>
       ) : (

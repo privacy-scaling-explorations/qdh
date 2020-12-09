@@ -12,9 +12,11 @@ export default function Nav() {
         <h1 className='text-2xl '>Quadratic Dollar Homepage</h1>
         <div className='space-x-2'>
           <WalletConnectButton />
-          <a className='px-6 button' title='Your voice credits'>
-            {balance} credits
-          </a>
+          {balance && (
+            <a className='px-6 button' title='Your voice credits'>
+              {balance} credits
+            </a>
+          )}
           <HamburgerMenu />
         </div>
         <div className='absolute right-0 top-auto pr-4' style={{ top: '4em' }}>

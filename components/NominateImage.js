@@ -56,18 +56,6 @@ export default function NominateImage({ ...props }) {
       title='Nominate an Image'
       trigger={props.trigger}>
       <ImageDropZone formControls={{ setValue }} />
-      <input
-        className='block w-full px-4 py-2 mt-3 border-2 border-gray-300 rounded hover:border-gray-400'
-        name='title'
-        placeholder='Title'
-        ref={register({ required: true, minLength: 2 })}
-      />
-      <input
-        className='block w-full px-4 py-2 mt-3 border-2 border-gray-300 rounded hover:border-gray-400'
-        name='link'
-        placeholder='Link'
-        ref={register({ minLength: 2 })}
-      />
       <input type='hidden' name='picture' ref={register({ required: true })} />
       <Modal.Actions>
         <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>

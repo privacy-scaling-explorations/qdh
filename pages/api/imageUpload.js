@@ -8,9 +8,9 @@ const uploadOptions = { bufferSize: 4 * ONE_MEGABYTE, maxBuffers: 20 }
 const containerName = 'qdh-test'
 
 export default async (req, res) => {
-  const { picture, title, link } = JSON.parse(req.body)
+  const { picture } = JSON.parse(req.body)
   const [blob, ext] = dataURItoBlob(picture)
-  const imageSHA256 = sha256(blob)
+  const imageSHA256 = sha256(picture)
   const blobName = `${imageSHA256}.${ext}`
 
   const data = await upload({
@@ -23,9 +23,6 @@ export default async (req, res) => {
   res.json({
     url: `https://qdh.blob.core.windows.net/${containerName}/${blobName}`,
     imageSHA256,
-    imageDataSHA256: sha256(picture),
-    title,
-    link,
     ...data,
   })
 }
