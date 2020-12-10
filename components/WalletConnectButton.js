@@ -1,4 +1,4 @@
-import useWeb3 from 'hooks/useWeb3'
+import useGlobalState from 'hooks/useGlobalState'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Dropdown from 'components/Dropdown'
 
@@ -7,7 +7,7 @@ export function formatAccountAddress(fullAddress) {
 }
 
 export default function WalletConnectButton() {
-  const { address, ensName, connect, logout } = useWeb3()
+  const [{ address, ensName }, { connect, logout }] = useGlobalState()
 
   if (address) {
     return (

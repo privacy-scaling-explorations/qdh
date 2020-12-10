@@ -1,8 +1,12 @@
-import '../styles/index.css'
+import 'styles/index.css'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
+import useGlobalState from 'hooks/useGlobalState'
 
 function MyApp({ Component, pageProps }) {
+  const [state, { initWeb3 }] = useGlobalState()
+  initWeb3()
+
   return (
     <>
       <DefaultSeo title='Quadratic Dollar Homepage' />

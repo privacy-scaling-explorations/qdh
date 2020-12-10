@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import useVoting from 'hooks/useVoting'
+import useGlobalState from 'hooks/useGlobalState'
 import Link from 'next/link'
 import Dropdown from 'components/Dropdown'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
 
 export default function HamburgerMenu() {
-  const [{ keyPair }, { changeKey }] = useVoting()
+  const [{ keyPair }, { changeKey }] = useGlobalState()
   const [modalOpen, setModalOpen] = useState(false)
   return (
     <Dropdown

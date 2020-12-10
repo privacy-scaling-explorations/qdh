@@ -1,4 +1,4 @@
-import useVoting from 'hooks/useVoting'
+import useGlobalState from 'hooks/useGlobalState'
 import classnames from 'classnames'
 
 export function Box({ style, isSelected, onClick, ...props }) {
@@ -14,9 +14,9 @@ export function Box({ style, isSelected, onClick, ...props }) {
 }
 
 export default function Canvas() {
-  const [state, actions] = useVoting()
+  const [state, actions] = useGlobalState()
   const { selected, canvas, boxes } = state
-  const { setSelected } = actions
+  const { selectImage } = actions
 
   return (
     <div className='relative mx-auto' style={{ width: canvas.w }}>
@@ -26,9 +26,9 @@ export default function Canvas() {
           isSelected={selected === key}
           onClick={_ => {
             if (selected === key) {
-              setSelected(false)
+              selectImage(null) // unselect
             } else {
-              setSelected(key)
+              selectImage(key)
             }
           }}
           style={{

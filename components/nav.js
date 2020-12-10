@@ -1,10 +1,11 @@
-import useVoting from 'hooks/useVoting'
+import useGlobalState from 'hooks/useGlobalState'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'
 import WalletConnectButton from 'components/WalletConnectButton'
 
 export default function Nav() {
-  const [{ balance }] = useVoting()
+  const [{ balance }] = useGlobalState()
+
   return (
     <nav>
       <ul className='flex justify-between p-4'>

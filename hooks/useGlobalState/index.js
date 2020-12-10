@@ -1,5 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import globalHook from 'use-global-hook'
+import web3state from './web3state'
+
 import random from 'lodash/random'
 import pack from 'libs/binpack'
 import { Keypair, PrivKey } from 'maci-domainobjs'
@@ -15,11 +17,11 @@ const BOXES = Array.from(Array(10)).map(_ => {
 const { canvas, boxes } = pack(BOXES, 'maxrects')
 
 const initialState = {
+  ...web3state.initialState,
   canvas,
   boxes,
-  balance: false,
-  selected: false,
-  voteCredits: 110,
+  balance: null,
+  selected: null,
   voteRootValue: 1,
   voteSquare: 1,
   bribedMode: false,
@@ -41,7 +43,8 @@ const initialState = {
 }
 
 const actions = {
-  setSelected: (store, value) => {
+  ...web3state.actions,
+  selectImage: (store, value) => {
     store.setState({ selected: value })
   },
   incVote: (store, value) => {

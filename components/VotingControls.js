@@ -1,17 +1,17 @@
-import useVoting from 'hooks/useVoting'
+import useGlobalState from 'hooks/useGlobalState'
 import classnames from 'classnames'
 import NominateImageModal from 'components/NominateImage'
 
 const Row = ({ children, className, ...props }) => <div className={classnames('space-x-2', className)}>{children}</div>
 
 export default function VotingControls() {
-  const [state, actions] = useVoting()
+  const [state, actions] = useGlobalState()
   const { selected, voteRootValue, bribedMode } = state
   const { imBeingBribed, incVote, decVote, vote } = actions
 
   return (
     <div className='space-y-6 text-right'>
-      {selected !== false ? (
+      {selected !== null ? (
         <>
           <Row className='-mb-2 text-center'>
             <span className='text-center text-cyan min-width-'>Vote for #{selected}:</span>
