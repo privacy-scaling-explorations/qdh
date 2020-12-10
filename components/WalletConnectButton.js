@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Dropdown from 'components/Dropdown'

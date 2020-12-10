@@ -1,8 +1,7 @@
-import dynamic from 'next/dynamic'
 import useVoting from 'hooks/useVoting'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'
-const WalletConnectButton = dynamic(() => import('components/WalletConnectButton'), { ssr: false })
+import WalletConnectButton from 'components/WalletConnectButton'
 
 export default function Nav() {
   const [{ balance }] = useVoting()

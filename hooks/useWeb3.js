@@ -6,22 +6,25 @@ import Ens from 'ethereum-ens'
 import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
 
 export default function useWeb3(options = {}) {
-  const web3Modal = new Web3Modal({
-    network: 'mainnet', // optional
-    cacheProvider: true, // optional
-    providerOptions: {
-      injected: {
-        display: {},
-        package: null,
-      },
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId: 'INFURA_ID', // required
+  let web3Modal = {}
+  if (typeof window !== 'undefined') {
+    web3Modal = new Web3Modal({
+      network: 'mainnet', // optional
+      cacheProvider: true, // optional
+      providerOptions: {
+        injected: {
+          display: {},
+          package: null,
+        },
+        walletconnect: {
+          package: WalletConnectProvider,
+          options: {
+            infuraId: 'INFURA_ID', // required
+          },
         },
       },
-    },
-  })
+    })
+  }
   const [web3, setWeb3] = useState(false)
   const [provider, setProvider] = useState(false)
   const [address, setAddress] = useState(false)
@@ -73,6 +76,7 @@ export default function useWeb3(options = {}) {
     setWeb3(null)
     setAddress(null)
     setEnsName(null)
+    await web3Modal.clearCachedProvider()
   }
 
   const getEnsName = async ({ address, provider }) => {
