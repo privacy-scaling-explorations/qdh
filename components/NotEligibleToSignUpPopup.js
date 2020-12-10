@@ -13,13 +13,15 @@ export default function NotEligibleToSignUpPopup() {
     }
   }, [hasEligiblePOAPtokens])
 
-  if (address) {
+  if (hasEligiblePOAPtokens === false) {
     return (
       <Modal
         isOpen={modalOpen}
         onOpenStateChange={state => setModalOpen(state)}
         title={`You don't have eligible tokens to sign up`}
-        trigger={false}>
+        trigger={
+          <span className='px-6 text-yellow-400 border-yellow-400 button'>⚠️ Your account is not eligible to vote</span>
+        }>
         <p className='mt-5 text-sm leading-5 text-gray-900'>
           To be eligible to vote or nominate candidates, you need to have at least one of these tokens:
           <ul className='my-2 list-disc list-inside'>

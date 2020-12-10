@@ -2,9 +2,10 @@ import useGlobalState from 'hooks/useGlobalState'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'
 import WalletConnectButton from 'components/WalletConnectButton'
+import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 
 export default function Nav() {
-  const [{ balance }] = useGlobalState()
+  const [{ balance, hasEligiblePOAPtokens }] = useGlobalState()
 
   return (
     <nav>
@@ -20,7 +21,7 @@ export default function Nav() {
           <HamburgerMenu />
         </div>
         <div className='absolute right-0 top-auto pr-4' style={{ top: '4em' }}>
-          <VotingControls />
+          {hasEligiblePOAPtokens ? <VotingControls /> : <NotEligibleToSignUpPopup />}
         </div>
       </ul>
     </nav>

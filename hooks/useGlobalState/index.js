@@ -45,6 +45,7 @@ const initialState = {
 const actions = {
   ...web3state.actions,
   selectImage: (store, value) => {
+    if (store.state.hasEligiblePOAPtokens !== true) return
     store.setState({ selected: value })
   },
   incVote: (store, value) => {

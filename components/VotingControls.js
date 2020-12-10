@@ -39,7 +39,7 @@ export default function VotingControls() {
             </a>
           </Row>
           <Row>
-            <NominateImageModal trigger={<a className='px-6 button'>Nominate an Image</a>} />
+            <NominateImageModal trigger={<a className='px-6 button'>Nominate an image</a>} />
           </Row>
         </>
       )}

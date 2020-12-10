@@ -53,13 +53,13 @@ export default function NominateImage({ ...props }) {
       isOpen={isOpen}
       onOpenStateChange={state => setIsOpen(state)}
       className='space-y-2'
-      title='Nominate an Image'
+      title='Nominate an image'
       trigger={props.trigger}>
       <ImageDropZone formControls={{ setValue }} />
       <input type='hidden' name='picture' ref={register({ required: true })} />
       <Modal.Actions>
         <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>
-          <Button onClick={setIsOpen.bind(false, this)}>Cancel</Button>
+          <Button onClick={setIsOpen.bind(false, this)}>Close</Button>
         </span>
         <span className='flex self-end w-full mt-3 sm:mt-0 sm:w-auto'>
           <button
