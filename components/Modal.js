@@ -28,7 +28,7 @@ function Modal({ trigger, title, children, allowEasyClose = true, onOpenStateCha
 
   return (
     <>
-      <div onClick={() => setIsOpen(v => !v)}>{trigger || <span>Open Modal</span>}</div>
+      <div onClick={() => setIsOpen(v => !v)}>{typeof trigger === 'undefined' ? <span>Open Modal</span> : trigger}</div>
       <Transition
         show={isOpen}
         enter='transition ease-out duration-300'
