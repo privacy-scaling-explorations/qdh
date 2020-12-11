@@ -18,13 +18,21 @@ const { canvas, boxes } = pack(BOXES, 'maxrects')
 
 const initialState = {
   ...web3state.initialState,
+  loading: null,
   canvas,
   boxes,
+  signedUp: false,
   balance: null,
   selected: null,
   voteRootValue: 1,
   voteSquare: 1,
   bribedMode: false,
+  userStateIndex: (() => {
+    if (typeof window !== 'undefined') {
+      const userStateIndex = localStorage.getItem('userStateIndex') || 0
+      return userStateIndex
+    }
+  })(),
   keyPair: (() => {
     if (typeof window !== 'undefined') {
       const macisk = localStorage.getItem('macisk')
@@ -44,6 +52,9 @@ const initialState = {
 
 const actions = {
   ...web3state.actions,
+  signUp: (store, value) => {
+    alert('TODO: Implement signup process')
+  },
   selectImage: (store, value) => {
     if (store.state.hasEligiblePOAPtokens !== true) return
     store.setState({ selected: value })

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import Web3 from 'web3'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
@@ -104,7 +103,17 @@ export default {
     hasEligiblePOAPtokens: null,
   },
   actions: {
-    connect,
+    initWeb3: async ({ setState, ...props }) => {
+      if (typeof window !== 'undefined' && web3Modal == null) {
+        web3Modal = getWeb3Modal()
+
+        if (web3Modal.cachedProvider) {
+          console.log('web3Modal.cachedProvider', props)
+          props.actions.connect({ setState, ...props })
+        }
+      }
+    },
+    connect: connect,
     logout: async ({ setState }) => {
       setState({
         address: null,
@@ -112,17 +121,7 @@ export default {
         web3: null,
         provider: null,
       })
-      await web3Modal.clearCachedProvider()
-    },
-    initWeb3: async ({ setState }) => {
-      if (typeof window !== 'undefined' && web3Modal == null) {
-        web3Modal = getWeb3Modal()
-
-        if (web3Modal.cachedProvider) {
-          console.log('web3Modal.cachedProvider')
-          connect({ setState })
-        }
-      }
+      web3Modal && (await web3Modal.clearCachedProvider())
     },
   },
 }
