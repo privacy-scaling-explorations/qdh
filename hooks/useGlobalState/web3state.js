@@ -47,6 +47,7 @@ const connect = async ({ setState, ...state }) => {
   const web3 = new Web3(provider)
   const [address, ...otherAdrresses] = await web3.eth.getAccounts()
   setState({ address, web3, provider })
+  setState({ loading: true })
 
   attendedEligiblePOAPEvents(address, provider).then(hasEligiblePOAPtokens => {
     if (!hasEligiblePOAPtokens) {
@@ -112,6 +113,7 @@ export default {
           console.log('web3Modal.cachedProvider', store)
           store.actions.connect({ setState, ...store })
         }
+        setState({ loading: false })
       }
     },
     connect: connect,
