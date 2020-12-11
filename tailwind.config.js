@@ -6,6 +6,9 @@ module.exports = {
         cyan: '#02FCF9',
         'accent-1': '#333',
       },
+      animation: {
+        'spin-fast': 'spin .6s linear infinite',
+      },
     },
   },
   variants: {

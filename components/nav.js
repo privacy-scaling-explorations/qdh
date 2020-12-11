@@ -4,15 +4,17 @@ import VotingControls from 'components/VotingControls'
 import WalletConnectButton from 'components/WalletConnectButton'
 import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 import SignUpPopup from 'components/SignUpPopup'
+import Loader from 'components/Loader'
 
 export default function Nav() {
-  const [{ balance, hasEligiblePOAPtokens, signedUp }] = useGlobalState()
+  const [{ balance, hasEligiblePOAPtokens, signedUp, loading }] = useGlobalState()
 
   return (
-    <nav>
+    <nav className='relative z-10'>
       <ul className='flex justify-between p-4'>
         <h1 className='text-2xl'>Quadratic Dollar Homepage</h1>
         <div className='space-x-2'>
+          {loading && <Loader className='relative inline-block -mt-1 text-left' />}
           <WalletConnectButton />
           {balance && (
             <a className='px-6 button' title='Your voice credits'>

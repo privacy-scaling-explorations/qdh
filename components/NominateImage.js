@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import useGlobalState from 'hooks/useGlobalState'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import Modal from 'components/Modal'
@@ -38,13 +39,16 @@ export function ImageDropZone({ formControls, ...props }) {
 
 export default function NominateImage({ ...props }) {
   const { register, errors, handleSubmit, setValue } = useForm()
+  const [{}, { setLoading }] = useGlobalState()
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
 
   const nominate = async formData => {
+    setLoading(true)
     const res = await fetch('/api/imageUpload', {
       method: 'POST',
       body: JSON.stringify(formData),
     })
+    setLoading(false)
     const data = await res.json()
   }
 

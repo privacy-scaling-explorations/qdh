@@ -52,7 +52,7 @@ const connect = async ({ setState, ...state }) => {
     if (!hasEligiblePOAPtokens) {
       console.warn('this account doesnt have eligible tokens to sign up')
     }
-    setState({ hasEligiblePOAPtokens })
+    setState({ hasEligiblePOAPtokens, loading: false })
   })
 
   getEnsName({ address, provider }).then(ensName => {
@@ -65,11 +65,12 @@ const connect = async ({ setState, ...state }) => {
       const [address, ...otherAdrresses] = accounts
       const ensName = await getEnsName({ address, provider })
       setState({ address, hasEligiblePOAPtokens: null })
+      setState({ loading: true })
       attendedEligiblePOAPEvents(address, provider).then(hasEligiblePOAPtokens => {
         if (!hasEligiblePOAPtokens) {
           console.warn('this account doesnt have eligible tokens to sign up')
         }
-        setState({ hasEligiblePOAPtokens })
+        setState({ hasEligiblePOAPtokens, loading: false })
       })
 
       getEnsName({ address, provider }).then(ensName => {
@@ -103,13 +104,13 @@ export default {
     hasEligiblePOAPtokens: null,
   },
   actions: {
-    initWeb3: async ({ setState, ...props }) => {
+    initWeb3: async ({ setState, ...store }) => {
       if (typeof window !== 'undefined' && web3Modal == null) {
         web3Modal = getWeb3Modal()
 
         if (web3Modal.cachedProvider) {
-          console.log('web3Modal.cachedProvider', props)
-          props.actions.connect({ setState, ...props })
+          console.log('web3Modal.cachedProvider', store)
+          store.actions.connect({ setState, ...store })
         }
       }
     },

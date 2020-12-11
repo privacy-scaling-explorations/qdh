@@ -18,7 +18,7 @@ const { canvas, boxes } = pack(BOXES, 'maxrects')
 
 const initialState = {
   ...web3state.initialState,
-  loading: null,
+  loading: true,
   canvas,
   boxes,
   signedUp: false,
@@ -57,6 +57,7 @@ const actions = {
   },
   selectImage: (store, value) => {
     if (store.state.hasEligiblePOAPtokens !== true) return
+    if (store.state.signedUp !== true) return
     store.setState({ selected: value })
   },
   incVote: (store, value) => {
@@ -90,6 +91,9 @@ const actions = {
     store.setState({ keyPair: keyPair })
     alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
     console.log('MACI key changed', keyPair.pubKey.serialize())
+  },
+  setLoading: (store, value) => {
+    store.setState({ loading: value })
   },
 }
 
