@@ -2,7 +2,12 @@
 
 /* Write your own custom base styles here */
 body {
-  @apply bg-gray-800;
+  /* @apply bg-gray-800; */
+  background-image: linear-gradient(to bottom, var(--gradient-color-stops));
+  --gradient-from-color: #1c0028;
+  --gradient-to-color: #2f0143;
+  --gradient-color-stops: var(--gradient-from-color) 45%, var(--gradient-to-color) 75%;
+  min-height: 100vh;
 }
 h1,
 h2,
@@ -18,10 +23,10 @@ h4 {
 /* Write you own custom component styles here */
 .button {
   @apply px-4 py-2 font-bold border rounded rounded-full cursor-pointer text-cyan border-cyan;
-  /* filter: drop-shadow(0px 0px 10px cyan); */
+  filter: drop-shadow(0px 0px 5px cyan);
 }
 .button:hover {
-  /* filter: drop-shadow(0px 0px 10px cyan); */
+  filter: drop-shadow(0px 0px 10px cyan);
   @apply bg-black bg-opacity-25;
 }
 
@@ -48,3 +53,18 @@ h4 {
 /* Stop purging. */
 
 /* Your own custom utilities */
+
+@keyframes shine {
+  0% {
+    transform: rotate(0) scale(0.5);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(720deg) scale(0.5);
+    opacity: 0.5;
+  }
+}

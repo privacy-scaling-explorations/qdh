@@ -53,9 +53,8 @@ const initialState = {
 const actions = {
   ...web3state.actions,
   signUp: (store, value) => {
-    alert('TODO: Implement signup process')
     // localStorage.setItem('userStateIndex', _stateIndex)
-    store.setState({ signedUp: true })
+    store.setState({ signedUp: true, balance: 90 })
   },
   selectImage: (store, value) => {
     if (store.state.hasEligiblePOAPtokens !== true) return
@@ -63,14 +62,22 @@ const actions = {
     store.setState({ selected: value })
   },
   incVote: (store, value) => {
-    store.setState({ voteRootValue: store.state.voteRootValue + 1 })
+    const voteRootValue = store.state.voteRootValue + 1
+    const voteSquare = Math.pow(voteRootValue, 2)
+    store.setState({ voteRootValue, voteSquare })
   },
   decVote: (store, value) => {
     if (store.state.voteRootValue <= 1) return
-    store.setState({ voteRootValue: store.state.voteRootValue - 1 })
+    const voteRootValue = store.state.voteRootValue - 1
+    const voteSquare = Math.pow(voteRootValue, 2)
+    store.setState({ voteRootValue, voteSquare })
   },
   vote: (store, value) => {
-    alert('TODO: Voting request…')
+    store.setState({
+      balance: store.state.balance - store.state.voteSquare,
+      voteRootValue: 1,
+      voteSquare: 1,
+    })
     if (store.bribedMode) {
       /*
         There are several ways to cast an invalid vote:

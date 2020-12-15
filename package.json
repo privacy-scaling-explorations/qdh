@@ -26,6 +26,7 @@
     "next-seo": "^4.15.0",
     "potpack": "^1.0.1",
     "react": "^17.0.1",
+    "react-countup": "^4.3.3",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
     "react-hook-form": "^6.12.2",
