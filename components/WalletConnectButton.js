@@ -14,7 +14,7 @@ export default function WalletConnectButton() {
       <Dropdown
         trigger={
           <a className='px-6 pl-12 button'>
-            <span className='absolute' style={{ top: '2px', left: '20px' }}>
+            <span className='absolute' style={{ top: '7px', left: '20px' }}>
               <Jazzicon diameter={20} seed={jsNumberForAddress(address)} />
             </span>
             {ensName || formatAccountAddress(address)}
