@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import CountUp from 'react-countup'
 import useGlobalState from 'hooks/useGlobalState'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'
@@ -8,6 +10,14 @@ import Loader from 'components/Loader'
 
 export default function Nav() {
   const [{ address, balance, hasEligiblePOAPtokens, signedUp, loading }] = useGlobalState()
+  const [_lastBalance, set_lastBalance] = useState(0)
+
+  useEffect(() => {
+    if (_lastBalance === balance) return
+    setTimeout(() => {
+      set_lastBalance(balance)
+    }, 1000)
+  }, [balance])
 
   return (
     <nav className='relative z-10'>
@@ -18,7 +28,7 @@ export default function Nav() {
           <WalletConnectButton />
           {balance && (
             <a className='px-6 button' title='Your voice credits'>
-              {balance} credits
+              <CountUp end={balance} start={_lastBalance} /> credits
             </a>
           )}
           <HamburgerMenu />

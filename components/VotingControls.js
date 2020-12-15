@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
 import useGlobalState from 'hooks/useGlobalState'
 import classnames from 'classnames'
 import NominateImageModal from 'components/NominateImage'
-import CountUp from 'react-countup'
 
 const Row = ({ children, className, ...props }) => <div className={classnames('space-x-2', className)}>{children}</div>
 
@@ -10,14 +8,6 @@ export default function VotingControls() {
   const [state, actions] = useGlobalState()
   const { selected, voteSquare, bribedMode } = state
   const { imBeingBribed, incVote, decVote, vote } = actions
-  const [lastVoteSquare, setLastVoteSquare] = useState(0)
-
-  useEffect(() => {
-    if (lastVoteSquare === voteSquare) return
-    setTimeout(() => {
-      setLastVoteSquare(voteSquare)
-    }, 1000)
-  }, [voteSquare])
 
   return (
     <div className='space-y-6 text-right'>
@@ -30,16 +20,14 @@ export default function VotingControls() {
             <a className='px-6 select-none button' onClick={decVote}>
               -
             </a>
-            <span className='inline-block w-16 px-0 py-2 text-center cursor-default button'>
-              <CountUp start={lastVoteSquare} end={voteSquare} />
-            </span>
+            <span className='inline-block w-16 px-0 py-2 text-center cursor-default button'>{voteSquare}</span>
             <a className='px-6 select-none button' onClick={incVote}>
               +
             </a>
           </Row>
           <Row className='inline-block min-w-full'>
             <a className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button' onClick={vote}>
-              Cast a Vote
+              Cast your Vote
             </a>
           </Row>
         </>
