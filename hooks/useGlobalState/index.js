@@ -29,7 +29,7 @@ const initialState = {
   bribedMode: false,
   userStateIndex: (() => {
     if (typeof window !== 'undefined') {
-      const userStateIndex = localStorage.getItem('userStateIndex') || 0
+      const userStateIndex = localStorage.getItem('userStateIndex') || null
       return userStateIndex
     }
   })(),
@@ -54,6 +54,8 @@ const actions = {
   ...web3state.actions,
   signUp: (store, value) => {
     alert('TODO: Implement signup process')
+    // localStorage.setItem('userStateIndex', _stateIndex)
+    store.setState({ signedUp: true })
   },
   selectImage: (store, value) => {
     if (store.state.hasEligiblePOAPtokens !== true) return

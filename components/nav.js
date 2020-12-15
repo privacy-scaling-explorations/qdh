@@ -7,7 +7,7 @@ import SignUpPopup from 'components/SignUpPopup'
 import Loader from 'components/Loader'
 
 export default function Nav() {
-  const [{ balance, hasEligiblePOAPtokens, signedUp, loading }] = useGlobalState()
+  const [{ address, balance, hasEligiblePOAPtokens, signedUp, loading }] = useGlobalState()
 
   return (
     <nav className='relative z-10'>
@@ -25,7 +25,7 @@ export default function Nav() {
         </div>
         <div className='absolute right-0 top-auto pr-4' style={{ top: '4em' }}>
           {(() => {
-            console.log({ hasEligiblePOAPtokens, signedUp })
+            if (!address) return null
             if (!hasEligiblePOAPtokens) {
               return <NotEligibleToSignUpPopup />
             } else if (hasEligiblePOAPtokens && !signedUp) {
