@@ -1,0 +1,79 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "iv",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[10]",
+            "name": "data",
+            "type": "uint256[10]"
+          }
+        ],
+        "internalType": "struct MACI.Message",
+        "name": "_message",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "x",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "y",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MACI.PubKey",
+        "name": "_encPubKey",
+        "type": "tuple"
+      }
+    ],
+    "name": "publishMessage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "x",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "y",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MACI.PubKey",
+        "name": "_userPubKey",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_signUpGatekeeperData",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_initialVoiceCreditProxyData",
+        "type": "bytes"
+      }
+    ],
+    "name": "signUp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
