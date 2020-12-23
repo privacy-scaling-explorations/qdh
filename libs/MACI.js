@@ -45,4 +45,22 @@ export async function signUp(ethersProvider, keyPair) {
   return { userStateIndex, voiceCredits }
 }
 
-export default { signUp }
+export async function publish(ethersProvider, keyPair) {
+  const signer = ethersProvider.getSigner()
+  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+
+  const tx = await maci.publishMessage(
+    keyPair.pubKey.asContractParam(),
+    [
+      /* signUpGatekeeperData: POAP tokenId */
+    ],
+    [
+      /* initialVoiceCreditProxyData */
+    ]
+  )
+
+  const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
+  const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
+
+  return { userStateIndex, voiceCredits }
+}
