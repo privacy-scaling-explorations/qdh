@@ -31,24 +31,28 @@ const connect = async ({ setState, ...state }) => {
 
   const provider = await web3Modal.connect()
   const ethersProvider = new ethers.providers.Web3Provider(provider)
-  const address = await ethersProvider.getSigner().getAddress()
-  setState({ address, provider, ethersProvider })
-  const ensName = await ethersProvider.lookupAddress(address)
-  setState({ ensName })
-  const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
-  setState({ hasEligiblePOAPtokens })
-  setState({ loading: false })
+  setState({ provider, ethersProvider })
+
+  const _handleAccountOrNetworkChange = async _ => {
+    setState({ loading: true })
+    const address = await ethersProvider.getSigner().getAddress()
+    setState({ address })
+    const { chainId } = await ethersProvider.getNetwork()
+    if (chainId === 1337) {
+      // local or private chain
+      setState({ hasEligiblePOAPtokens: true })
+    } else {
+      const ensName = await ethersProvider.lookupAddress(address)
+      setState({ ensName })
+      const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
+      setState({ hasEligiblePOAPtokens })
+    }
+    setState({ loading: false })
+  }
+
+  _handleAccountOrNetworkChange()
 
   if (!state.provider) {
-    const _handleAccountOrNetworkChange = async _ => {
-      setState({ loading: true })
-      const address = await ethersProvider.getSigner().getAddress()
-      const ensName = await ethersProvider.lookupAddress(address)
-      const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
-      setState({ address, ensName, hasEligiblePOAPtokens })
-      setState({ loading: false })
-    }
-
     provider.on('accountsChanged', async accounts => {
       console.log('accountsChanged', accounts)
       _handleAccountOrNetworkChange()
@@ -77,7 +81,7 @@ export default {
     address: null,
     ensName: null,
     provider: null,
-    web3: null,
+    ethersProvider: null,
     hasEligiblePOAPtokens: null,
   },
   actions: {
@@ -86,7 +90,6 @@ export default {
         web3Modal = getWeb3Modal()
 
         if (web3Modal.cachedProvider) {
-          console.log('web3Modal.cachedProvider', store)
           store.actions.connect({ setState, ...store })
         } else {
           setState({ loading: false })
@@ -98,7 +101,6 @@ export default {
       setState({
         address: null,
         ensName: null,
-        web3: null,
         provider: null,
         ethersProvider: null,
       })

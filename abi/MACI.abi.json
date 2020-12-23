@@ -1,5 +1,98 @@
 [
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "iv",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[10]",
+            "name": "data",
+            "type": "uint256[10]"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MACI.Message",
+        "name": "_message",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "x",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "y",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MACI.PubKey",
+        "name": "_encPubKey",
+        "type": "tuple"
+      }
+    ],
+    "name": "PublishMessage",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "x",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "y",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct MACI.PubKey",
+        "name": "_userPubKey",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_stateIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_voiceCreditBalance",
+        "type": "uint256"
+      }
+    ],
+    "name": "SignUp",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "calcSignUpDeadline",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [

@@ -4,6 +4,7 @@ import web3state from './web3state'
 
 import random from 'lodash/random'
 import pack from 'libs/binpack'
+import { signUp as MaciSignUp } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 
 const BOXES = Array.from(Array(10)).map(_ => {
@@ -21,12 +22,16 @@ const initialState = {
   loading: true,
   canvas,
   boxes,
-  signedUp: false,
   balance: null,
   selected: null,
   voteRootValue: 1,
   voteSquare: 1,
   bribedMode: false,
+  signedUp: (() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('userStateIndex') || false
+    }
+  })(),
   userStateIndex: (() => {
     if (typeof window !== 'undefined') {
       const userStateIndex = localStorage.getItem('userStateIndex') || null
@@ -52,9 +57,12 @@ const initialState = {
 
 const actions = {
   ...web3state.actions,
-  signUp: (store, value) => {
-    // localStorage.setItem('userStateIndex', _stateIndex)
-    store.setState({ signedUp: true, balance: 90 })
+  signUp: async (store, value) => {
+    store.setState({ loading: true })
+    const { userStateIndex, voiceCredits } = await MaciSignUp(store.state.ethersProvider, store.state.keyPair)
+    localStorage.setItem('userStateIndex', userStateIndex)
+    store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
+    store.setState({ loading: false })
   },
   selectImage: (store, value) => {
     if (store.state.hasEligiblePOAPtokens !== true) return

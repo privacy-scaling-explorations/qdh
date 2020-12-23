@@ -1,15 +1,48 @@
 import { ethers } from 'ethers'
 import { MACI_ADDRESS } from 'libs/constants'
-import MACIABI from 'abi/MACI.abi.json'
+import MACI_ABI from 'abi/MACI.abi.json'
 
-export default async function signUp(address, provider) {
-  const ethersProvider = new ethers.providers.Web3Provider(provider)
-  const MaciContract = new ethers.Contract(MACI_ADDRESS, MACIABI, ethersProvider)
-
-  const args = {}
-
-  const tx = await MaciContract.signUp(args)
-
-  const stateIndex = getEventArg(contributionTxReceipt, maci, 'SignUp', '_stateIndex')
-  const voiceCredits = getEventArg(contributionTxReceipt, maci, 'SignUp', '_voiceCreditBalance')
+async function getEventArg(transaction, contract, eventName, argumentName) {
+  const receipt = await transaction.wait()
+  for (const log of receipt.logs || []) {
+    if (log.address != contract.address) {
+      continue
+    }
+    const event = contract.interface.parseLog(log)
+    if (event && event.name === eventName) {
+      return event.args[argumentName]
+    }
+  }
+  throw new Error('Event not found')
 }
+
+export async function calcSignUpDeadline(ethersProvider) {
+  const signer = ethersProvider.getSigner()
+  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+
+  const tx = await maci.calcSignUpDeadline()
+  console.log(tx)
+  return tx
+}
+
+export async function signUp(ethersProvider, keyPair) {
+  const signer = ethersProvider.getSigner()
+  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+
+  const tx = await maci.signUp(
+    keyPair.pubKey.asContractParam(),
+    [
+      /* signUpGatekeeperData: POAP tokenId */
+    ],
+    [
+      /* initialVoiceCreditProxyData */
+    ]
+  )
+
+  const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
+  const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
+
+  return { userStateIndex, voiceCredits }
+}
+
+export default { signUp }
