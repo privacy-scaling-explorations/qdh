@@ -1,8 +1,8 @@
 import random from 'lodash/random'
 
-const starsArr = Array.from({ length: 30 }).map(i => (
+const starsArr = Array.from({ length: 30 }).map((_, index) => (
   <span
-    key={i}
+    key={index}
     className='star'
     style={{
       position: 'absolute',

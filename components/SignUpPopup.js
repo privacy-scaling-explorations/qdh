@@ -25,7 +25,7 @@ export default function SignUpPopup() {
         </p>
         <Modal.Actions>
           <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>
-            <Button onClick={setModalOpen.bind(false, this)}>Close</Button>
+            <Button onClick={setModalOpen.bind(false, this)}>Later</Button>
           </span>
           <span className='flex self-end w-full mt-3 sm:mt-0 sm:w-auto'>
             <button

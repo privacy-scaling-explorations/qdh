@@ -22,15 +22,15 @@ export default function NotEligibleToSignUpPopup() {
         trigger={
           <span className='px-6 text-yellow-400 border-yellow-400 button'>⚠️ Your account is not eligible to vote</span>
         }>
-        <p className='mt-5 text-sm leading-5 text-gray-900'>
-          To be eligible to vote or nominate candidates, you need to have at least one of these tokens:
+        <div className='mt-5 text-sm text-gray-900'>
+          <p>To be eligible to vote or nominate candidates, you need to have at least one of these tokens:</p>
           <ul className='my-2 list-disc list-inside'>
             <li>POAP (from any 2018-2020 event)</li>
             <li>BRICK</li>
             <li>MOON</li>
           </ul>
-          Make sure your wallet has one of these and try again.
-        </p>
+          <p>Make sure your wallet has one of these and try again.</p>
+        </div>
         <Modal.Actions>
           <span>{/* Dummy span to align "Nice" button to the right */}</span>
           <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>

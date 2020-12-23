@@ -1,24 +1,9 @@
-import Web3 from 'web3'
+import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import Ens from 'ethereum-ens'
 import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
 
 let web3Modal = null
-
-export const getEnsName = async ({ address, provider }) => {
-  const ens = new Ens(provider)
-  let ensName = null
-  try {
-    ensName = await ens.reverse(address).name()
-    if (address != (await ens.resolver(ensName).addr())) {
-      ensName = null
-    }
-  } catch (err) {
-    console.log('Error getting ENS', address, err)
-  }
-  return ensName
-}
 
 const getWeb3Modal = () =>
   new Web3Modal({
@@ -39,49 +24,40 @@ const getWeb3Modal = () =>
   })
 
 const connect = async ({ setState, ...state }) => {
+  setState({ loading: true })
   if (web3Modal === null && typeof window !== 'undefined') {
     web3Modal = getWeb3Modal()
   }
 
   const provider = await web3Modal.connect()
-  const web3 = new Web3(provider)
-  const [address, ...otherAdrresses] = await web3.eth.getAccounts()
-  setState({ address, web3, provider })
-  setState({ loading: true })
-
-  attendedEligiblePOAPEvents(address, provider).then(hasEligiblePOAPtokens => {
-    if (!hasEligiblePOAPtokens) {
-      console.warn('this account doesnt have eligible tokens to sign up')
-    }
-    setState({ hasEligiblePOAPtokens, loading: false })
-  })
-
-  getEnsName({ address, provider }).then(ensName => {
-    setState({ ensName })
-  })
+  const ethersProvider = new ethers.providers.Web3Provider(provider)
+  const address = await ethersProvider.getSigner().getAddress()
+  setState({ address, provider, ethersProvider })
+  const ensName = await ethersProvider.lookupAddress(address)
+  setState({ ensName })
+  const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
+  setState({ hasEligiblePOAPtokens })
+  setState({ loading: false })
 
   if (!state.provider) {
+    const _handleAccountOrNetworkChange = async _ => {
+      setState({ loading: true })
+      const address = await ethersProvider.getSigner().getAddress()
+      const ensName = await ethersProvider.lookupAddress(address)
+      const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
+      setState({ address, ensName, hasEligiblePOAPtokens })
+      setState({ loading: false })
+    }
+
     provider.on('accountsChanged', async accounts => {
       console.log('accountsChanged', accounts)
-      const [address, ...otherAdrresses] = accounts
-      const ensName = await getEnsName({ address, provider })
-      setState({ address, hasEligiblePOAPtokens: null })
-      setState({ loading: true })
-      attendedEligiblePOAPEvents(address, provider).then(hasEligiblePOAPtokens => {
-        if (!hasEligiblePOAPtokens) {
-          console.warn('this account doesnt have eligible tokens to sign up')
-        }
-        setState({ hasEligiblePOAPtokens, loading: false })
-      })
-
-      getEnsName({ address, provider }).then(ensName => {
-        setState({ ensName })
-      })
+      _handleAccountOrNetworkChange()
     })
 
     // Subscribe to chainId change
     provider.on('chainChanged', chainId => {
       console.log('chainChanged', chainId)
+      _handleAccountOrNetworkChange()
     })
 
     // Subscribe to provider connection
@@ -112,8 +88,9 @@ export default {
         if (web3Modal.cachedProvider) {
           console.log('web3Modal.cachedProvider', store)
           store.actions.connect({ setState, ...store })
+        } else {
+          setState({ loading: false })
         }
-        setState({ loading: false })
       }
     },
     connect: connect,
@@ -123,6 +100,7 @@ export default {
         ensName: null,
         web3: null,
         provider: null,
+        ethersProvider: null,
       })
       web3Modal && (await web3Modal.clearCachedProvider())
     },

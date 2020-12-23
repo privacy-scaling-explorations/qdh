@@ -1,24 +1,25 @@
-import Web3 from 'web3'
-import { POAP_CONTRACT_ADDRESS } from 'libs/constants'
+import { ethers } from 'ethers'
+import { POAP_ADDRESS } from 'libs/constants'
 import ERC721ABI from 'abi/ERC721.abi.json'
 
 export default async function getPOAPEvents(address, provider) {
-  const web3 = new Web3(provider)
-  const PoapContract = new web3.eth.Contract(ERC721ABI, POAP_CONTRACT_ADDRESS)
-  const proxy = PoapContract.methods
   const attendedEvents = []
+
+  const ethersProvider = new ethers.providers.Web3Provider(provider)
+  const PoapContract = new ethers.Contract(POAP_ADDRESS, ERC721ABI, ethersProvider)
+
   let tokensAmount
 
   try {
-    tokensAmount = parseInt(await proxy.balanceOf(address).call())
+    tokensAmount = parseInt(await PoapContract.balanceOf(address))
   } catch (err) {
     console.error(err)
     return []
   }
 
   for (let i = 0; i < tokensAmount; i++) {
-    const { tokenId } = await proxy.tokenDetailsOfOwnerByIndex(address, i).call()
-    const tokenURI = await proxy.tokenURI(tokenId).call()
+    const { tokenId } = await PoapContract.tokenDetailsOfOwnerByIndex(address, i)
+    const tokenURI = await PoapContract.tokenURI(tokenId)
     const poapEvent = await (await fetch(tokenURI)).json()
     attendedEvents.push(poapEvent)
   }
