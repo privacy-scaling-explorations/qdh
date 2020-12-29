@@ -38,8 +38,7 @@ const connect = async ({ setState, ...state }) => {
     const address = await ethersProvider.getSigner().getAddress()
     setState({ address })
     const { chainId } = await ethersProvider.getNetwork()
-    if (chainId === 1337) {
-      // local or private chain
+    if (chainId === 1337) { /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
     } else {
       const ensName = await ethersProvider.lookupAddress(address)

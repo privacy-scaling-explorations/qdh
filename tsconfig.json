@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "libs/*": ["./libs/*"],
+      "components/*": ["./components/*"]
     },
     "types": ["node"]
   },

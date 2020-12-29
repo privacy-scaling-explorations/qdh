@@ -4,7 +4,7 @@ import web3state from './web3state'
 
 import random from 'lodash/random'
 import pack from 'libs/binpack'
-import { signUp as MaciSignUp } from 'libs/MACI'
+import { signUp as MaciSignUp, changeKey as MaciChangeKey, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 
 const BOXES = Array.from(Array(10)).map(_ => {
@@ -105,13 +105,13 @@ const actions = {
   imBeingBribed: (store, value) => {
     store.setState({ bribedMode: !store.state.bribedMode })
   },
-  changeKey: (store, value) => {
+  changeKey: async ({ state, ...store }, value) => {
     const keyPair = new Keypair()
     localStorage.setItem('macisk', keyPair.privKey.serialize())
-    // TODO send a signature to the contract
     store.setState({ keyPair: keyPair })
     alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
     console.log('MACI key changed', keyPair.pubKey.serialize())
+    await MaciChangeKey(state.ethersProvider, state.keyPair, state.userStateIndex, BigInt(0))
   },
   setLoading: (store, value) => {
     store.setState({ loading: value })

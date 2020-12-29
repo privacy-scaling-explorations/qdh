@@ -33,68 +33,52 @@ export async function calcSignUpDeadline(ethersProvider: providers.Web3Provider)
   return tx
 }
 
-export async function signUp(ethersProvider: providers.Web3Provider, keypair: Keypair, poapTokenId: number) {
+export async function signUp(
+  ethersProvider: providers.Web3Provider,
+  keypair: Keypair,
+  poapTokenId: number
+): Promise<{ userStateIndex: number; voiceCredits: number }> {
   const signer = ethersProvider.getSigner()
   const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
-
   const tx = await maci.signUp(
     keypair.pubKey.asContractParam(),
-    [
-      /* signUpGatekeeperData: POAP tokenId */
-      ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId]),
-    ],
-    [
-      /* initialVoiceCreditProxyData empty */
-    ]
+    [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
+    [/* initialVoiceCreditProxyData: empty */]
   )
-
   const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
   const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
-
   return { userStateIndex, voiceCredits }
 }
 
-export async function changeKey(ethersProvider: providers.Web3Provider, keypair: Keypair) {
-  const signer = ethersProvider.getSigner()
-  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
-
-  // const command = new Command([])
-
-  const tx = await maci.publishMessage(
-    keypair.pubKey.asContractParam(),
-    [
-      /* signUpGatekeeperData: POAP tokenId */
-    ],
-    [
-      /* initialVoiceCreditProxyData */
-    ]
-  )
-
-  return {}
+export async function changeKey(
+  ethersProvider: providers.Web3Provider,
+  keypair: Keypair,
+  stateIndex: BigInt,
+  nonce: BigInt
+): Promise<any> {
+  const receipt = await publish(ethersProvider, keypair, stateIndex, BigInt(0), BigInt(0), nonce)
+  return receipt
 }
 
-export async function publish(ethersProvider: any, keypair: Keypair) {
+export async function publish(
+  ethersProvider: any,
+  keypair: Keypair,
+  stateIndex: BigInt,
+  voteOptionIndex: BigInt,
+  voteWeight: BigInt,
+  nonce: BigInt
+): Promise<any> {
   const signer = ethersProvider.getSigner()
   const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
 
   // TODO https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
-  const _stateIndex = BigInt(0)
-  const _voteOptionIndex = BigInt(0)
-  const _nonce = BigInt(0)
-
-  const command = new Command(_stateIndex, keypair.pubKey, _voteOptionIndex, BigInt(0), _nonce, genRandomSalt())
+  const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
   const signature = command.sign(keypair.privKey)
   const message = command.encrypt(signature, BigInt(0))
 
   const tx = await maci.publishMessage(
     message.asContractParam(),
     keypair.pubKey.asContractParam(),
-    [
-      /* signUpGatekeeperData: POAP tokenId */
-    ],
-    [
-      /* initialVoiceCreditProxyData */
-    ]
   )
   const receipt = await tx.wait()
   return receipt
