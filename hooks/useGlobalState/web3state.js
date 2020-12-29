@@ -44,8 +44,8 @@ const connect = async ({ setState, ...state }) => {
     } else {
       const ensName = await ethersProvider.lookupAddress(address)
       setState({ ensName })
-      const hasEligiblePOAPtokens = await attendedEligiblePOAPEvents(address, provider)
-      setState({ hasEligiblePOAPtokens })
+      const { eligible, poapTokenId } = await attendedEligiblePOAPEvents(address, provider)
+      setState({ hasEligiblePOAPtokens: eligible, poapTokenId })
     }
     setState({ loading: false })
   }

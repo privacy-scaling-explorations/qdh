@@ -29,7 +29,7 @@ const initialState = {
   bribedMode: false,
   signedUp: (() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('userStateIndex') || false
+      return Boolean(localStorage.getItem('userStateIndex')) || false
     }
   })(),
   userStateIndex: (() => {
@@ -59,7 +59,11 @@ const actions = {
   ...web3state.actions,
   signUp: async (store, value) => {
     store.setState({ loading: true })
-    const { userStateIndex, voiceCredits } = await MaciSignUp(store.state.ethersProvider, store.state.keyPair)
+    const { userStateIndex, voiceCredits } = await MaciSignUp(
+      store.state.ethersProvider,
+      store.state.keyPair,
+      store.state.poapTokenId
+    )
     localStorage.setItem('userStateIndex', userStateIndex)
     store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
     store.setState({ loading: false })
