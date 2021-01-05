@@ -6,7 +6,10 @@ import Modal from 'components/Modal'
 import Button from 'components/Button'
 
 export default function HamburgerMenu() {
-  const [{ keyPair }, { changeKey }] = useGlobalState()
+  const [state, actions] = useGlobalState()
+  const { keyPair, bribedMode } = state
+  const { changeKey, imBeingBribed } = actions
+
   const [modalOpen, setModalOpen] = useState(false)
   return (
     <Dropdown
@@ -62,6 +65,18 @@ export default function HamburgerMenu() {
         onClick={changeKey}
         role='menuitem'>
         Change key
+      </a>
+      <a
+        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        onClick={imBeingBribed}
+        role='menuitem'>
+        {bribedMode ? (
+          <span title={`I'm being bribed mode is ON`}>
+            <b>I'm being bribed</b> mode is on.
+          </span>
+        ) : (
+          <span>I'm being bribed</span>
+        )}
       </a>
     </Dropdown>
   )

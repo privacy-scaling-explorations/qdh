@@ -38,7 +38,8 @@ const connect = async ({ setState, ...state }) => {
     const address = await ethersProvider.getSigner().getAddress()
     setState({ address })
     const { chainId } = await ethersProvider.getNetwork()
-    if (chainId === 1337) { /* local or private chain */
+    if (chainId === 1337) {
+      /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
     } else {
       const ensName = await ethersProvider.lookupAddress(address)
@@ -85,6 +86,9 @@ export default {
   },
   actions: {
     initWeb3: async ({ setState, ...store }) => {
+      if (typeof window !== 'undefined') {
+        store.actions.initImages()
+      }
       if (typeof window !== 'undefined' && web3Modal == null) {
         web3Modal = getWeb3Modal()
 

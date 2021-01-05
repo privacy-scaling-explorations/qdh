@@ -1,16 +1,17 @@
 import useGlobalState from 'hooks/useGlobalState'
 import classnames from 'classnames'
 import NominateImageModal from 'components/NominateImage'
+import Cart from 'components/Cart'
 
 const Row = ({ children, className, ...props }) => <div className={classnames('space-x-2', className)}>{children}</div>
 
 export default function VotingControls() {
   const [state, actions] = useGlobalState()
-  const { selected, voteSquare, bribedMode } = state
-  const { imBeingBribed, incVote, decVote, vote } = actions
+  const { selected, voteSquare, bribedMode, cart } = state
+  const { imBeingBribed, incVote, decVote, addToCart } = actions
 
   return (
-    <div className='space-y-6 text-right'>
+    <div className='relative block space-y-6 text-center'>
       {selected !== null ? (
         <>
           <Row className='-mb-2 text-center'>
@@ -26,20 +27,22 @@ export default function VotingControls() {
             </a>
           </Row>
           <Row className='inline-block min-w-full'>
-            <a className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button' onClick={vote}>
-              Cast your Vote
+            <a
+              className='inline-block min-w-full px-6 -mt-2 text-center select-none leading-1 button'
+              onClick={addToCart}>
+              Add to cart
             </a>
           </Row>
         </>
       ) : (
         <>
-          <Row>
+          {/* <Row>
             <a onClick={imBeingBribed} className='px-6 text-yellow-400 border-yellow-400 button'>
               {bribedMode ? `⚠️ "I'm being bribed" mode is ON` : `"I'm being bribed" mode`}
             </a>
-          </Row>
+          </Row> */}
           <Row>
-            <NominateImageModal trigger={<a className='px-6 button'>Nominate an image</a>} />
+            <Cart />
           </Row>
         </>
       )}

@@ -7,22 +7,17 @@ import pack from 'libs/binpack'
 import { signUp as MaciSignUp, changeKey as MaciChangeKey, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 
-const BOXES = Array.from(Array(10)).map(_ => {
-  const _size = (2 ^ random(1, 10)) * 20
-  return {
-    w: _size,
-    h: _size,
-    color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
-  }
-})
-const { canvas, boxes } = pack(BOXES, 'maxrects')
-
 const initialState = {
   ...web3state.initialState,
   loading: true,
-  canvas,
-  boxes,
-  balance: null,
+  canvas: {},
+  boxes: [],
+  cart: [],
+  balance: (() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem('voiceCredits')) || 100
+    }
+  })(),
   selected: null,
   voteRootValue: 1,
   voteSquare: 1,
@@ -34,8 +29,7 @@ const initialState = {
   })(),
   userStateIndex: (() => {
     if (typeof window !== 'undefined') {
-      const userStateIndex = localStorage.getItem('userStateIndex') || null
-      return userStateIndex
+      return parseInt(localStorage.getItem('userStateIndex')) || null
     }
   })(),
   keyPair: (() => {
@@ -65,6 +59,7 @@ const actions = {
       store.state.poapTokenId
     )
     localStorage.setItem('userStateIndex', userStateIndex)
+    localStorage.setItem('voiceCredits', voiceCredits)
     store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
     store.setState({ loading: false })
   },
@@ -84,6 +79,22 @@ const actions = {
     const voteSquare = Math.pow(voteRootValue, 2)
     store.setState({ voteRootValue, voteSquare })
   },
+  addToCart: (store, value) => {
+    let { cart, selected, voteRootValue, voteSquare } = store.state
+    cart.push({ type: 'vote', imageId: selected, voteRootValue, voteSquare })
+    store.setState({
+      cart: cart,
+      selected: null,
+      balance: store.state.balance - store.state.voteSquare,
+      voteRootValue: 1,
+      voteSquare: 1,
+    })
+  },
+  removeFromCart: (store, value) => {
+    let { cart } = store.state
+    const [{ voteRootValue, voteSquare }] = cart.splice(value, 1)
+    store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
+  },
   vote: (store, value) => {
     store.setState({
       balance: store.state.balance - store.state.voteSquare,
@@ -101,20 +112,41 @@ const actions = {
         Vote for a vote option that does not exist
       */
     }
+    // TODO update local storate balance
   },
   imBeingBribed: (store, value) => {
     store.setState({ bribedMode: !store.state.bribedMode })
   },
   changeKey: async ({ state, ...store }, value) => {
     const keyPair = new Keypair()
-    localStorage.setItem('macisk', keyPair.privKey.serialize())
+    // localStorage.setItem('macisk', keyPair.privKey.serialize())
     store.setState({ keyPair: keyPair })
-    alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
-    console.log('MACI key changed', keyPair.pubKey.serialize())
-    await MaciChangeKey(state.ethersProvider, state.keyPair, state.userStateIndex, BigInt(0))
+    // alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
+    // console.log('MACI key changed', keyPair.pubKey.serialize())
+    // await MaciChangeKey(state.ethersProvider, state.keyPair, state.userStateIndex, BigInt(0))
+
+    let { cart } = state
+    cart.push({ type: 'keychange', keyPair })
+    store.setState({ cart })
   },
   setLoading: (store, value) => {
     store.setState({ loading: value })
+  },
+  initImages: async store => {
+    if (typeof window === 'undefined') return
+    if (store.state.boxes.length > 0) return
+
+    // TODO fetch existing images here:
+    const BOXES = Array.from(Array(10)).map(_ => {
+      const _size = (2 ^ random(1, 10)) * 20
+      return {
+        w: _size,
+        h: _size,
+        color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
+      }
+    })
+    const { canvas, boxes } = pack(BOXES, 'maxrects')
+    store.setState({ canvas, boxes })
   },
 }
 
