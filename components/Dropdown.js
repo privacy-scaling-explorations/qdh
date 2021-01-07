@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { Transition } from '@headlessui/react'
+import { HiDotsVertical } from 'react-icons/hi'
+import classnames from 'classnames'
 
-export default function Dropdown({ trigger, children }) {
+export default function Dropdown({ trigger, children, ...props }) {
   const ref = useRef()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -31,13 +33,7 @@ export default function Dropdown({ trigger, children }) {
           aria-haspopup='true'
           aria-expanded={isOpen}>
           Options
-          <svg className='w-5 h-5 ml-2 -mr-1' viewBox='0 0 20 20' fill='currentColor'>
-            <path
-              fillRule='evenodd'
-              d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-              clipRule='evenodd'
-            />
-          </svg>
+          <HiDotsVertical className='w-5 h-5 ml-2 -mr-1' />
         </button>
       </span>
     )
@@ -54,7 +50,10 @@ export default function Dropdown({ trigger, children }) {
         leave='transition ease-in duration-150'
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'
-        className='absolute right-0 z-20 w-40 mt-4 origin-top-right rounded-md shadow-lg'>
+        className={classnames(
+          'absolute right-0 z-20 w-40 mt-4 origin-top-right rounded-md shadow-lg',
+          props.className
+        )}>
         <div className='bg-white rounded-md shadow-xs'>
           <div className='py-1' role='menu' aria-orientation='vertical' aria-labelledby='options-menu'>
             {children}

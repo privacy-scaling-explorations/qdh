@@ -21,7 +21,9 @@ export default function VotingControls() {
             <a className='px-6 select-none button' onClick={decVote}>
               -
             </a>
-            <span className='inline-block w-16 px-0 py-2 text-center cursor-default button'>{voteSquare}</span>
+            <span className='inline-block w-16 px-0 py-2 text-center border-none cursor-default button'>
+              {voteSquare}
+            </span>
             <a className='px-6 select-none button' onClick={incVote}>
               +
             </a>

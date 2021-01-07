@@ -97,6 +97,9 @@ const actions = {
     store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
   },
   vote: (store, value) => {
+    store.state.cart.forEach(item => {
+      console.log(item)
+    })
     if (store.bribedMode) {
       /*
         There are several ways to cast an invalid vote:
@@ -125,6 +128,7 @@ const actions = {
     cart.push({ type: 'keychange', keyPair })
     store.setState({ cart })
   },
+
   setLoading: (store, value) => {
     store.setState({ loading: value })
   },
