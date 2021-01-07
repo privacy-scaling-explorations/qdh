@@ -3,7 +3,7 @@ import classnames from 'classnames'
 export default function Loader({ className, ...props }) {
   return (
     <svg
-      className={classnames('animate-spin-fast -ml-1 mr-3 h-5 w-5 text-cyan', className)}
+      className={classnames('animate-spin-fast mr-3 h-5 w-5 text-cyan', className)}
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
       viewBox='0 0 24 24'>

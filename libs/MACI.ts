@@ -43,7 +43,9 @@ export async function signUp(
   const tx = await maci.signUp(
     keypair.pubKey.asContractParam(),
     [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
-    [/* initialVoiceCreditProxyData: empty */]
+    [
+      /* initialVoiceCreditProxyData: empty */
+    ]
   )
   const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
   const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
@@ -75,11 +77,11 @@ export async function publish(
   const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
   const signature = command.sign(keypair.privKey)
   const message = command.encrypt(signature, BigInt(0))
-
-  const tx = await maci.publishMessage(
-    message.asContractParam(),
-    keypair.pubKey.asContractParam(),
-  )
-  const receipt = await tx.wait()
-  return receipt
+  try {
+    const tx = await maci.publishMessage(message.asContractParam(), keypair.pubKey.asContractParam())
+    const receipt = await tx.wait()
+    return receipt
+  } catch (err) {
+    alert(err.data?.message || err.message)
+  }
 }

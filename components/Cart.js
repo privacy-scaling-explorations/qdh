@@ -13,7 +13,7 @@ const TrashIcon = ({ className, ...props }) => (
 
 export default function Cart() {
   const [state, actions] = useGlobalState()
-  const { cart, boxes } = state
+  const { cart, boxes, loading } = state
   const { vote, removeFromCart } = actions
 
   return (
@@ -51,8 +51,12 @@ export default function Cart() {
       })}
 
       {Boolean(cart.length) && (
-        <a className='block w-full px-6 text-center button' onClick={vote}>
-          Vote
+        <a
+          className={classnames('block w-full px-6 text-center button select-none', {
+            'cursor-wait': loading,
+          })}
+          onClick={vote}>
+          {loading ? 'Voting…' : 'Vote'}
         </a>
       )}
     </div>

@@ -23,7 +23,7 @@ export default function Nav() {
               <a className='px-6 button' title='Your voice credits'>
                 {balance} {pluralize('credits', balance)}
               </a>
-              <NominateImageModal trigger={<a className='inline px-6 button'>Nominate an image</a>} />
+              <NominateImageModal trigger={<a className='inline px-6 select-none button'>Nominate an image</a>} />
             </>
           )}
           {/* <a className='px-6 button' title='Your voice credits'>

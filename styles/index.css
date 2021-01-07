@@ -30,6 +30,10 @@ h4 {
   @apply bg-black bg-opacity-25;
 }
 
+.button.cursor-wait:hover {
+  box-shadow: none;
+}
+
 .btn-red {
   @apply inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-red-600 border border-transparent rounded-md shadow-sm;
 }

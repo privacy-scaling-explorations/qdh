@@ -2,6 +2,8 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
+import { MACI_ADDRESS } from 'libs/constants'
+import MACI_ABI from 'abi/MACI.abi.json'
 
 let web3Modal = null
 

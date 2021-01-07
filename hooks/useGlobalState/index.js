@@ -13,6 +13,16 @@ const initialState = {
   canvas: {},
   boxes: [],
   cart: [],
+  committedVotes: (() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return JSON.parse(localStorage.getItem('committedVotes')) || []
+      } catch (err) {
+        return []
+      }
+    }
+    return []
+  })(),
   balance: (() => {
     if (typeof window !== 'undefined') {
       return parseInt(localStorage.getItem('voiceCredits')) || 120
@@ -56,7 +66,7 @@ const actions = {
     const { userStateIndex, voiceCredits } = await MaciSignUp(
       store.state.ethersProvider,
       store.state.keyPair,
-      store.state.poapTokenId
+      BigInt(store.state.poapTokenId || 0)
     )
     localStorage.setItem('userStateIndex', userStateIndex)
     localStorage.setItem('voiceCredits', voiceCredits)
@@ -96,22 +106,41 @@ const actions = {
     const [{ voteRootValue, voteSquare }] = cart.splice(value, 1)
     store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
   },
-  vote: (store, value) => {
-    store.state.cart.forEach(item => {
-      console.log(item)
-    })
+  vote: async ({ state, ...store }, value) => {
+    if (state.loading) return
+    store.setState({ loading: true })
+    const { ethersProvider, keyPair, userStateIndex, cart, committedVotes } = state
+    console.log(cart, cart.entries())
+    for (const [index, item] of cart.entries()) {
+      console.log(index, item)
+      item.nonce = index + 1
+      const { imageId: voteOptionIndex, voteSquare: voteWeight, nonce } = item
+      const tx = await MaciPublish(
+        ethersProvider,
+        keyPair,
+        BigInt(userStateIndex),
+        BigInt(voteOptionIndex || 0),
+        BigInt(voteWeight || 0),
+        BigInt(nonce)
+      )
+      item.tx = tx
+      committedVotes.push(item)
+    }
     if (store.bribedMode) {
       /*
-        There are several ways to cast an invalid vote:
+      There are several ways to cast an invalid vote:
 
-        Use an invalid signature
-        Use more voice credits than available
-        Use an incorrect nonce
-        Use an invalid state index
-        Vote for a vote option that does not exist
+      Use an invalid signature
+      Use more voice credits than available
+      Use an incorrect nonce
+      Use an invalid state index
+      Vote for a vote option that does not exist
       */
     }
     // TODO update local storate balance
+    committedVotes.forEach(item => cart.splice(cart.indexOf(item), 1))
+    localStorage.setItem('committedVotes', JSON.stringify(committedVotes))
+    store.setState({ loading: false, committedVotes, cart })
   },
   imBeingBribed: (store, value) => {
     store.setState({ bribedMode: !store.state.bribedMode })
@@ -125,7 +154,7 @@ const actions = {
     // await MaciChangeKey(state.ethersProvider, state.keyPair, state.userStateIndex, BigInt(0))
 
     let { cart } = state
-    cart.push({ type: 'keychange', keyPair })
+    cart.push({ type: 'keychange', keyPair, voteOptionIndex: 0, voteWeight: 0 })
     store.setState({ cart })
   },
 
