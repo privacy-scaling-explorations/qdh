@@ -110,21 +110,23 @@ const actions = {
     if (state.loading) return
     store.setState({ loading: true })
     const { ethersProvider, keyPair, userStateIndex, cart, committedVotes } = state
-    console.log(cart, cart.entries())
     for (const [index, item] of cart.entries()) {
-      console.log(index, item)
       item.nonce = index + 1
       const { imageId: voteOptionIndex, voteSquare: voteWeight, nonce } = item
-      const tx = await MaciPublish(
-        ethersProvider,
-        keyPair,
-        BigInt(userStateIndex),
-        BigInt(voteOptionIndex || 0),
-        BigInt(voteWeight || 0),
-        BigInt(nonce)
-      )
-      item.tx = tx
-      committedVotes.push(item)
+      try {
+        const tx = await MaciPublish(
+          ethersProvider,
+          keyPair,
+          BigInt(userStateIndex),
+          BigInt(voteOptionIndex || 0),
+          BigInt(voteWeight || 0),
+          BigInt(nonce)
+        )
+        item.tx = tx
+        committedVotes.push(item)
+      } catch (error) {
+        // TODO make sure failed transactions are not removed from cart
+      }
     }
     if (store.bribedMode) {
       /*
@@ -139,7 +141,14 @@ const actions = {
     }
     // TODO update local storate balance
     committedVotes.forEach(item => cart.splice(cart.indexOf(item), 1))
-    localStorage.setItem('committedVotes', JSON.stringify(committedVotes))
+    localStorage.setItem(
+      'committedVotes',
+      JSON.stringify(
+        committedVotes,
+        (key, value) => (typeof value === 'bigint' ? value.toString() : value) // return everything else unchanged
+      )
+    )
+    localStorage.setItem('voiceCredits', state.balance)
     store.setState({ loading: false, committedVotes, cart })
   },
   imBeingBribed: (store, value) => {

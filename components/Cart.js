@@ -17,7 +17,7 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
   if (committedVotes.length < 1) return null
   return (
     <>
-      <h3 className='text-xl text-center cursor-pointer' onClick={_ => setOpen(!open)}>
+      <h3 className='text-xl text-center cursor-pointer select-none' onClick={_ => setOpen(!open)}>
         {committedVotes.length} Commited Votes
       </h3>
       {open &&

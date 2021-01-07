@@ -83,5 +83,6 @@ export async function publish(
     return receipt
   } catch (err) {
     alert(err.data?.message || err.message)
+    throw new Error(err)
   }
 }
