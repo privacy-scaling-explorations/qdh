@@ -34,12 +34,13 @@ export async function calcSignUpDeadline(ethersProvider: providers.Web3Provider)
 }
 
 export async function signUp(
-  ethersProvider: providers.Web3Provider,
+  // ethersProvider: providers.Web3Provider,
+  maci: Contract,
   keypair: Keypair,
   poapTokenId: number
 ): Promise<{ userStateIndex: number; voiceCredits: number }> {
-  const signer = ethersProvider.getSigner()
-  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+  // const signer = ethersProvider.getSigner()
+  // const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
   const tx = await maci.signUp(
     keypair.pubKey.asContractParam(),
     [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
@@ -52,26 +53,17 @@ export async function signUp(
   return { userStateIndex, voiceCredits }
 }
 
-export async function changeKey(
-  ethersProvider: providers.Web3Provider,
-  keypair: Keypair,
-  stateIndex: BigInt,
-  nonce: BigInt
-): Promise<any> {
-  const receipt = await publish(ethersProvider, keypair, stateIndex, BigInt(0), BigInt(0), nonce)
-  return receipt
-}
-
 export async function publish(
-  ethersProvider: any,
+  // ethersProvider: providers.Web3Provider,
+  maci: Contract,
   keypair: Keypair,
   stateIndex: BigInt,
   voteOptionIndex: BigInt,
   voteWeight: BigInt,
   nonce: BigInt
 ): Promise<any> {
-  const signer = ethersProvider.getSigner()
-  const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+  // const signer = ethersProvider.getSigner()
+  // const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
 
   // TODO https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
   const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
@@ -85,4 +77,15 @@ export async function publish(
     alert(err.data?.message || err.message)
     throw new Error(err)
   }
+}
+
+export async function changeKey(
+  // ethersProvider: providers.Web3Provider,
+  maci: Contract,
+  keypair: Keypair,
+  stateIndex: BigInt,
+  nonce: BigInt
+): Promise<any> {
+  const receipt = await publish(maci, keypair, stateIndex, BigInt(0), BigInt(0), nonce)
+  return receipt
 }

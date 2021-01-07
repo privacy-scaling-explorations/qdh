@@ -88,6 +88,7 @@ export default {
     provider: null,
     ethersProvider: null,
     hasEligiblePOAPtokens: null,
+    maciAddress: MACI_ADDRESS,
   },
   actions: {
     initWeb3: async ({ setState, ...store }) => {
@@ -102,6 +103,15 @@ export default {
         } else {
           setState({ loading: false })
         }
+      }
+    },
+    setMaciAddress: ({ setState, ...store }, maciAddress) => {
+      const signer = store.state.ethersProvider.getSigner()
+      try {
+        const maci = new ethers.Contract(maciAddress, MACI_ABI, signer)
+        setState({ maci, maciAddress })
+      } catch (error) {
+        alert(`Doesnt look like a valid MACI address. Please try again`)
       }
     },
     connect: connect,

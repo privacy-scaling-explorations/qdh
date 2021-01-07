@@ -4,7 +4,7 @@ import web3state from './web3state'
 
 import random from 'lodash/random'
 import pack from 'libs/binpack'
-import { signUp as MaciSignUp, changeKey as MaciChangeKey, publish as MaciPublish } from 'libs/MACI'
+import { signUp as MaciSignUp, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 
 const initialState = {
@@ -62,11 +62,15 @@ const initialState = {
 const actions = {
   ...web3state.actions,
   signUp: async (store, value) => {
+    const { chainId } = await store.state.ethersProvider.getNetwork()
+    if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
+    const { ethersProvider, maci, keyPair, poapTokenId } = store.state
     const { userStateIndex, voiceCredits } = await MaciSignUp(
-      store.state.ethersProvider,
-      store.state.keyPair,
-      BigInt(store.state.poapTokenId || 0)
+      // ethersProvider,
+      maci,
+      keyPair,
+      BigInt(poapTokenId || 0)
     )
     localStorage.setItem('userStateIndex', userStateIndex)
     localStorage.setItem('voiceCredits', voiceCredits)
@@ -108,14 +112,17 @@ const actions = {
   },
   vote: async ({ state, ...store }, value) => {
     if (state.loading) return
+    const { chainId } = await state.ethersProvider.getNetwork()
+    if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
-    const { ethersProvider, keyPair, userStateIndex, cart, committedVotes } = state
+    const { ethersProvider, maci, keyPair, userStateIndex, cart, committedVotes } = state
     for (const [index, item] of cart.entries()) {
       item.nonce = index + 1
       const { imageId: voteOptionIndex, voteSquare: voteWeight, nonce } = item
       try {
         const tx = await MaciPublish(
-          ethersProvider,
+          // ethersProvider,
+          maci,
           keyPair,
           BigInt(userStateIndex),
           BigInt(voteOptionIndex || 0),

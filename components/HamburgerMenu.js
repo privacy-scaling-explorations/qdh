@@ -4,12 +4,12 @@ import Link from 'next/link'
 import Dropdown from 'components/Dropdown'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
-import { HiOutlineKey, HiDotsVertical, HiOutlineExclamation, HiExclamation } from 'react-icons/hi'
+import { HiOutlineKey, HiDotsVertical, HiOutlineExclamation, HiExclamation, HiChartPie } from 'react-icons/hi'
 
 export default function HamburgerMenu() {
   const [state, actions] = useGlobalState()
   const { keyPair, bribedMode } = state
-  const { changeKey, imBeingBribed } = actions
+  const { changeKey, imBeingBribed, setMaciAddress } = actions
 
   const [modalOpen, setModalOpen] = useState(false)
   return (
@@ -42,6 +42,16 @@ export default function HamburgerMenu() {
             <HiOutlineExclamation className='inline text-red-600' /> I'm being bribed
           </span>
         )}
+      </a>
+      <a
+        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        onClick={_ => {
+          const address = prompt('Enter new MACI address:', '0x123…')
+          setMaciAddress(address)
+          document.dispatchEvent(new Event('mousedown')) // closes the dropdown
+        }}
+        role='menuitem'>
+        <HiChartPie className='inline text-indigo-600' /> Set MACI Address
       </a>
       <Modal
         isOpen={modalOpen}
