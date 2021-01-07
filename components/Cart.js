@@ -29,8 +29,11 @@ export default function Cart() {
   return (
     <div className='w-56 space-y-6 text-right'>
       <h3 className='text-xl text-center'>
-        {cart.length} pending {pluralize('vote', cart.length)}
-        {Boolean(cart.length) ? ':' : null}
+        {Boolean(cart.length) && (
+          <span>
+            {cart.length} pending {pluralize('vote', cart.length)}
+          </span>
+        )}
       </h3>
       {cart.map((item, i) => {
         if (item.type === 'keychange') {

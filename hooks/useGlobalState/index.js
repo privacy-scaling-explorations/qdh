@@ -15,7 +15,7 @@ const initialState = {
   cart: [],
   balance: (() => {
     if (typeof window !== 'undefined') {
-      return parseInt(localStorage.getItem('voiceCredits')) || 100
+      return parseInt(localStorage.getItem('voiceCredits')) || 120
     }
   })(),
   selected: null,
@@ -71,6 +71,7 @@ const actions = {
   incVote: (store, value) => {
     const voteRootValue = store.state.voteRootValue + 1
     const voteSquare = Math.pow(voteRootValue, 2)
+    if (store.state.balance - voteSquare < 0) return
     store.setState({ voteRootValue, voteSquare })
   },
   decVote: (store, value) => {
@@ -96,11 +97,6 @@ const actions = {
     store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
   },
   vote: (store, value) => {
-    store.setState({
-      balance: store.state.balance - store.state.voteSquare,
-      voteRootValue: 1,
-      voteSquare: 1,
-    })
     if (store.bribedMode) {
       /*
         There are several ways to cast an invalid vote:
