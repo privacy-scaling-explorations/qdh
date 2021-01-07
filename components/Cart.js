@@ -24,10 +24,7 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
         committedVotes.map((item, i) => {
           if (item.type === 'keychange') {
             return (
-              <div
-                className='relative text-left text-white cursor-default'
-                key={i}
-                title={item.keyPair.pubKey.serialize()}>
+              <div className='relative text-left text-white cursor-default' key={i}>
                 <HiOutlineKey className='inline w-6 h-6 ml-1 mr-3' stroke='yellow' /> Change key
               </div>
             )
