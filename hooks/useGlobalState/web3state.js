@@ -40,6 +40,9 @@ const connect = async ({ setState, ...state }) => {
     const address = await ethersProvider.getSigner().getAddress()
     setState({ address })
     const { chainId } = await ethersProvider.getNetwork()
+    const signer = ethersProvider.getSigner()
+    const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+    setState({ maci })
     if (chainId === 1337) {
       /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
