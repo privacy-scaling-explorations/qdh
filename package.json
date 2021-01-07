@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.3.0",
@@ -35,9 +38,11 @@
     "web3modal": "^1.9.2"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^10.0.5",
     "@types/crypto-js": "^4.0.1",
     "@types/node": "^14.14.6",
     "@types/react": "^16.9.55",
+    "cross-env": "^7.0.3",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.9.6",
