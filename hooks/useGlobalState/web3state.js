@@ -2,6 +2,9 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
+import { calcVotingDeadline } from 'libs/MACI'
+import { MACI_ADDRESS } from 'libs/constants'
+import MACI_ABI from 'abi/MACI.abi.json'
 
 let web3Modal = null
 
@@ -38,7 +41,13 @@ const connect = async ({ setState, ...state }) => {
     const address = await ethersProvider.getSigner().getAddress()
     setState({ address })
     const { chainId } = await ethersProvider.getNetwork()
-    if (chainId === 1337) { /* local or private chain */
+    const signer = ethersProvider.getSigner()
+    const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+    setState({ maci })
+    const votingDeadline = await calcVotingDeadline(maci)
+    setState({ votingDeadline })
+    if (chainId === 1337) {
+      /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
     } else {
       const ensName = await ethersProvider.lookupAddress(address)
@@ -82,9 +91,14 @@ export default {
     provider: null,
     ethersProvider: null,
     hasEligiblePOAPtokens: null,
+    maciAddress: MACI_ADDRESS,
+    votingDeadline: null,
   },
   actions: {
     initWeb3: async ({ setState, ...store }) => {
+      if (typeof window !== 'undefined') {
+        store.actions.initImages()
+      }
       if (typeof window !== 'undefined' && web3Modal == null) {
         web3Modal = getWeb3Modal()
 
@@ -93,6 +107,15 @@ export default {
         } else {
           setState({ loading: false })
         }
+      }
+    },
+    setMaciAddress: ({ setState, ...store }, maciAddress) => {
+      const signer = store.state.ethersProvider.getSigner()
+      try {
+        const maci = new ethers.Contract(maciAddress, MACI_ABI, signer)
+        setState({ maci, maciAddress })
+      } catch (error) {
+        alert(`Doesnt look like a valid MACI address. Please try again`)
       }
     },
     connect: connect,

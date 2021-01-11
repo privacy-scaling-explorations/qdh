@@ -81,7 +81,7 @@
   },
   {
     "inputs": [],
-    "name": "calcSignUpDeadline",
+    "name": "calcVotingDeadline",
     "outputs": [
       {
         "internalType": "uint256",

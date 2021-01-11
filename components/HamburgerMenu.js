@@ -4,24 +4,55 @@ import Link from 'next/link'
 import Dropdown from 'components/Dropdown'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
+import { HiOutlineKey, HiDotsVertical, HiOutlineExclamation, HiExclamation, HiChartPie } from 'react-icons/hi'
 
 export default function HamburgerMenu() {
-  const [{ keyPair }, { changeKey }] = useGlobalState()
+  const [state, actions] = useGlobalState()
+  const { keyPair, bribedMode } = state
+  const { changeKey, imBeingBribed, setMaciAddress } = actions
+
   const [modalOpen, setModalOpen] = useState(false)
   return (
     <Dropdown
+      className='w-48 text-center'
       trigger={
         <a className='w-5 px-2 overflow-hidden border-none outline-none button'>
-          <svg
-            className='inline w-5'
-            style={{ verticalAlign: 'sub' }}
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 20 20'
-            fill='currentColor'>
-            <path d='M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z' />
-          </svg>
+          <HiDotsVertical className='inline w-5 h-5' />
         </a>
       }>
+      <a
+        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        onClick={_ => {
+          changeKey()
+          document.dispatchEvent(new Event('mousedown')) // closes the dropdown
+        }}
+        role='menuitem'>
+        <HiOutlineKey className='inline text-orange-500' /> Change key
+      </a>
+      <a
+        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        onClick={imBeingBribed}
+        role='menuitem'>
+        {bribedMode ? (
+          <span title={`I'm being bribed mode is ON`}>
+            <HiExclamation className='inline text-red-600' /> <b>I'm being bribed</b> mode is on.
+          </span>
+        ) : (
+          <span>
+            <HiOutlineExclamation className='inline text-red-600' /> I'm being bribed
+          </span>
+        )}
+      </a>
+      <a
+        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        onClick={_ => {
+          const address = prompt('Enter new MACI address:', '0x123…')
+          setMaciAddress(address)
+          document.dispatchEvent(new Event('mousedown')) // closes the dropdown
+        }}
+        role='menuitem'>
+        <HiChartPie className='inline text-indigo-600' /> Set MACI Address
+      </a>
       <Modal
         isOpen={modalOpen}
         onOpenStateChange={state => setModalOpen(state)}
@@ -57,12 +88,6 @@ export default function HamburgerMenu() {
           Github
         </a>
       </Link>
-      <a
-        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-        onClick={changeKey}
-        role='menuitem'>
-        Change key
-      </a>
     </Dropdown>
   )
 }

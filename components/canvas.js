@@ -9,6 +9,7 @@ export function Box({ style, isSelected, onClick, ...props }) {
         'shadow-outline z-auto isSelected': isSelected,
       })}
       style={style}
+      {...props}
     />
   )
 }
@@ -19,7 +20,7 @@ export default function Canvas() {
   const { selectImage } = actions
 
   return (
-    <div className='relative mx-auto' style={{ width: canvas.w }}>
+    <div className='relative mx-auto' style={{ width: canvas.w || 600 }}>
       {boxes.map((i, key) => (
         <Box
           key={key}
