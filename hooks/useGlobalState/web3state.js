@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
+import { calcVotingDeadline } from 'libs/MACI'
 import { MACI_ADDRESS } from 'libs/constants'
 import MACI_ABI from 'abi/MACI.abi.json'
 
@@ -43,6 +44,8 @@ const connect = async ({ setState, ...state }) => {
     const signer = ethersProvider.getSigner()
     const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
     setState({ maci })
+    const votingDeadline = await calcVotingDeadline(maci)
+    setState({ votingDeadline })
     if (chainId === 1337) {
       /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
@@ -89,6 +92,7 @@ export default {
     ethersProvider: null,
     hasEligiblePOAPtokens: null,
     maciAddress: MACI_ADDRESS,
+    votingDeadline: null,
   },
   actions: {
     initWeb3: async ({ setState, ...store }) => {

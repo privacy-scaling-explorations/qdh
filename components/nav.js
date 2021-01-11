@@ -7,9 +7,18 @@ import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 import NominateImageModal from 'components/NominateImage'
 import SignUpPopup from 'components/SignUpPopup'
 import Loader from 'components/Loader'
+import { useEffect, useState } from 'react'
 
 export default function Nav() {
-  const [{ address, balance, hasEligiblePOAPtokens, signedUp, loading, cart }] = useGlobalState()
+  const [{ address, balance, hasEligiblePOAPtokens, signedUp, loading, cart, votingDeadline }] = useGlobalState()
+  const [countDown, setCountDown] = useState(null)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (votingDeadline) setCountDown(Math.round(votingDeadline - Date.now() / 1000))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [votingDeadline])
 
   return (
     <nav className='relative z-10'>
@@ -17,6 +26,11 @@ export default function Nav() {
         <h1 className='text-2xl'>Quadratic Dollar Homepage</h1>
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
+          {Boolean(votingDeadline) && Boolean(countDown > 0) && (
+            <span className='px-6 button' title='Voting deadline'>
+              {countDown}
+            </span>
+          )}
           <WalletConnectButton />
           {address && hasEligiblePOAPtokens && signedUp && (
             <>

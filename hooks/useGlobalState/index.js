@@ -107,7 +107,7 @@ const actions = {
   },
   removeFromCart: (store, value) => {
     let { cart } = store.state
-    const [{ voteRootValue, voteSquare }] = cart.splice(value, 1)
+    const [{ voteSquare }] = cart.splice(value, 1)
     store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
   },
   vote: async ({ state, ...store }, value) => {
@@ -115,10 +115,11 @@ const actions = {
     const { chainId } = await state.ethersProvider.getNetwork()
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
-    const { ethersProvider, maci, keyPair, userStateIndex, cart, committedVotes } = state
+    const { maci, keyPair, userStateIndex, cart, committedVotes } = state
     for (const [index, item] of cart.entries()) {
-      item.nonce = index + 1
-      const { imageId: voteOptionIndex, voteSquare: voteWeight, nonce } = item
+      // item.nonce = cart.length - index
+      item.nonce = 1 + index
+      const { imageId: voteOptionIndex, voteRootValue: voteWeight, nonce } = item
       try {
         const tx = await MaciPublish(
           // ethersProvider,
