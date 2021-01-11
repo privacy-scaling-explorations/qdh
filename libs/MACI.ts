@@ -32,17 +32,15 @@ export async function calcVotingDeadline(maci: Contract): Promise<number> {
   }
 }
 
-// TODO 2 get results from tally.json
-export async function getResults() {}
+export async function getResults() {
+  // TODO 2 get results from tally.json
+}
 
 export async function signUp(
-  // ethersProvider: providers.Web3Provider,
   maci: Contract,
   keypair: Keypair,
   poapTokenId: number
 ): Promise<{ userStateIndex: number; voiceCredits: number }> {
-  // const signer = ethersProvider.getSigner()
-  // const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
   const tx = await maci.signUp(
     keypair.pubKey.asContractParam(),
     [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
@@ -64,9 +62,6 @@ export async function publish(
   voteWeight: BigInt,
   nonce: BigInt
 ): Promise<any> {
-  // const signer = ethersProvider.getSigner()
-  // const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
-
   // TODO https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
   const coordinatorPubKey = PubKey.unserialize('macipk.4ba3aa2718d5e3741aa643217722cf4a480854dfae544837d4af332f0c2b4586')
   const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
@@ -84,7 +79,6 @@ export async function publish(
 }
 
 export async function changeKey(
-  // ethersProvider: providers.Web3Provider,
   maci: Contract,
   keypair: Keypair,
   stateIndex: BigInt,

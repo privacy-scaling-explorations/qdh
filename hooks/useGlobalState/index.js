@@ -116,13 +116,12 @@ const actions = {
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
     const { maci, keyPair, userStateIndex, cart, committedVotes } = state
-    for (const [index, item] of cart.entries()) {
-      // item.nonce = cart.length - index
-      item.nonce = 1 + index
+    const _cart = cart.slice().reverse()
+    for (const [index, item] of _cart.reverse().entries()) {
+      item.nonce = _cart.length - index
       const { imageId: voteOptionIndex, voteRootValue: voteWeight, nonce } = item
       try {
         const tx = await MaciPublish(
-          // ethersProvider,
           maci,
           keyPair,
           BigInt(userStateIndex),
