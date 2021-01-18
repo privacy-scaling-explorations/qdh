@@ -47,7 +47,7 @@ export default function NominateImage({ ...props }) {
     if (uploading) return
     setLoading(true)
     setUploading(true)
-    const res = await fetch('/api/imageUpload', {
+    const res = await fetch('/api/image/upload', {
       method: 'POST',
       body: JSON.stringify(formData),
     })
