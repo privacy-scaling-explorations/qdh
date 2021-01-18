@@ -39,17 +39,23 @@ export function ImageDropZone({ formControls, ...props }) {
 
 export default function NominateImage({ ...props }) {
   const { register, errors, handleSubmit, setValue } = useForm()
-  const [{}, { setLoading }] = useGlobalState()
+  const [{}, { setLoading, fetchImages }] = useGlobalState()
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
+  const [uploading, setUploading] = useState(false)
 
   const nominate = async formData => {
+    if (uploading) return
     setLoading(true)
+    setUploading(true)
     const res = await fetch('/api/imageUpload', {
       method: 'POST',
       body: JSON.stringify(formData),
     })
     setLoading(false)
     const data = await res.json()
+    setUploading(false)
+    setIsOpen(false)
+    fetchImages()
   }
 
   return (
@@ -70,7 +76,7 @@ export default function NominateImage({ ...props }) {
             type='button'
             onClick={handleSubmit(nominate)}
             className='inline-flex justify-center w-full px-4 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-green-600 rounded-md shadow-sm hover:text-green-200 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue sm:text-sm sm:leading-5'>
-            Nominate
+            {uploading ? 'Uploading...' : 'Nominate'}
           </button>
         </span>
       </Modal.Actions>

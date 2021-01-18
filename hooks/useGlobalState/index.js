@@ -177,11 +177,7 @@ const actions = {
   setLoading: (store, value) => {
     store.setState({ loading: value })
   },
-  initImages: async store => {
-    if (typeof window === 'undefined') return
-    if (store.state.boxes.length > 0) return
-
-    // TODO fetch existing images here:
+  fetchImages: async store => {
     const res = await fetch('/api/image')
     const images = await res.json()
     const initialSize = 100

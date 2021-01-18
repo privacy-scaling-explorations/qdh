@@ -33,7 +33,11 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
               <div className='relative text-left text-white cursor-default' key={i}>
                 <div
                   className='inline-block w-8 h-8 mr-3 align-middle rounded'
-                  style={{ backgroundColor: boxes[item.imageId].color }}
+                  style={{
+                    backgroundColor: boxes[item.imageId].color,
+                    backgroundImage: `url(${i.url})`,
+                    backgroundSize: 'cover',
+                  }}
                 />
                 {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}{' '}
               </div>

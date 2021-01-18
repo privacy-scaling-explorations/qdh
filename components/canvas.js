@@ -24,12 +24,12 @@ export default function Canvas() {
       {boxes.map((i, key) => (
         <Box
           key={key}
-          isSelected={selected === key}
+          isSelected={selected === i.index}
           onClick={_ => {
-            if (selected === key) {
+            if (selected === i.index) {
               selectImage(null) // unselect
             } else {
-              selectImage(key)
+              selectImage(i.index)
             }
           }}
           style={{

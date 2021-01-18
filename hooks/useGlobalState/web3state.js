@@ -96,8 +96,8 @@ export default {
   },
   actions: {
     initWeb3: async ({ setState, ...store }) => {
-      if (typeof window !== 'undefined') {
-        store.actions.initImages()
+      if (typeof window !== 'undefined' && store.state.boxes.length < 1) {
+        store.actions.fetchImages()
       }
       if (typeof window !== 'undefined' && web3Modal == null) {
         web3Modal = getWeb3Modal()
