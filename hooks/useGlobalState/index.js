@@ -182,17 +182,27 @@ const actions = {
     if (store.state.boxes.length > 0) return
 
     // TODO fetch existing images here:
-    const BOXES = Array.from(Array(10)).map(_ => {
-      const _size = (2 ^ random(1, 10)) * 20
-      return {
-        w: _size,
-        h: _size,
-        color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
-      }
+    const res = await fetch('/api/image')
+    const images = await res.json()
+    const initialSize = 100
+    images.map(image => {
+      image.w = initialSize
+      image.h = initialSize
+      image.color= '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
+      return image
     })
-    const { canvas, boxes } = pack(BOXES, 'maxrects')
+    // const BOXES = Array.from(Array(10)).map(_ => {
+    //   const _size = (2 ^ random(1, 10)) * 20
+    //   return {
+    //     w: _size,
+    //     h: _size,
+    //     color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
+    //   }
+    // })
+    const { canvas, boxes } = pack(images, 'maxrects')
     store.setState({ canvas, boxes })
-  },
+  }
+
 }
 
 export default globalHook(React, initialState, actions)

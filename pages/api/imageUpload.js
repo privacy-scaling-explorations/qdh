@@ -1,8 +1,10 @@
-const { BlobServiceClient } = require('@azure/storage-blob')
-const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.ASURE_CONNECTION_STRING)
-const getStream = require('into-stream')
+import { BlobServiceClient } from '@azure/storage-blob'
+import getStream from 'into-stream'
 import { sha256 } from 'libs/crypto'
+import dbConnect from 'libs/database'
+import Image from 'models/Image'
 
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.ASURE_CONNECTION_STRING)
 const ONE_MEGABYTE = 1024 * 1024
 const uploadOptions = { bufferSize: 4 * ONE_MEGABYTE, maxBuffers: 20 }
 const containerName = 'qdh-test'
@@ -13,16 +15,20 @@ export default async (req, res) => {
   const imageSHA256 = sha256(picture)
   const blobName = `${imageSHA256}.${ext}`
 
-  const data = await upload({
-    blob,
-    blobName,
-    ext,
-    containerName,
+  const data = await upload({ blob, blobName, ext, containerName })
+
+  await dbConnect()
+  const index = await Image.countDocuments()
+  const image = await Image.create({
+    hash: imageSHA256,
+    index: index,
+    url: `https://qdh.blob.core.windows.net/${containerName}/${blobName}`,
   })
 
   res.json({
     url: `https://qdh.blob.core.windows.net/${containerName}/${blobName}`,
     imageSHA256,
+    index,
     ...data,
   })
 }

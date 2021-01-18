@@ -38,6 +38,8 @@ export default function Canvas() {
             top: i.y,
             left: i.x,
             backgroundColor: i.color,
+            backgroundImage: `url(${i.url})`,
+            backgroundSize: 'cover'
           }}
         />
       ))}
