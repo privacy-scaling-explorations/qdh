@@ -184,7 +184,7 @@ const actions = {
     images.map(image => {
       image.w = initialSize
       image.h = initialSize
-      image.color= '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
+      image.color = '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
       return image
     })
     // const BOXES = Array.from(Array(10)).map(_ => {
@@ -195,10 +195,11 @@ const actions = {
     //     color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
     //   }
     // })
-    const { canvas, boxes } = pack(images, 'maxrects')
-    store.setState({ canvas, boxes })
-  }
-
+    if (images.length > 0) {
+      const { canvas, boxes } = pack(images, 'maxrects')
+      store.setState({ canvas, boxes })
+    }
+  },
 }
 
 export default globalHook(React, initialState, actions)
