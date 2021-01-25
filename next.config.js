@@ -6,9 +6,17 @@ module.exports = withBundleAnalyzer({
   async redirects() {
     return [
       {
-        source: '/admin/:path*',
+        source: `/admin/:path*`,
         destination: `https://qdh-admin.ksaitor.com/admin/:path*`,
-        permanent: false
+        permanent: false,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: `/api/qdh-general-config`,
+        destination: `https://qdh-admin.ksaitor.com/qdh-general-config`,
       },
     ]
   },

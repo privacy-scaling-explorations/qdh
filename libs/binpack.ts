@@ -3,7 +3,12 @@ import potpack from 'potpack'
 import binPack from 'bin-pack'
 import { MaxRectsPacker } from '@vanchelo/maxrects-packer'
 
-export default function pack(boxes, algo = 'potpack') {
+export interface BinPackResult {
+  canvas: any
+  boxes: Array<any>
+}
+
+export default function pack(boxes: Array<any>, algo = 'potpack'): BinPackResult {
   switch (algo) {
     case 'potpack':
       return { canvas: potpack(boxes), boxes }
@@ -37,4 +42,5 @@ export default function pack(boxes, algo = 'potpack') {
     default:
       return { canvas: potpack(boxes), boxes }
   }
+  return { canvas: {}, boxes: [] }
 }

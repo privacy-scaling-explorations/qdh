@@ -2,21 +2,23 @@ import React from 'react'
 import globalHook from 'use-global-hook'
 import web3state from './web3state'
 
-import random from 'lodash/random'
 import pack from 'libs/binpack'
 import { signUp as MaciSignUp, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
+import { Tally } from '../../types/tally'
+import { ImageObj } from '../../types/api-responses'
 
 const initialState = {
   ...web3state.initialState,
   loading: true,
   canvas: {},
   boxes: [],
+  tallyJson: null,
   cart: [],
   committedVotes: (() => {
     if (typeof window !== 'undefined') {
       try {
-        return JSON.parse(localStorage.getItem('committedVotes')) || []
+        return JSON.parse(localStorage.getItem('committedVotes') as string) || []
       } catch (err) {
         return []
       }
@@ -25,7 +27,7 @@ const initialState = {
   })(),
   balance: (() => {
     if (typeof window !== 'undefined') {
-      return parseInt(localStorage.getItem('voiceCredits')) || 120
+      return parseInt(localStorage.getItem('voiceCredits') as string) || 120
     }
   })(),
   selected: null,
@@ -39,7 +41,7 @@ const initialState = {
   })(),
   userStateIndex: (() => {
     if (typeof window !== 'undefined') {
-      return parseInt(localStorage.getItem('userStateIndex')) || null
+      return parseInt(localStorage.getItem('userStateIndex') as string) || null
     }
   })(),
   keyPair: (() => {
@@ -61,7 +63,7 @@ const initialState = {
 
 const actions = {
   ...web3state.actions,
-  signUp: async (store, value) => {
+  signUp: async (store: any) => {
     const { chainId } = await store.state.ethersProvider.getNetwork()
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
@@ -72,29 +74,29 @@ const actions = {
       keyPair,
       BigInt(poapTokenId || 0)
     )
-    localStorage.setItem('userStateIndex', userStateIndex)
-    localStorage.setItem('voiceCredits', voiceCredits)
+    localStorage.setItem('userStateIndex', String(userStateIndex))
+    localStorage.setItem('voiceCredits', String(voiceCredits))
     store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
     store.setState({ loading: false })
   },
-  selectImage: (store, value) => {
+  selectImage: (store: any, value: number) => {
     if (store.state.hasEligiblePOAPtokens !== true) return
     if (store.state.signedUp !== true) return
     store.setState({ selected: value })
   },
-  incVote: (store, value) => {
+  incVote: (store: any) => {
     const voteRootValue = store.state.voteRootValue + 1
     const voteSquare = Math.pow(voteRootValue, 2)
     if (store.state.balance - voteSquare < 0) return
     store.setState({ voteRootValue, voteSquare })
   },
-  decVote: (store, value) => {
+  decVote: (store: any) => {
     if (store.state.voteRootValue <= 1) return
     const voteRootValue = store.state.voteRootValue - 1
     const voteSquare = Math.pow(voteRootValue, 2)
     store.setState({ voteRootValue, voteSquare })
   },
-  addToCart: (store, value) => {
+  addToCart: (store: any) => {
     let { cart, selected, voteRootValue, voteSquare } = store.state
     cart.push({ type: 'vote', imageId: selected, voteRootValue, voteSquare })
     store.setState({
@@ -105,12 +107,12 @@ const actions = {
       voteSquare: 1,
     })
   },
-  removeFromCart: (store, value) => {
+  removeFromCart: (store: any, value: number) => {
     let { cart } = store.state
     const [{ voteSquare }] = cart.splice(value, 1)
     store.setState({ cart, balance: store.state.balance + (voteSquare || 0) })
   },
-  vote: async ({ state, ...store }, value) => {
+  vote: async ({ state, ...store }: any) => {
     if (state.loading) return
     const { chainId } = await state.ethersProvider.getNetwork()
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
@@ -147,7 +149,7 @@ const actions = {
       */
     }
     // TODO update local storate balance
-    committedVotes.forEach(item => cart.splice(cart.indexOf(item), 1))
+    committedVotes.forEach((item: any) => cart.splice(cart.indexOf(item), 1))
     localStorage.setItem(
       'committedVotes',
       JSON.stringify(
@@ -158,10 +160,10 @@ const actions = {
     localStorage.setItem('voiceCredits', state.balance)
     store.setState({ loading: false, committedVotes, cart })
   },
-  imBeingBribed: (store, value) => {
+  imBeingBribed: (store: any) => {
     store.setState({ bribedMode: !store.state.bribedMode })
   },
-  changeKey: async ({ state, ...store }, value) => {
+  changeKey: async ({ state, ...store }: any) => {
     const keyPair = new Keypair()
     // localStorage.setItem('macisk', keyPair.privKey.serialize())
     store.setState({ keyPair: keyPair })
@@ -174,30 +176,35 @@ const actions = {
     store.setState({ cart })
   },
 
-  setLoading: (store, value) => {
+  setLoading: (store: any, value: boolean) => {
     store.setState({ loading: value })
   },
-  fetchImages: async store => {
+  fetchImages: async (store: any) => {
     const res = await fetch('/api/image')
-    const images = await res.json()
+    const images = await res.json() as Array<ImageObj>
     const initialSize = 100
-    images.map(image => {
+    console.log(images)
+    images.map((image: ImageObj) => {
       image.w = initialSize
       image.h = initialSize
       image.color = '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
       return image
     })
-    // const BOXES = Array.from(Array(10)).map(_ => {
-    //   const _size = (2 ^ random(1, 10)) * 20
-    //   return {
-    //     w: _size,
-    //     h: _size,
-    //     color: '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6),
-    //   }
-    // })
     if (images.length > 0) {
       const { canvas, boxes } = pack(images, 'maxrects')
       store.setState({ canvas, boxes })
+    }
+  },
+  fetchConfig: async (store: any) => {
+    const res = await fetch('/api/qdh-general-config')
+    const config = await res.json()
+    if (config.maciAddress) {
+      store.setState({ maciAddress: config.maciAddress })
+    }
+    if (config.tally && config.tally.url) {
+      const res = await fetch(config.tally.url)
+      const tallyJson = (await res.json()) as Tally
+      store.setState({ tallyJson })
     }
   },
 }

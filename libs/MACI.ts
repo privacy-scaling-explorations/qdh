@@ -39,7 +39,7 @@ export async function getResults() {
 export async function signUp(
   maci: Contract,
   keypair: Keypair,
-  poapTokenId: number
+  poapTokenId: BigInt
 ): Promise<{ userStateIndex: number; voiceCredits: number }> {
   const tx = await maci.signUp(
     keypair.pubKey.asContractParam(),
