@@ -7,7 +7,7 @@ import Image from 'models/Image'
 const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.ASURE_CONNECTION_STRING)
 const ONE_MEGABYTE = 1024 * 1024
 const uploadOptions = { bufferSize: 4 * ONE_MEGABYTE, maxBuffers: 20 }
-const containerName = 'qdh-test'
+const containerName = process.env.AZURE_CONTAINER_NAME || 'qdh-test'
 
 export default async (req, res) => {
   const { picture } = JSON.parse(req.body)

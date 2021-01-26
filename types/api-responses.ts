@@ -4,4 +4,5 @@ export interface ImageObj {
   h: number
   w: number
   hash: string
+  index: number
 }

@@ -9,6 +9,10 @@ module.exports = withBundleAnalyzer({
         source: `/api/qdh-general-config`,
         destination: `https://strapi-admin.quadratic.page/qdh-general-config`,
       },
+      {
+        source: `/api/tally/:filename`,
+        destination: `https://qdh.blob.core.windows.net/qdh-user-images/assets/:filename`
+      }
     ]
   },
 })

@@ -8,6 +8,7 @@ body {
   --gradient-to-color: #2f0143;
   --gradient-color-stops: var(--gradient-from-color) 45%, var(--gradient-to-color) 75%;
   min-height: 100vh;
+  min-width: 930px;
 }
 h1,
 h2,

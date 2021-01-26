@@ -1,11 +1,12 @@
 import 'styles/index.css'
+import { useEffect } from 'react'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
 import useGlobalState from 'hooks/useGlobalState'
 
 function MyApp({ Component, pageProps }) {
   const [state, { initWeb3 }] = useGlobalState()
-  initWeb3()
+  useEffect(initWeb3, []) // Making sure we are hitting initWeb3 only once
 
   return (
     <>

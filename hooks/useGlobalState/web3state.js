@@ -95,19 +95,21 @@ export default {
     votingDeadline: null,
   },
   actions: {
-    initWeb3: async ({ setState, ...store }) => {
-      if (typeof window !== 'undefined' && store.state.boxes.length < 1) {
+    initWeb3: async ({ setState, ...store }, defaultProps) => {
+      if (typeof window === 'undefined') return
+      if (store.state.boxes.length < 1) {
+        await store.actions.fetchConfig()
         store.actions.fetchImages()
       }
-      if (typeof window !== 'undefined' && web3Modal == null) {
+      if (web3Modal == null) {
         web3Modal = getWeb3Modal()
-
         if (web3Modal.cachedProvider) {
           store.actions.connect({ setState, ...store })
         } else {
           setState({ loading: false })
         }
       }
+      setState({ loading: false })
     },
     setMaciAddress: ({ setState, ...store }, maciAddress) => {
       const signer = store.state.ethersProvider.getSigner()

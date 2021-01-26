@@ -1,4 +1,4 @@
-export interface Tally {
+export interface TallyResult {
   provider: string
   maci: string
   results: {

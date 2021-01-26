@@ -5,15 +5,17 @@ import web3state from './web3state'
 import pack from 'libs/binpack'
 import { signUp as MaciSignUp, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
-import { Tally } from '../../types/tally'
+import { TallyResult } from '../../types/tally'
 import { ImageObj } from '../../types/api-responses'
+
+let images: Array<ImageObj>
+let tallyResult: TallyResult
 
 const initialState = {
   ...web3state.initialState,
   loading: true,
   canvas: {},
   boxes: [],
-  tallyJson: null,
   cart: [],
   committedVotes: (() => {
     if (typeof window !== 'undefined') {
@@ -181,12 +183,20 @@ const actions = {
   },
   fetchImages: async (store: any) => {
     const res = await fetch('/api/image')
-    const images = await res.json() as Array<ImageObj>
-    const initialSize = 100
-    console.log(images)
-    images.map((image: ImageObj) => {
-      image.w = initialSize
-      image.h = initialSize
+    images = (await res.json()) as Array<ImageObj>
+    const BASE_IMAGE_SIZE = 5
+    images.map(image => {
+      let multiplier: number = 1
+      if (tallyResult) {
+        const totalVoiceCreditsSpent: number = parseInt(tallyResult.totalVoiceCredits.spent)
+        const squareVote: number = parseInt(tallyResult.totalVoiceCreditsPerVoteOption.tally[image.index])
+        multiplier = (squareVote / totalVoiceCreditsSpent) * 100
+        console.log(image.index, { multiplier })
+      } else {
+        multiplier = 20
+      }
+      image.w = BASE_IMAGE_SIZE * multiplier
+      image.h = BASE_IMAGE_SIZE * multiplier
       image.color = '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
       return image
     })
@@ -202,9 +212,15 @@ const actions = {
       store.setState({ maciAddress: config.maciAddress })
     }
     if (config.tally && config.tally.url) {
-      const res = await fetch(config.tally.url)
-      const tallyJson = (await res.json()) as Tally
-      store.setState({ tallyJson })
+      const filename = config.tally.url.split('/assets/')[1]
+      const res = await fetch(`/api/tally/${filename}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
+      tallyResult = (await res.json()) as TallyResult
+      store.setState({ tallyResult })
     }
   },
 }
