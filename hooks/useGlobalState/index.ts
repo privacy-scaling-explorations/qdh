@@ -9,7 +9,6 @@ import { TallyResult } from '../../types/tally'
 import { ImageObj } from '../../types/api-responses'
 
 let images: Array<ImageObj>
-let tallyResult: TallyResult
 
 const initialState = {
   ...web3state.initialState,
@@ -177,21 +176,23 @@ const actions = {
     cart.push({ type: 'keychange', keyPair, voteOptionIndex: 0, voteWeight: 0 })
     store.setState({ cart })
   },
-
   setLoading: (store: any, value: boolean) => {
     store.setState({ loading: value })
+  },
+  setTallyResult: (store: any, tallyResult: TallyResult) => {
+    store.setState({ tallyResult })
   },
   fetchImages: async (store: any) => {
     const res = await fetch('/api/image')
     images = (await res.json()) as Array<ImageObj>
     const BASE_IMAGE_SIZE = 5
+    const tallyResult = store.state.tallyResult
     images.map(image => {
       let multiplier: number = 1
       if (tallyResult) {
         const totalVoiceCreditsSpent: number = parseInt(tallyResult.totalVoiceCredits.spent)
         const squareVote: number = parseInt(tallyResult.totalVoiceCreditsPerVoteOption.tally[image.index])
         multiplier = (squareVote / totalVoiceCreditsSpent) * 100
-        console.log(image.index, { multiplier })
       } else {
         multiplier = 20
       }
@@ -219,8 +220,8 @@ const actions = {
           Accept: 'application/json',
         },
       })
-      tallyResult = (await res.json()) as TallyResult
-      store.setState({ tallyResult })
+      const tallyResult = (await res.json()) as TallyResult
+      store.actions.setTallyResult(tallyResult)
     }
   },
 }

@@ -4,14 +4,24 @@ import Link from 'next/link'
 import Dropdown from 'components/Dropdown'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
-import { HiOutlineKey, HiDotsVertical, HiOutlineExclamation, HiExclamation, HiChartPie } from 'react-icons/hi'
+import {
+  HiOutlineKey,
+  HiDotsVertical,
+  HiOutlineExclamation,
+  HiExclamation,
+  HiChartPie,
+} from 'react-icons/hi'
+import { VscJson } from 'react-icons/vsc'
+import { tallyUpload } from '../libs/tallyUpload'
+
+const dropDownItemClasses = `block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900`
 
 export default function HamburgerMenu() {
-  const [state, actions] = useGlobalState()
-  const { keyPair, maciAddress, bribedMode } = state
-  const { changeKey, imBeingBribed, setMaciAddress } = actions
-
   const [modalOpen, setModalOpen] = useState(false)
+  const [state, actions] = useGlobalState()
+  const { maciAddress, bribedMode } = state
+  const { changeKey, imBeingBribed, setMaciAddress, setTallyResult, fetchImages } = actions
+
   return (
     <Dropdown
       className='w-48 text-center'
@@ -21,7 +31,7 @@ export default function HamburgerMenu() {
         </a>
       }>
       <a
-        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        className={dropDownItemClasses}
         onClick={_ => {
           changeKey()
           document.dispatchEvent(new Event('mousedown')) // closes the dropdown
@@ -29,10 +39,7 @@ export default function HamburgerMenu() {
         role='menuitem'>
         <HiOutlineKey className='inline text-orange-500' /> Change key
       </a>
-      <a
-        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-        onClick={imBeingBribed}
-        role='menuitem'>
+      <a className={dropDownItemClasses} onClick={imBeingBribed} role='menuitem'>
         {bribedMode ? (
           <span title={`I'm being bribed mode is ON`}>
             <HiExclamation className='inline text-red-600' /> <b>I'm being bribed</b> mode is on.
@@ -43,12 +50,13 @@ export default function HamburgerMenu() {
           </span>
         )}
       </a>
+      <hr />
       <a
-        className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
+        className={dropDownItemClasses}
         onClick={_ => {
           const address = prompt('Enter MACI address:', maciAddress || '0x123…')
           if (address) {
-            if (/^0x[a-fA-F0-9]{40}$/gi.test(address) ) {
+            if (/^0x[a-fA-F0-9]{40}$/gi.test(address)) {
               setMaciAddress(address)
               document.dispatchEvent(new Event('mousedown')) // closes the dropdown
             } else {
@@ -59,14 +67,22 @@ export default function HamburgerMenu() {
         role='menuitem'>
         <HiChartPie className='inline text-indigo-600' /> Set MACI Address
       </a>
+      <a
+        className={dropDownItemClasses}
+        onClick={tallyUpload.bind(this, tallyResult => {
+          setTallyResult(tallyResult)
+          fetchImages()
+        })}
+        role='menuitem'>
+        <VscJson className='inline text-yellow-800' /> Load tally.json
+      </a>
+      <hr />
       <Modal
         isOpen={modalOpen}
         onOpenStateChange={state => setModalOpen(state)}
         title='About Quadratic Dollar Homepage'
         trigger={
-          <a
-            className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-            role='menuitem'>
+          <a className={dropDownItemClasses} role='menuitem'>
             About
           </a>
         }>
