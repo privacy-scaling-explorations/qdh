@@ -8,7 +8,7 @@ import { HiOutlineKey, HiDotsVertical, HiOutlineExclamation, HiExclamation, HiCh
 
 export default function HamburgerMenu() {
   const [state, actions] = useGlobalState()
-  const { keyPair, bribedMode } = state
+  const { keyPair, maciAddress, bribedMode } = state
   const { changeKey, imBeingBribed, setMaciAddress } = actions
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -46,9 +46,15 @@ export default function HamburgerMenu() {
       <a
         className='block px-4 py-2 text-sm leading-5 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
         onClick={_ => {
-          const address = prompt('Enter new MACI address:', '0x123…')
-          setMaciAddress(address)
-          document.dispatchEvent(new Event('mousedown')) // closes the dropdown
+          const address = prompt('Enter MACI address:', maciAddress || '0x123…')
+          if (address) {
+            if (/^0x[a-fA-F0-9]{40}$/gi.test(address) ) {
+              setMaciAddress(address)
+              document.dispatchEvent(new Event('mousedown')) // closes the dropdown
+            } else {
+              alert('Invalid Ethereum address. Please try again.')
+            }
+          }
         }}
         role='menuitem'>
         <HiChartPie className='inline text-indigo-600' /> Set MACI Address
