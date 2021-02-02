@@ -20,7 +20,7 @@ In the root of the project, copy `.env.sample` file and name it `.env`.
 
 Set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`, `ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
 
-> If you are are looking for a free Mongo hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas). 
+> If you are are looking for a free Mongo hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas).
 
 > If you are already running `yarn dev` or `npm run dev`, make sure to kill the process and start it again. Next.js
 doesn't pick up `.env` changes automatically, hence you need to restart it manually.
@@ -59,6 +59,9 @@ like this:
 MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
 ```
 
-### Setting up admin 
+### Setting up Admin dashboard
 
-TODO: describe Strapi setup process here…
+Setting up and running Admin Dashboard is not mandatory, but recommended.
+We've based it off an open source headless CMS, called [Strapi](https://strapi.io/)
+
+Clone admin panel: https://github.com/ksaitor/qdh-admin and follow instruction in it's README.
