@@ -17,7 +17,9 @@ cd qdh
 yarn  # or `npm install`
 ```
 
-Copy `.env.sample` and name it `.env`. In `.env` set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`,
+Copy `.env.sample` and name it `.env`.
+
+In `.env` set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`,
 `ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
 
 ```bash
@@ -55,7 +57,7 @@ Loaded env from /your-project-path/qdh/.env
 ready - started server on 0.0.0.0:3000, url: http://localhost:3000
 ```
 
-Frontend will be accessible on http://localhost:3000
+Frontend is now accessible on http://localhost:3000
 
 Now you need to set up and deploy MACI:
 
@@ -63,8 +65,7 @@ Now you need to set up and deploy MACI:
 
 In a separate terminal, clone MACI: https://github.com/appliedzkp/maci
 
-Carefully follow everything in ["Local development and testing"](https://github.com/appliedzkp/maci#local-development-and-testing)
-to bootstrap MACI repo, install Rust, build zk-SNARKs, and compile contracts …everything up to the ["Demo"](https://github.com/appliedzkp/maci#demo) section.
+Carefully follow everything in ["Local development and testing"](https://github.com/appliedzkp/maci#local-development-and-testing): bootstrap MACI repo, install Rust, build zk-SNARKs, compile contracts... everything up to the ["Demo"](https://github.com/appliedzkp/maci#demo) section.
 
 ```bash
 git clone git@github.com:appliedzkp/maci.git
@@ -98,6 +99,7 @@ node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e
 	-bm 4 \
 	-bv 4
 ```
+> You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
 
 Once you've deployed MACI, and created an election you should have an output like this:
 
@@ -112,7 +114,30 @@ Don't forget to connect your Metamask to your local testnet `locahost:8545` and 
 
 ## Setting up Admin dashboard
 
-Setting up and running Admin Dashboard is not mandatory, but recommended. We've based it off an open source headless
+Setting up and running [Admin Dashboard](https://github.com/ksaitor/qdh-admin) is not mandatory, but recommended. We've based it off an open source headless
 CMS, called [Strapi](https://strapi.io/)
 
-Clone admin panel: https://github.com/ksaitor/qdh-admin and follow instruction in it's README.
+You'll be able to find detailed instructions on how to run it in the repo's README, but we'll make a short overview here as well.
+
+Clone the repo https://github.com/ksaitor/qdh-admin and install dependencies with `yarn` (or `npm install`)
+```bash
+git clone https://github.com/ksaitor/qdh-admin
+cd qdh-admin
+yarn  # or `npm install`
+```
+
+Copy `.env.example` and name it `.env`.
+
+In `.env` set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`,
+`ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING` with the same values as used above.
+
+```bash
+cp .env.example .env
+vim .env # set `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`, `ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
+```
+
+Run `yarn develop` to start the server locally.
+
+The api will be available at `http://localhost:1337` and the admin panel at `http://localhost:1337/admin`
+
+You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` of the _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doen't automatically pick up .env file changes.)
