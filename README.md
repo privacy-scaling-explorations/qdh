@@ -19,12 +19,12 @@ yarn  # or `npm install`
 
 Copy `.env.sample` and name it `.env`.
 
-In `.env` set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`,
-`ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
+In `.env` set values for all the missing variables, such as `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`,
+`AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
 
 ```bash
 cp .env.sample .env
-vim .env # set `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`, `ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
+vim .env # set `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
 ```
 
 Your `.env` file should looks something like this:
@@ -36,14 +36,14 @@ NEXT_PUBLIC_STRAPI_URL='https://strapi-admin.quadratic.page'
 
 MONGO_URL='mongodb+srv://user:password@mongodb-ip-or-dns.com/database...'
 
-ASURE_STORAGE_ACCOUNT_NAME='qdh'
-ASURE_CONTAINER_NAME='qdh-user-images'
-ASURE_KEY='24f234f234f+24f243f+24f243f/24f234f234f2f24f==...'
-ASURE_CONNECTION_STRING='DefaultEndpointsProtocol=https...'
+AZURE_STORAGE_ACCOUNT_NAME='qdh'
+AZURE_CONTAINER_NAME='qdh-user-images'
+AZURE_KEY='24f234f234f+24f243f+24f243f/24f234f234f2f24f==...'
+AZURE_CONNECTION_STRING='DefaultEndpointsProtocol=https...'
 ```
 
 > - If you are are looking for a free Mongo hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas).
-> - To get Asure keys, first create a new Asure Storage account. Within it, create a new container and name it, e.g.: `qdh-user-images`. Then go to Storage account > Settings > Access keys. Copy paste Account Name, Key and Connection String from there.
+> - To get Azure keys, first create a new Azure Storage account. Within it, create a new container and name it, e.g.: `qdh-user-images`. Then go to Storage account > Settings > Access keys. Copy paste Account Name, Key and Connection String from there. We'll everntually try to make this project cloud agnostic. Feel free to contribute.
 
 
 Now run `yarn dev` (or `npm run dev`)
@@ -128,12 +128,12 @@ yarn  # or `npm install`
 
 Copy `.env.example` and name it `.env`.
 
-In `.env` set values for all the missing variables, such as `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`,
-`ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING` with the same values as used above.
+In `.env` set values for all the missing variables, such as `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`,
+`AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING` with the same values as used above.
 
 ```bash
 cp .env.example .env
-vim .env # set `MONGO_URL`, `ASURE_STORAGE_ACCOUNT_NAME`, `ASURE_CONTAINER_NAME`, `ASURE_KEY`, `ASURE_CONNECTION_STRING`.
+vim .env # set `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
 ```
 
 Run `yarn develop` to start the server locally.
