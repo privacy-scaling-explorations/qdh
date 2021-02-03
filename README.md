@@ -9,7 +9,6 @@ Infrastructure (MACI) to prevent bribery and scale images quadratically.
 
 ## How to run QDH locally
 
-
 Clone this repo. Install dependencies by running `yarn` or `npm install`.
 
 ```bash
