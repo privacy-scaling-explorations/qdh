@@ -140,4 +140,9 @@ Run `yarn develop` to start the server locally.
 
 The api will be available at `http://localhost:1337` and the admin panel at `http://localhost:1337/admin`
 
-You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` of the _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doen't automatically pick up .env file changes.)
+You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` in _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doen't automatically pick up .env file changes.)
+
+
+## Deploying QDH frontend to prod
+
+The repo is out of the box ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Just set env variables (similar to what you already have in `.env`) and follow standard deployment procedures.
