@@ -9,7 +9,7 @@ Infrastructure (MACI) to prevent bribery and scale images quadratically.
 
 ## How to run QDH locally
 
-Clone this repo. Install dependencies by running `yarn` or `npm install`.
+Clone this repo. Install dependencies by running `yarn` or `npm install`:
 
 ```bash
 git clone https://github.com/ksaitor/qdh
@@ -20,11 +20,11 @@ yarn  # or `npm install`
 Copy `.env.sample` and name it `.env`.
 
 In `.env` set values for all the missing variables, such as `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`,
-`AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
+`AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`. You can find detailed guides on setting up [MongoDB](#setting-up-mongodb) and [Azure Storage](#setting-up-azure-storage) towards the end of this doc.
 
 ```bash
 cp .env.sample .env
-vim .env # set `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
+vim .env  # set `MONGO_URL, AZURE_STORAGE_ACCOUNT_NAME, etc...`
 ```
 
 Your `.env` file should looks something like this:
@@ -42,10 +42,6 @@ AZURE_KEY='24f234f234f+24f243f+24f243f/24f234f234f2f24f==...'
 AZURE_CONNECTION_STRING='DefaultEndpointsProtocol=https...'
 ```
 
-> - If you are are looking for a free Mongo hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas).
-> - To get Azure keys, first create a new Azure Storage account. Within it, create a new container and name it, e.g.: `qdh-user-images`. Then go to Storage account > Settings > Access keys. Copy paste Account Name, Key and Connection String from there. We'll everntually try to make this project cloud agnostic. Feel free to contribute.
-
-
 Now run `yarn dev` (or `npm run dev`)
 
 > If you are already running `yarn dev` (or `npm run dev`), make sure to kill the process and start it again. Next.js doesn't pick up `.env` changes automatically. Hence you need to restart it manually.
@@ -59,13 +55,15 @@ ready - started server on 0.0.0.0:3000, url: http://localhost:3000
 
 Frontend is now accessible on http://localhost:3000
 
-Now you need to set up and deploy MACI:
+Now let's set up and deploy MACI on a local testnet.
 
 ## Setting up MACI
 
 In a separate terminal, clone MACI: https://github.com/appliedzkp/maci
 
 Carefully follow everything in ["Local development and testing"](https://github.com/appliedzkp/maci#local-development-and-testing): bootstrap MACI repo, install Rust, build zk-SNARKs, compile contracts... everything up to the ["Demo"](https://github.com/appliedzkp/maci#demo) section.
+
+Here is a summary of commands described in detail in the abovementioned guide:
 
 ```bash
 git clone git@github.com:appliedzkp/maci.git
@@ -99,9 +97,9 @@ node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e
 	-bm 4 \
 	-bv 4
 ```
-> You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
+You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
 
-Once you've deployed MACI, and created an election you should have an output like this:
+Once you've deployed MACI and created an election you should have an output like this:
 
 ```bash
 MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
@@ -112,10 +110,12 @@ Now you can go to the frontend http://localhost:3000 and interact with MACI depl
 Don't forget to connect your Metamask to your local testnet `locahost:8545` and import one of the test wallets into it.
 
 
-## Setting up Admin dashboard
+## Setting up Admin Dashboard
 
-Setting up and running [Admin Dashboard](https://github.com/ksaitor/qdh-admin) is not mandatory, but recommended. We've based it off an open source headless
-CMS, called [Strapi](https://strapi.io/)
+The goal of the Admin Dashboard is to simplify moderation of uploaded images, supply basic initial configuration to the QDH frontend (e.g. MACI contract address on the mainnet) and upload `tally.json` once the vote results are tallied.
+
+Setting up and running [Admin Dashboard](https://github.com/ksaitor/qdh-admin) is not mandatory, but recommended. We've based it on an open source headless
+CMS, called [Strapi](https://strapi.io/).
 
 You'll be able to find detailed instructions on how to run it in the repo's README, but we'll make a short overview here as well.
 
@@ -140,9 +140,31 @@ Run `yarn develop` to start the server locally.
 
 The api will be available at `http://localhost:1337` and the admin panel at `http://localhost:1337/admin`
 
-You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` in _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doen't automatically pick up .env file changes.)
+You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` in _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doesn't automatically pick up .env file changes.)
 
+## Deploying QDH frontend to production
 
-## Deploying QDH frontend to prod
+The repo is ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Just set env variables (similar to what you already have in `.env`) and follow standard deployment procedures.
 
-The repo is out of the box ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Just set env variables (similar to what you already have in `.env`) and follow standard deployment procedures.
+## Setting up Azure Storage
+1. Create a Storage account. Give it a name. For example `qdh`
+2. Go to Storage account > Overview
+3. Click on Containers. Create a new storage container. Let's name it `qdh-user-images`. Make sure that the "Public access level" is set to **Blob (anonymous access for blobs only)**
+4. Click on Settings > Access keys. Copy paste Account Name, Key and Connection String from there.
+5. Tada! You now have `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`:
+
+```bash
+AZURE_STORAGE_ACCOUNT_NAME='qdh'
+AZURE_CONTAINER_NAME='qdh-user-images'
+AZURE_KEY='24f234f234f+24f243f+24f243f/24f234f234f2f24f==...'
+AZURE_CONNECTION_STRING='DefaultEndpointsProtocol=https...'
+```
+![Screenshot 2021-02-03 at 3 21 41 PM](https://user-images.githubusercontent.com/936436/106730581-82522780-6649-11eb-88a7-a928e6bbe5bd.png)
+
+p.s. We'll eventually try to make this project cloud agnostic. Feel free to contribute!
+
+## Setting up MongoDB
+
+- If you are are looking for a free & easy MongoDB hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
+- If you've used [Dokku](https://github.com/dokku/dokku) before, you can deploy mongo instance on it as well using [dokku-mongo](https://github.com/dokku/dokku-mongo) plugin.
+- You can also deploy Mongo on your IaaS or PaaS of choice.
