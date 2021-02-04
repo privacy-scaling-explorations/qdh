@@ -176,6 +176,19 @@ git push heroku master
 
 If name `qdh-frontend` is already taken, try the steps above with a different name.
 
+### Deploying on Dokku
+
+[Dokku](https://github.com/dokku/dokku) is a Docker powered mini-Heroku.
+
+Follow [these instructions](https://github.com/dokku/dokku#installation) to install Dokku on your server. Make sure to add your pub ssh keys to the dokku deployment (not just to  ~/.ssh/authorized_keys on your server). Once you do that, you should be able to run the following from your local machine:
+
+```bash
+ssh -t dokku@your-server-ip apps:create qdh-frontend
+ssh -t dokku@your-server-ip config:set qdh-frontend $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
+git remote add dokku dokku@your-server-ip:qdh-frontend
+git push dokku master
+```
+
 
 ## Setting up Azure Storage
 1. Create a Storage account. Give it a name. For example `qdh`
