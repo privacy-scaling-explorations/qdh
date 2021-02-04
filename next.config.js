@@ -1,8 +1,13 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+const withPlugins = require('next-compose-plugins')
+const withBundleAnalyzer = (_ => {
+  if (Boolean(process.env.ANALYZE) === true) {
+    return require('@next/bundle-analyzer')({ enabled: true })
+  } else {
+    return {}
+  }
+})()
 
-module.exports = withBundleAnalyzer({
+module.exports = withPlugins([[withBundleAnalyzer]], {
   async rewrites() {
     return [
       {
@@ -11,8 +16,8 @@ module.exports = withBundleAnalyzer({
       },
       {
         source: `/api/tally/:filename`,
-        destination: `https://qdh.blob.core.windows.net/qdh-user-images/assets/:filename`
-      }
+        destination: `https://qdh.blob.core.windows.net/${process.env.AZURE_CONTAINER_NAME}/assets/:filename`,
+      },
     ]
   },
 })

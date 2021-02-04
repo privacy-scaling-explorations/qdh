@@ -29,17 +29,17 @@ vim .env  # set `MONGO_URL, AZURE_STORAGE_ACCOUNT_NAME, etc...`
 
 Your `.env` file should looks something like this:
 ```bash
-NEXT_PUBLIC_MACI_ADDRESS='0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4'
-NEXT_PUBLIC_POAP_ADDRESS='0x22C1f6050E56d2876009903609a2cC3fEf83B415'
+NEXT_PUBLIC_MACI_ADDRESS=0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
+NEXT_PUBLIC_POAP_ADDRESS=0x22C1f6050E56d2876009903609a2cC3fEf83B415
 
-NEXT_PUBLIC_STRAPI_URL='https://strapi-admin.quadratic.page'
+NEXT_PUBLIC_STRAPI_URL=https://strapi-admin.quadratic.page
 
-MONGO_URL='mongodb+srv://user:password@mongodb-ip-or-dns.com/database...'
+MONGO_URL=mongodb+srv://user:password@mongodb-ip-or-dns.com/database...
 
-AZURE_STORAGE_ACCOUNT_NAME='qdh'
-AZURE_CONTAINER_NAME='qdh-user-images'
-AZURE_KEY='24f234f234f+24f243f+24f243f/24f234f234f2f24f==...'
-AZURE_CONNECTION_STRING='DefaultEndpointsProtocol=https...'
+AZURE_STORAGE_ACCOUNT_NAME=qdh
+AZURE_CONTAINER_NAME=qdh-user-images
+AZURE_KEY=24f234f234f+24f243f+24f243f/24f234f234f2f24f==...
+AZURE_CONNECTION_STRING=DefaultEndpointsProtocol=https...
 ```
 
 Now run `yarn dev` (or `npm run dev`)
@@ -142,9 +142,40 @@ The api will be available at `http://localhost:1337` and the admin panel at `htt
 
 You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` in _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doesn't automatically pick up .env file changes.)
 
-## Deploying QDH frontend to production
+## How to run QDH in production
 
-The repo is ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Just set env variables (similar to what you already have in `.env`) and follow standard deployment procedures.
+This repo is ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Make sure to export enviromental variables from `.env` to the platform you are deploying on.
+
+### Deploying on Vercel
+Install [Vercel CLI](https://vercel.com/download):
+```bash
+yarn global add vercel
+# or
+npm i -g vercel
+```
+
+Then from your `qdh/` directory run `vercel` to start the deployment process and follow the steps. Should work automagically:
+
+```bash
+vercel
+```
+
+You can also auto deploy to Vercel by importing your git repo: https://vercel.com/new
+
+### Deploying on Heroku
+If you don't have `heroku` cli installed yet, [install it](https://devcenter.heroku.com/articles/heroku-cli): `brew tap heroku/brew && brew install heroku` on macOS or `sudo snap install --classic heroku` on Ubuntu 16+. Then run `heroku login` to link your Heroku CLI to your account.
+
+Then from your `qdh/` repo directory run the following:
+
+```bash
+heroku create qdh-frontend
+heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') --app qdh-frontend
+heroku git:remote --app qdh-frontend
+git push heroku master
+```
+
+If name `qdh-frontend` is already taken, try the steps above with a different name.
+
 
 ## Setting up Azure Storage
 1. Create a Storage account. Give it a name. For example `qdh`
@@ -166,5 +197,5 @@ p.s. We'll eventually try to make this project cloud agnostic. Feel free to cont
 ## Setting up MongoDB
 
 - If you are are looking for a free & easy MongoDB hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
-- If you've used [Dokku](https://github.com/dokku/dokku) before, you can deploy mongo instance on it as well using [dokku-mongo](https://github.com/dokku/dokku-mongo) plugin.
-- You can also deploy Mongo on your IaaS or PaaS of choice.
+- If you've used [Dokku](https://github.com/dokku/dokku) before, you can deploy mongo instance on it using [dokku-mongo](https://github.com/dokku/dokku-mongo) plugin.
+- You can also deploy MongoDB on your IaaS or PaaS of choice.
