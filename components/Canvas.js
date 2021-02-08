@@ -21,24 +21,24 @@ export default function Canvas() {
 
   return (
     <div className='relative mx-auto' style={{ width: canvas.w || 600 }}>
-      {boxes.map((i, key) => (
+      {boxes.map((image, key) => (
         <Box
           key={key}
-          isSelected={selected === i.index}
+          isSelected={selected === image.index}
           onClick={_ => {
-            if (selected === i.index) {
+            if (selected === image.index) {
               selectImage(null) // unselect
             } else {
-              selectImage(i.index)
+              selectImage(image.index)
             }
           }}
           style={{
-            height: i.h,
-            width: i.w,
-            top: i.y,
-            left: i.x,
-            backgroundColor: i.color,
-            backgroundImage: `url(${i.url})`,
+            height: image.h,
+            width: image.w,
+            top: image.y,
+            left: image.x,
+            backgroundColor: image.color,
+            backgroundImage: `url(${image.url})`,
             backgroundSize: 'cover'
           }}
         />

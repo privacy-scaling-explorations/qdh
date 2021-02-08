@@ -32,11 +32,9 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
             return (
               <div className='relative text-left text-white cursor-default' key={i}>
                 <div
-                  className='inline-block w-8 h-8 mr-3 align-middle rounded'
+                  className='inline-block w-8 h-8 mr-3 align-middle bg-cover rounded'
                   style={{
-                    backgroundColor: boxes[item.imageId].color,
-                    backgroundImage: `url(${i.url})`,
-                    backgroundSize: 'cover',
+                    backgroundImage: `url(${boxes[item.imageId].url})`,
                   }}
                 />
                 {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}{' '}
@@ -78,8 +76,11 @@ export default function Cart() {
           return (
             <div className='relative text-left text-white cursor-default' key={i}>
               <div
-                className='inline-block w-8 h-8 mr-3 align-middle rounded'
-                style={{ backgroundColor: boxes[item.imageId].color }}
+                className='inline-block w-8 h-8 mr-3 align-middle bg-cover rounded'
+                style={{
+                  backgroundImage: `url(${boxes[item.imageId].url})`,
+                  backgroundColor: boxes[item.imageId].url,
+                }}
               />
               {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}{' '}
               <TrashIcon onClick={_ => removeFromCart(i)} />

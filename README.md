@@ -169,7 +169,7 @@ Then from your `qdh/` repo directory run the following:
 
 ```bash
 heroku create qdh-frontend
-heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') --app qdh-frontend
+heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') --app qdh-frontend # this will pick up variables from .env and transport them to your heroku instance
 heroku git:remote --app qdh-frontend
 git push heroku master
 ```
@@ -184,7 +184,7 @@ Follow [these instructions](https://github.com/dokku/dokku#installation) to inst
 
 ```bash
 ssh -t dokku@your-server-ip apps:create qdh-frontend
-ssh -t dokku@your-server-ip config:set qdh-frontend $(cat .env | sed '/^$/d; /#[[:print:]]*$/d')
+ssh -t dokku@your-server-ip config:set qdh-frontend $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') # this will pick up variables from .env and transport them to your dokku instance
 git remote add dokku dokku@your-server-ip:qdh-frontend
 git push dokku master
 ```
