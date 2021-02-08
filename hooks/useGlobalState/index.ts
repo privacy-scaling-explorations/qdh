@@ -74,8 +74,17 @@ const actions = {
       localStorage.setItem('userStateIndex', String(userStateIndex))
       localStorage.setItem('voiceCredits', String(voiceCredits))
       store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
-    } catch (err) {}
+      await store.actions.changeKey()
+    } catch (err) {
+      console.log(err)
+    }
     store.setState({ loading: false })
+  },
+  changeKey: async ({ state, ...store }: any) => {
+    const keyPair = new Keypair()
+    localStorage.setItem('macisk', keyPair.privKey.serialize())
+    store.setState({ keyPair: keyPair })
+    await MaciPublish(state.maci, state.keyPair, BigInt(state.userStateIndex), BigInt(0), BigInt(0), BigInt(1))
   },
   selectImage: (store: any, value: number) => {
     if (store.state.hasEligiblePOAPtokens !== true) return
@@ -105,6 +114,12 @@ const actions = {
       voteSquare: 1,
     })
   },
+  addChangeKeyToCart: async ({ state, ...store }: any) => {
+    const keyPair = new Keypair()
+    let { cart } = state
+    cart.push({ type: 'keychange', keyPair, voteOptionIndex: 0, voteWeight: 0 })
+    store.setState({ cart })
+  },
   removeFromCart: (store: any, value: number) => {
     let { cart } = store.state
     const [{ voteSquare }] = cart.splice(value, 1)
@@ -115,15 +130,15 @@ const actions = {
     const { chainId } = await state.ethersProvider.getNetwork()
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
-    const { maci, keyPair, userStateIndex, cart, committedVotes } = state
+    const { maci, userStateIndex, cart, committedVotes } = state
     const _cart = cart.slice().reverse()
     for (const [index, item] of _cart.reverse().entries()) {
       item.nonce = _cart.length - index
-      const { imageId: voteOptionIndex, voteRootValue: voteWeight, nonce } = item
+      const { type, imageId: voteOptionIndex, voteRootValue: voteWeight, nonce } = item
       try {
         const tx = await MaciPublish(
           maci,
-          keyPair,
+          item.keyPair || state.keyPair,
           BigInt(userStateIndex),
           BigInt(voteOptionIndex || 0),
           BigInt(voteWeight || 0),
@@ -131,6 +146,10 @@ const actions = {
         )
         item.tx = tx
         committedVotes.push(item)
+        if (type === 'keychange') {
+          localStorage.setItem('macisk', item.keyPair.privKey.serialize())
+          store.setState({ keyPair: item.keyPair })
+        }
       } catch (error) {
         // TODO make sure failed transactions are not removed from cart
       }
@@ -146,7 +165,6 @@ const actions = {
       Vote for a vote option that does not exist
       */
     }
-    // TODO update local storate balance
     committedVotes.forEach((item: any) => cart.splice(cart.indexOf(item), 1))
     localStorage.setItem(
       'committedVotes',
@@ -158,20 +176,9 @@ const actions = {
     localStorage.setItem('voiceCredits', state.balance)
     store.setState({ loading: false, committedVotes, cart })
   },
-  imBeingBribed: (store: any) => {
-    store.setState({ bribedMode: !store.state.bribedMode })
-  },
-  changeKey: async ({ state, ...store }: any) => {
-    const keyPair = new Keypair()
-    // localStorage.setItem('macisk', keyPair.privKey.serialize())
-    store.setState({ keyPair: keyPair })
-    // alert(`Voting key changed to:\n${keyPair.pubKey.serialize()}`)
-    // console.log('MACI key changed', keyPair.pubKey.serialize())
-    // await MaciChangeKey(state.ethersProvider, state.keyPair, state.userStateIndex, BigInt(0))
 
-    let { cart } = state
-    cart.push({ type: 'keychange', keyPair, voteOptionIndex: 0, voteWeight: 0 })
-    store.setState({ cart })
+  toggleBribeMode: (store: any) => {
+    store.setState({ bribedMode: !store.state.bribedMode })
   },
   setLoading: (store: any, value: boolean) => {
     store.setState({ loading: value })

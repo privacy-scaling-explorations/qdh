@@ -8,7 +8,7 @@ const Row = ({ children, className, ...props }) => <div className={classnames('s
 export default function VotingControls() {
   const [state, actions] = useGlobalState()
   const { selected, voteSquare, bribedMode, cart } = state
-  const { imBeingBribed, incVote, decVote, addToCart } = actions
+  const { incVote, decVote, addToCart } = actions
 
   return (
     <div className='relative block space-y-6 text-center'>
@@ -38,11 +38,6 @@ export default function VotingControls() {
         </>
       ) : (
         <>
-          {/* <Row>
-            <a onClick={imBeingBribed} className='px-6 text-yellow-400 border-yellow-400 button'>
-              {bribedMode ? `⚠️ "I'm being bribed" mode is ON` : `"I'm being bribed" mode`}
-            </a>
-          </Row> */}
           <Row>
             <Cart />
           </Row>

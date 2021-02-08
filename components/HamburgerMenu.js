@@ -21,7 +21,7 @@ export default function HamburgerMenu() {
   const [modalOpen, setModalOpen] = useState(false)
   const [state, actions] = useGlobalState()
   const { maciAddress, bribedMode } = state
-  const { changeKey, imBeingBribed, setMaciAddress, setTallyResult, fetchImages, resetSignupState } = actions
+  const { addChangeKeyToCart, toggleBribeMode, setMaciAddress, setTallyResult, fetchImages, resetSignupState } = actions
 
   return (
     <Dropdown
@@ -34,13 +34,13 @@ export default function HamburgerMenu() {
       <a
         className={dropDownItemClasses}
         onClick={_ => {
-          changeKey()
+          addChangeKeyToCart()
           document.dispatchEvent(new Event('mousedown')) // closes the dropdown
         }}
         role='menuitem'>
         <HiOutlineKey className='inline text-orange-500' /> Change key
       </a>
-      <a className={dropDownItemClasses} onClick={imBeingBribed} role='menuitem'>
+      <a className={dropDownItemClasses} onClick={toggleBribeMode} role='menuitem'>
         {bribedMode ? (
           <span title={`I'm being bribed mode is ON`}>
             <HiExclamation className='inline text-red-600' /> <b>I'm being bribed</b> mode is on.
@@ -78,7 +78,7 @@ export default function HamburgerMenu() {
         <VscJson className='inline text-yellow-800' /> Load tally.json
       </a>
       <a
-        className={dropDownItemClasses + ' hover:text-red-700'}
+        className={'hover:text-red-700 ' + dropDownItemClasses}
         onClick={resetSignupState}
         role='menuitem'>
         <HiXCircle className='inline' /> Reset State
