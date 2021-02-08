@@ -3,10 +3,13 @@ import { useEffect } from 'react'
 import { DefaultSeo } from 'next-seo'
 import Head from 'next/head'
 import useGlobalState from 'hooks/useGlobalState'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 function MyApp({ Component, pageProps }) {
-  const [state, { initWeb3 }] = useGlobalState()
+  const [state, { initWeb3, toggleBribeMode }] = useGlobalState()
   useEffect(initWeb3, []) // Making sure we are hitting initWeb3 only once
+  useHotkeys('b', () => toggleBribeMode(true))
+  useHotkeys('n', () => toggleBribeMode(false))
 
   return (
     <>

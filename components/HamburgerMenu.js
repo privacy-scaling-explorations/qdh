@@ -20,7 +20,7 @@ const dropDownItemClasses = `block px-4 py-2 text-sm leading-5 text-gray-700 cur
 export default function HamburgerMenu() {
   const [modalOpen, setModalOpen] = useState(false)
   const [state, actions] = useGlobalState()
-  const { maciAddress, bribedMode } = state
+  const { maciAddress, bribeMode } = state
   const { addChangeKeyToCart, toggleBribeMode, setMaciAddress, setTallyResult, fetchImages, resetSignupState } = actions
 
   return (
@@ -40,8 +40,8 @@ export default function HamburgerMenu() {
         role='menuitem'>
         <HiOutlineKey className='inline text-orange-500' /> Change key
       </a>
-      <a className={dropDownItemClasses} onClick={toggleBribeMode} role='menuitem'>
-        {bribedMode ? (
+      <a className={dropDownItemClasses} onClick={_=>toggleBribeMode()} role='menuitem'>
+        {bribeMode ? (
           <span title={`I'm being bribed mode is ON`}>
             <HiExclamation className='inline text-red-600' /> <b>I'm being bribed</b> mode is on.
           </span>

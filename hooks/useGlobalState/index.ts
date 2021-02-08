@@ -177,8 +177,12 @@ const actions = {
     store.setState({ loading: false, committedVotes, cart })
   },
 
-  toggleBribeMode: (store: any) => {
-    store.setState({ bribeMode: !store.state.bribeMode })
+  toggleBribeMode: (store: any, value?: boolean) => {
+    if (typeof value === 'undefined') {
+      store.setState({ bribeMode: !store.state.bribeMode })
+    } else {
+      store.setState({ bribeMode: value })
+    }
   },
   setLoading: (store: any, value: boolean) => {
     store.setState({ loading: value })

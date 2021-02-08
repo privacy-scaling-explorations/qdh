@@ -7,7 +7,7 @@ const Row = ({ children, className, ...props }) => <div className={classnames('s
 
 export default function VotingControls() {
   const [state, actions] = useGlobalState()
-  const { selected, voteSquare, bribedMode, cart } = state
+  const { selected, voteSquare } = state
   const { incVote, decVote, addToCart } = actions
 
   return (
