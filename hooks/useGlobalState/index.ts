@@ -69,10 +69,12 @@ const actions = {
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
     const { maci, keyPair, poapTokenId } = store.state
-    const { userStateIndex, voiceCredits } = await MaciSignUp(maci, keyPair, BigInt(poapTokenId || 0))
-    localStorage.setItem('userStateIndex', String(userStateIndex))
-    localStorage.setItem('voiceCredits', String(voiceCredits))
-    store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
+    try {
+      const { userStateIndex, voiceCredits } = await MaciSignUp(maci, keyPair, BigInt(poapTokenId || 0))
+      localStorage.setItem('userStateIndex', String(userStateIndex))
+      localStorage.setItem('voiceCredits', String(voiceCredits))
+      store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
+    } catch (err) {}
     store.setState({ loading: false })
   },
   selectImage: (store: any, value: number) => {

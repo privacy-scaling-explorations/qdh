@@ -2,6 +2,7 @@ import { ethers, Contract, providers } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { Command, Keypair, PubKey } from 'maci-domainobjs'
 import { genRandomSalt } from 'maci-crypto'
+import { MACI_COORDINATOR_PUBKEY } from './constants'
 
 async function getEventArg(
   transaction: TransactionResponse,
@@ -41,20 +42,21 @@ export async function signUp(
   keypair: Keypair,
   poapTokenId: BigInt
 ): Promise<{ userStateIndex: number; voiceCredits: number }> {
-  const tx = await maci.signUp(
-    keypair.pubKey.asContractParam(),
-    [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
-    [
-      /* initialVoiceCreditProxyData: empty */
-    ]
-  )
-  const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
-  const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
-  /* TODO: handle errors:
-    - when signup deadline has passed
-    - invalid POAP token or year
-  */
-  return { userStateIndex, voiceCredits }
+  try {
+    const tx = await maci.signUp(
+      keypair.pubKey.asContractParam(),
+      [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
+      [
+        /* initialVoiceCreditProxyData: empty */
+      ]
+    )
+    const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
+    const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
+    return { userStateIndex, voiceCredits }
+  } catch (err) {
+    alert(err.data.message)
+    throw err
+  }
 }
 
 export async function publish(
@@ -66,7 +68,7 @@ export async function publish(
   nonce: BigInt
 ): Promise<any> {
   // TODO https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
-  const coordinatorPubKey = PubKey.unserialize('macipk.4ba3aa2718d5e3741aa643217722cf4a480854dfae544837d4af332f0c2b4586')
+  const coordinatorPubKey = PubKey.unserialize(MACI_COORDINATOR_PUBKEY)
   const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
   const signature = command.sign(keypair.privKey)
   const sharedKey = Keypair.genEcdhSharedKey(keypair.privKey, coordinatorPubKey)
@@ -81,12 +83,7 @@ export async function publish(
   }
 }
 
-export async function changeKey(
-  maci: Contract,
-  keypair: Keypair,
-  stateIndex: BigInt,
-  nonce: BigInt
-): Promise<any> {
+export async function changeKey(maci: Contract, keypair: Keypair, stateIndex: BigInt, nonce: BigInt): Promise<any> {
   const receipt = await publish(maci, keypair, stateIndex, BigInt(0), BigInt(0), nonce)
   return receipt
 }
