@@ -21,7 +21,7 @@ export default function SignUpPopup() {
         title={`Let's sign you up!`}
         trigger={<span className='px-6 text-yellow-400 border-yellow-400 button'>Let's sign you up!</span>}>
         <p className='mt-5 text-sm leading-5 text-gray-900'>
-          Signin up will allow you to vote and and nominate images.
+          Signing up will allow you to <b>vote</b> and <b>nominate images</b>.
         </p>
         <Modal.Actions>
           <span className='flex w-full mt-3 sm:mt-0 sm:w-auto'>

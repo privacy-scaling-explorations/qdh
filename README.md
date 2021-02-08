@@ -97,17 +97,18 @@ node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e
 	-bm 4 \
 	-bv 4
 ```
-You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
 
-Once you've deployed MACI and created an election you should have an output like this:
+Once you've deployed MACI and created an election, you should have an output like this:
 
 ```bash
 MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
 ```
 
-Now you can go to the frontend http://localhost:3000 and interact with MACI deployment.
+Now you have 15 seconds to go to the frontend http://localhost:3000 and sign up. Then you'll be able to start voting and interacting with MACI. If you didn't signup in time - restart ganache and redeploy MACI (steps above). Also, you can increase MACI signup deadline, by changing `-s 15` to `-s 30` seconds.
 
 Don't forget to connect your Metamask to your local testnet `locahost:8545` and import one of the test wallets into it.
+
+You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
 
 
 ## Setting up Admin Dashboard

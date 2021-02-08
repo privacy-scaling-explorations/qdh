@@ -133,5 +133,12 @@ export default {
       })
       web3Modal && (await web3Modal.clearCachedProvider())
     },
+    resetSignupState: _ => {
+      if (confirm(`This will reset your signup state data. You'll have to sign up again after this. You sure?`)) {
+        localStorage.removeItem('userStateIndex')
+        localStorage.removeItem('voiceCredits')
+        window.location.reload()
+      }
+    },
   },
 }

@@ -10,6 +10,7 @@ import {
   HiOutlineExclamation,
   HiExclamation,
   HiChartPie,
+  HiXCircle
 } from 'react-icons/hi'
 import { VscJson } from 'react-icons/vsc'
 import { tallyUpload } from '../libs/tallyUpload'
@@ -20,7 +21,7 @@ export default function HamburgerMenu() {
   const [modalOpen, setModalOpen] = useState(false)
   const [state, actions] = useGlobalState()
   const { maciAddress, bribedMode } = state
-  const { changeKey, imBeingBribed, setMaciAddress, setTallyResult, fetchImages } = actions
+  const { changeKey, imBeingBribed, setMaciAddress, setTallyResult, fetchImages, resetSignupState } = actions
 
   return (
     <Dropdown
@@ -75,6 +76,12 @@ export default function HamburgerMenu() {
         })}
         role='menuitem'>
         <VscJson className='inline text-yellow-800' /> Load tally.json
+      </a>
+      <a
+        className={dropDownItemClasses + ' hover:text-red-700'}
+        onClick={resetSignupState}
+        role='menuitem'>
+        <HiXCircle className='inline' /> Reset State
       </a>
       <hr />
       <Modal

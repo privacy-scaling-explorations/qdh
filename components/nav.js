@@ -27,8 +27,8 @@ export default function Nav() {
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
           {Boolean(votingDeadline) && Boolean(countDown > 0) && (
-            <span className='px-6 button' title='Voting deadline'>
-              {countDown}
+            <span className='px-6 button' title='Signup deadline'>
+              Signup deadline in {countDown}s
             </span>
           )}
           <WalletConnectButton />
