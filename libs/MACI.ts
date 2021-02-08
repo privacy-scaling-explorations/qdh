@@ -50,11 +50,14 @@ export async function signUp(
   )
   const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
   const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
+  /* TODO: handle errors:
+    - when signup deadline has passed
+    - invalid POAP token or year
+  */
   return { userStateIndex, voiceCredits }
 }
 
 export async function publish(
-  // ethersProvider: providers.Web3Provider,
   maci: Contract,
   keypair: Keypair,
   stateIndex: BigInt,

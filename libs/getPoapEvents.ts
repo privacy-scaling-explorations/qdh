@@ -27,13 +27,14 @@ export default async function getPOAPEvents(address: string, provider: any): Pro
 
 export async function attendedEligiblePOAPEvents(
   address: string,
-  provider: providers.Web3Provider
+  provider: providers.Web3Provider,
+  minEligibleYear: number = 2018
 ): Promise<{ eligible: boolean; poapTokenId: number }> {
   let eligible: boolean = false
   let poapTokenId: number = 0
   const events = await getPOAPEvents(address, provider)
   events.forEach(event => {
-    if (event.year >= 2018) {
+    if (event.year >= minEligibleYear) {
       eligible = true
       poapTokenId = event.tokenId
     }

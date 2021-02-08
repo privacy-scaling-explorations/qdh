@@ -50,9 +50,12 @@ const connect = async ({ setState, ...state }) => {
       /* local or private chain */
       setState({ hasEligiblePOAPtokens: true })
     } else {
-      const ensName = await ethersProvider.lookupAddress(address)
-      setState({ ensName })
-      const { eligible, poapTokenId } = await attendedEligiblePOAPEvents(address, provider)
+      try {
+        const ensName = await ethersProvider.lookupAddress(address)
+        setState({ ensName })
+      } catch (err) {}
+      const poapMinEligibleYear = 2018
+      const { eligible, poapTokenId } = await attendedEligiblePOAPEvents(address, provider, poapMinEligibleYear)
       setState({ hasEligiblePOAPtokens: eligible, poapTokenId })
     }
     setState({ loading: false })
