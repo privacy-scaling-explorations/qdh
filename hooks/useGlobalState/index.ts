@@ -217,9 +217,8 @@ const actions = {
   fetchConfig: async (store: any) => {
     const res = await fetch('/api/qdh-general-config')
     const config = await res.json()
-    if (config.maciAddress) {
-      store.setState({ maciAddress: config.maciAddress })
-    }
+    if (config.maciAddress) store.setState({ maciAddress: config.maciAddress })
+    if (config.maciAddressKovan) store.setState({ maciAddressKovan: config.maciAddressKovan })
     if (config.tally && config.tally.url) {
       const filename = config.tally.url.split('/assets/')[1]
       const res = await fetch(`/api/tally/${filename}`, {

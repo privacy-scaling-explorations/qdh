@@ -10,7 +10,7 @@ import {
   HiOutlineExclamation,
   HiExclamation,
   HiChartPie,
-  HiXCircle
+  HiXCircle,
 } from 'react-icons/hi'
 import { VscJson } from 'react-icons/vsc'
 import { tallyUpload } from '../libs/tallyUpload'
@@ -40,7 +40,7 @@ export default function HamburgerMenu() {
         role='menuitem'>
         <HiOutlineKey className='inline text-orange-500' /> Change key
       </a>
-      <a className={dropDownItemClasses} onClick={_=>toggleBribeMode()} role='menuitem'>
+      <a className={dropDownItemClasses} onClick={_ => toggleBribeMode()} role='menuitem'>
         {bribeMode ? (
           <span title={`I'm being bribed mode is ON`}>
             <HiExclamation className='inline text-red-600' /> <b>I'm being bribed</b> mode is on.
@@ -77,10 +77,7 @@ export default function HamburgerMenu() {
         role='menuitem'>
         <VscJson className='inline text-yellow-800' /> Load tally.json
       </a>
-      <a
-        className={'hover:text-red-700 ' + dropDownItemClasses}
-        onClick={resetSignupState}
-        role='menuitem'>
+      <a className={'hover:text-red-700 ' + dropDownItemClasses} onClick={resetSignupState} role='menuitem'>
         <HiXCircle className='inline' /> Reset State
       </a>
       <hr />

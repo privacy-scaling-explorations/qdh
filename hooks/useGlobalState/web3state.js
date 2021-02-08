@@ -26,7 +26,7 @@ const getWeb3Modal = () =>
     },
   })
 
-const connect = async ({ setState, ...state }) => {
+const connect = async ({ setState, ...store }) => {
   setState({ loading: true })
   if (web3Modal === null && typeof window !== 'undefined') {
     web3Modal = getWeb3Modal()
@@ -40,16 +40,11 @@ const connect = async ({ setState, ...state }) => {
     setState({ loading: true })
     const address = await ethersProvider.getSigner().getAddress()
     setState({ address })
-    const { chainId } = await ethersProvider.getNetwork()
     const signer = ethersProvider.getSigner()
-    const maci = new ethers.Contract(MACI_ADDRESS, MACI_ABI, signer)
+    let maci = new ethers.Contract(store.state.maciAddress, MACI_ABI, signer)
     setState({ maci })
-    const votingDeadline = await calcVotingDeadline(maci)
-    setState({ votingDeadline })
-    if (chainId === 1337) {
-      /* local or private chain */
-      setState({ hasEligiblePOAPtokens: true })
-    } else {
+    const { name: networkName } = await ethersProvider.getNetwork()
+    if (networkName === 'homestead') {
       try {
         const ensName = await ethersProvider.lookupAddress(address)
         setState({ ensName })
@@ -57,13 +52,22 @@ const connect = async ({ setState, ...state }) => {
       const poapMinEligibleYear = 2018
       const { eligible, poapTokenId } = await attendedEligiblePOAPEvents(address, provider, poapMinEligibleYear)
       setState({ hasEligiblePOAPtokens: eligible, poapTokenId })
+    } else if (networkName === 'kovan') {
+      if (store.state.maciAddressKovan) {
+        maci = new ethers.Contract(store.state.maciAddressKovan, MACI_ABI, signer)
+      }
+      setState({ maci, hasEligiblePOAPtokens: true })
+    } else {
+      setState({ hasEligiblePOAPtokens: true })
     }
+    const votingDeadline = await calcVotingDeadline(maci)
+    setState({ votingDeadline })
     setState({ loading: false })
   }
 
   _handleAccountOrNetworkChange()
 
-  if (!state.provider) {
+  if (!store.state.provider) {
     provider.on('accountsChanged', async accounts => {
       console.log('accountsChanged', accounts)
       _handleAccountOrNetworkChange()
@@ -71,7 +75,7 @@ const connect = async ({ setState, ...state }) => {
 
     // Subscribe to chainId change
     provider.on('chainChanged', chainId => {
-      console.log('chainChanged', chainId)
+      console.log('chainChanged', parseInt(chainId))
       _handleAccountOrNetworkChange()
     })
 
