@@ -34,7 +34,7 @@ const initialState = {
   selected: null,
   voteRootValue: 1,
   voteSquare: 1,
-  bribedMode: false,
+  bribeMode: false,
   signedUp: (() => {
     if (typeof window !== 'undefined') {
       return Boolean(localStorage.getItem('userStateIndex')) || false
@@ -135,10 +135,11 @@ const actions = {
     for (const [index, item] of _cart.reverse().entries()) {
       item.nonce = _cart.length - index
       const { type, imageId: voteOptionIndex, voteRootValue: voteWeight, nonce } = item
+      const keyPair = state.bribeMode ? new Keypair() : item.keyPair || state.keyPair
       try {
         const tx = await MaciPublish(
           maci,
-          item.keyPair || state.keyPair,
+          keyPair,
           BigInt(userStateIndex),
           BigInt(voteOptionIndex || 0),
           BigInt(voteWeight || 0),
@@ -150,12 +151,12 @@ const actions = {
           localStorage.setItem('macisk', item.keyPair.privKey.serialize())
           store.setState({ keyPair: item.keyPair })
         }
-      } catch (error) {
+      } catch (err) {
+        console.error('MACI Command failed', err)
         // TODO make sure failed transactions are not removed from cart
       }
     }
-    if (store.bribedMode) {
-      /*
+    /*
       There are several ways to cast an invalid vote:
 
       Use an invalid signature
@@ -163,8 +164,7 @@ const actions = {
       Use an incorrect nonce
       Use an invalid state index
       Vote for a vote option that does not exist
-      */
-    }
+    */
     committedVotes.forEach((item: any) => cart.splice(cart.indexOf(item), 1))
     localStorage.setItem(
       'committedVotes',
@@ -178,7 +178,7 @@ const actions = {
   },
 
   toggleBribeMode: (store: any) => {
-    store.setState({ bribedMode: !store.state.bribedMode })
+    store.setState({ bribeMode: !store.state.bribeMode })
   },
   setLoading: (store: any, value: boolean) => {
     store.setState({ loading: value })
