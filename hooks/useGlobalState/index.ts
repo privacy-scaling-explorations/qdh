@@ -214,11 +214,10 @@ const actions = {
         const totalVoiceCreditsSpent: number = parseInt(tallyResult.totalVoiceCredits.spent)
         const squareVote: number = parseInt(tallyResult.totalVoiceCreditsPerVoteOption.tally[image.index])
         multiplier = (squareVote / totalVoiceCreditsSpent) * 100
-      } else {
-        multiplier = 20
+        image.squareVote = squareVote
       }
-      image.w = BASE_IMAGE_SIZE * multiplier
-      image.h = BASE_IMAGE_SIZE * multiplier
+      image.w = 50 + BASE_IMAGE_SIZE * multiplier
+      image.h = 50 + BASE_IMAGE_SIZE * multiplier
       image.color = '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
       return image
     })

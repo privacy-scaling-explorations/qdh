@@ -5,4 +5,5 @@ export interface ImageObj {
   w: number
   hash: string
   index: number
+  squareVote?: number
 }

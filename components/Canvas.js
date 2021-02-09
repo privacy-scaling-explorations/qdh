@@ -1,10 +1,11 @@
 import useGlobalState from 'hooks/useGlobalState'
 import classnames from 'classnames'
 
-export function Box({ style, isSelected, onClick, ...props }) {
+export function Box({ style, isSelected, onClick, squareVote, ...props }) {
   return (
     <a
       onClick={onClick}
+      title={`Votes: ${squareVote}`}
       className={classnames('box absolute z-0 rounded cursor-pointer hover:shadow-outline hover:z-10', {
         'shadow-outline z-auto isSelected': isSelected,
       })}
@@ -32,6 +33,7 @@ export default function Canvas() {
               selectImage(image.index)
             }
           }}
+          squareVote={image.squareVote}
           style={{
             height: image.h,
             width: image.w,
