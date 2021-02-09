@@ -55,11 +55,7 @@ export default function Cart() {
     <div className='w-56 space-y-6 text-right'>
       <CommittedVotes committedVotes={committedVotes} boxes={boxes} />
       <h3 className='text-xl text-center'>
-        {Boolean(cart.length) && (
-          <>
-            {cart.length} Pending {pluralize('Vote', cart.length)}:
-          </>
-        )}
+        {cart.length > 0 ? `${cart.length} Pending ${pluralize('Action', cart.length)}` : null}
       </h3>
       {cart.map((item, i) => {
         if (item.type === 'keychange') {
