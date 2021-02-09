@@ -5,7 +5,7 @@ import Button from 'components/Button'
 import find from 'lodash/find'
 import pull from 'lodash/pull'
 
-function Modal({ trigger, title, children, allowEasyClose = true, onOpenStateChange, ...props }) {
+function Modal({ trigger, title, children, easyToDismiss = true, onOpenStateChange, ...props }) {
   const [isOpen, setIsOpen] = useState(props.isOpen || false)
 
   useEffect(() => {
@@ -50,7 +50,9 @@ function Modal({ trigger, title, children, allowEasyClose = true, onOpenStateCha
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
             className='fixed inset-0 transition-opacity delay-150'>
-            <div onClick={_ => setIsOpen(false)} className='absolute inset-0 bg-black opacity-50'></div>
+            <div
+              onClick={_ => (easyToDismiss ? setIsOpen(false) : null)}
+              className='absolute inset-0 bg-black opacity-50'></div>
           </Transition>
           {/* This element is to trick the browser into centering the modal contents. */}
           <span className='hidden sm:inline-block sm:align-middle sm:h-screen'></span>&#8203;
