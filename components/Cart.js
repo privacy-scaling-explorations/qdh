@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import pluralize from 'pluralize'
 import useGlobalState from 'hooks/useGlobalState'
 import { HiOutlineKey, HiOutlineTrash } from 'react-icons/hi'
+import find from 'lodash/find'
 
 const TrashIcon = ({ className, ...props }) => (
   <HiOutlineTrash
@@ -12,7 +13,7 @@ const TrashIcon = ({ className, ...props }) => (
   />
 )
 
-export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
+export function CommittedVotes({ committedVotes = [], images = [], ...params }) {
   const [open, setOpen] = useState(false)
   if (committedVotes.length < 1) return null
   return (
@@ -34,10 +35,10 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
                 <div
                   className='inline-block w-8 h-8 mr-3 align-middle bg-cover rounded'
                   style={{
-                    backgroundImage: `url(${boxes[item.imageId].url})`,
+                    backgroundImage: `url(${find(images, ['index', item.imageId]).url})`,
                   }}
                 />
-                {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}{' '}
+                {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}
               </div>
             )
           }
@@ -48,12 +49,12 @@ export function CommittedVotes({ committedVotes = [], boxes = [], ...params }) {
 
 export default function Cart() {
   const [state, actions] = useGlobalState()
-  const { cart, boxes, committedVotes, loading } = state
+  const { cart, images, committedVotes, loading } = state
   const { vote, removeFromCart } = actions
 
   return (
     <div className='w-56 space-y-6 text-right'>
-      <CommittedVotes committedVotes={committedVotes} boxes={boxes} />
+      <CommittedVotes committedVotes={committedVotes} images={images} />
       <h3 className='text-xl text-center'>
         {cart.length > 0 ? `${cart.length} Pending ${pluralize('Action', cart.length)}` : null}
       </h3>
@@ -69,13 +70,14 @@ export default function Cart() {
             </div>
           )
         } else {
+          const image = find(images, ['index', item.imageId])
           return (
             <div className='relative text-left text-white cursor-default' key={i}>
               <div
                 className='inline-block w-8 h-8 mr-3 align-middle bg-cover rounded'
                 style={{
-                  backgroundImage: `url(${boxes[item.imageId].url})`,
-                  backgroundColor: boxes[item.imageId].url,
+                  backgroundImage: `url(${image.url})`,
+                  backgroundColor: image.color,
                 }}
               />
               {item.voteSquare} {pluralize('credit', item.voteSquare)} for #{item.imageId}{' '}

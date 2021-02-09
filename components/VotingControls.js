@@ -15,7 +15,7 @@ export default function VotingControls() {
       {selected !== null ? (
         <>
           <Row className='-mb-2 text-center'>
-            <span className='text-center text-cyan min-width-'>Vote for #{selected}:</span>
+            <span className='text-center text-cyan'>Vote for #{selected}:</span>
           </Row>
           <Row>
             <a className='px-6 select-none button' onClick={decVote}>
