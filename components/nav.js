@@ -15,7 +15,7 @@ const SignUpCountDown = ({ votingDeadline, signedUp }) => {
   if (Math.round(votingDeadline - Date.now() / 1000) < 0) return null
   if (signedUp) {
     return (
-      <span className='px-6 border-none cursor-default button' title='Signup deadline'>
+      <span className='px-6 border-none cursor-default button' title='Voting deadline'>
         Voting ends in <Countdown daysInHours={true} date={votingDeadline * 1000} />
       </span>
     )
@@ -47,21 +47,15 @@ export default function Nav() {
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
           <SignUpCountDown votingDeadline={votingDeadline} signedUp={signedUp} />
-          <WalletConnectButton />
           {address && hasEligiblePOAPtokens && signedUp && (
             <>
-              <a className='px-6 button' title='Your voice credits'>
+              <a className='px-6 border-none cursor-default button' title='Your voice credits'>
                 {balance} {pluralize('credits', balance)}
               </a>
               <NominateImageModal trigger={<a className='inline px-6 select-none button'>Nominate an image</a>} />
             </>
           )}
-          {/* <a className='px-6 button' title='Your voice credits'>
-            {cart.length} pending votes
-            {Boolean(cart.length) && (
-              <span className='absolute inline-block w-2 h-2 rounded-full' style={{ top: -4, background: 'red' }} />
-            )}
-          </a> */}
+          <WalletConnectButton />
           <HamburgerMenu />
         </div>
         <div className='absolute right-0 top-auto pr-4' style={{ top: '4em' }}>
