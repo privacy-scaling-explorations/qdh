@@ -40,6 +40,11 @@ const initialState = {
       return Boolean(localStorage.getItem('userStateIndex')) || false
     }
   })(),
+  initialKeyChangePerformed: (() => {
+    if (typeof window !== 'undefined') {
+      return Boolean(localStorage.getItem('initialKeyChangePerformed')) || false
+    }
+  })(),
   userStateIndex: (() => {
     if (typeof window !== 'undefined') {
       return parseInt(localStorage.getItem('userStateIndex') as string) || null
@@ -74,17 +79,25 @@ const actions = {
       localStorage.setItem('userStateIndex', String(userStateIndex))
       localStorage.setItem('voiceCredits', String(voiceCredits))
       store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
-      await store.actions.changeKey()
     } catch (err) {
       console.log(err)
     }
     store.setState({ loading: false })
   },
   changeKey: async ({ state, ...store }: any) => {
+    store.setState({ loading: true })
     const keyPair = new Keypair()
-    localStorage.setItem('macisk', keyPair.privKey.serialize())
-    store.setState({ keyPair: keyPair })
-    await MaciPublish(state.maci, state.keyPair, BigInt(state.userStateIndex), BigInt(0), BigInt(0), BigInt(1))
+    try {
+      await MaciPublish(state.maci, state.keyPair, BigInt(state.userStateIndex), BigInt(0), BigInt(0), BigInt(1))
+      store.setState({ keyPair: keyPair })
+      localStorage.setItem('macisk', keyPair.privKey.serialize())
+      localStorage.setItem('initialKeyChangePerformed', String(true))
+      store.setState({ initialKeyChangePerformed: true })
+    } catch (err) {
+      console.error('Error while performing initial key-change', err)
+    } finally {
+      store.setState({ loading: false })
+    }
   },
   selectImage: (store: any, value: number) => {
     if (store.state.hasEligiblePOAPtokens !== true) return

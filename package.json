@@ -34,6 +34,7 @@
     "pluralize": "^8.0.0",
     "potpack": "^1.0.1",
     "react": "^17.0.1",
+    "react-countdown": "^2.3.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.3.1",
     "react-hook-form": "^6.15.1",

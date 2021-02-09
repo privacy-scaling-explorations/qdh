@@ -6,19 +6,39 @@ import WalletConnectButton from 'components/WalletConnectButton'
 import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 import NominateImageModal from 'components/NominateImage'
 import SignUpPopup from 'components/SignUpPopup'
+import InitialKeyChangePopup from 'components/InitialKeyChangePopup'
 import Loader from 'components/Loader'
-import { useEffect, useState } from 'react'
+import Countdown from 'react-countdown'
+
+const SignUpCountDown = ({ votingDeadline, signedUp }) => {
+  if (!votingDeadline) return null
+  if (Math.round(votingDeadline - Date.now() / 1000) < 0) return null
+  if (signedUp) {
+    return (
+      <span className='px-6 border-none cursor-default button' title='Signup deadline'>
+        Voting ends in <Countdown daysInHours={true} date={votingDeadline * 1000} />
+      </span>
+    )
+  } else {
+    return (
+      <span className='px-6 border-none cursor-default button' title='Signup deadline'>
+        Signup ends in <Countdown daysInHours={true} date={votingDeadline * 1000} />
+      </span>
+    )
+  }
+}
 
 export default function Nav() {
-  const [{ address, balance, hasEligiblePOAPtokens, signedUp, loading, cart, votingDeadline }] = useGlobalState()
-  const [countDown, setCountDown] = useState(null)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (votingDeadline) setCountDown(Math.round(votingDeadline - Date.now() / 1000))
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [votingDeadline])
+  const [state, actions] = useGlobalState()
+  const {
+    address,
+    balance,
+    hasEligiblePOAPtokens,
+    signedUp,
+    initialKeyChangePerformed,
+    loading,
+    votingDeadline,
+  } = state
 
   return (
     <nav className='relative z-10'>
@@ -26,11 +46,7 @@ export default function Nav() {
         <h1 className='text-2xl'>Quadratic Dollar Homepage</h1>
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
-          {Boolean(votingDeadline) && Boolean(countDown > 0) && (
-            <span className='px-6 button' title='Signup deadline'>
-              Signup deadline in {countDown}s
-            </span>
-          )}
+          <SignUpCountDown votingDeadline={votingDeadline} signedUp={signedUp} />
           <WalletConnectButton />
           {address && hasEligiblePOAPtokens && signedUp && (
             <>
@@ -55,7 +71,9 @@ export default function Nav() {
               return <NotEligibleToSignUpPopup />
             } else if (hasEligiblePOAPtokens && !signedUp) {
               return <SignUpPopup />
-            } else if (hasEligiblePOAPtokens && signedUp) {
+            } else if (hasEligiblePOAPtokens && signedUp && !initialKeyChangePerformed) {
+              return <InitialKeyChangePopup />
+            } else if (hasEligiblePOAPtokens && signedUp && initialKeyChangePerformed) {
               return <VotingControls />
             }
           })()}
