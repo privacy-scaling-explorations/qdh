@@ -2,7 +2,6 @@ import React from 'react'
 import globalHook from 'use-global-hook'
 import web3state from './web3state'
 
-import pack from 'libs/binpack'
 import { signUp as MaciSignUp, publish as MaciPublish } from 'libs/MACI'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 import { TallyResult } from '../../types/tally'
@@ -13,6 +12,7 @@ let images: Array<ImageObj>
 const initialState = {
   ...web3state.initialState,
   loading: true,
+  images: [],
   canvas: {},
   boxes: [],
   cart: [],
@@ -100,8 +100,6 @@ const actions = {
     }
   },
   selectImage: (store: any, value: number) => {
-    if (store.state.hasEligiblePOAPtokens !== true) return
-    if (store.state.signedUp !== true) return
     store.setState({ selected: value })
   },
   incVote: (store: any) => {
@@ -166,7 +164,6 @@ const actions = {
         }
       } catch (err) {
         console.error('MACI Command failed', err)
-        // TODO make sure failed transactions are not removed from cart
       }
     }
     /*
@@ -206,25 +203,7 @@ const actions = {
   fetchImages: async (store: any) => {
     const res = await fetch('/api/image')
     images = (await res.json()) as Array<ImageObj>
-    const BASE_IMAGE_SIZE = 5
-    const tallyResult = store.state.tallyResult
-    images.map(image => {
-      let multiplier: number = 1
-      if (tallyResult) {
-        const totalVoiceCreditsSpent: number = parseInt(tallyResult.totalVoiceCredits.spent)
-        const squareVote: number = parseInt(tallyResult.totalVoiceCreditsPerVoteOption.tally[image.index])
-        multiplier = (squareVote / totalVoiceCreditsSpent) * 100
-        image.squareVote = squareVote
-      }
-      image.w = 50 + BASE_IMAGE_SIZE * multiplier
-      image.h = 50 + BASE_IMAGE_SIZE * multiplier
-      image.color = '#' + (Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)
-      return image
-    })
-    if (images.length > 0) {
-      const { canvas, boxes } = pack(images, 'maxrects')
-      store.setState({ canvas, boxes })
-    }
+    store.setState({ images })
   },
   fetchConfig: async (store: any) => {
     const res = await fetch('/api/qdh-general-config')

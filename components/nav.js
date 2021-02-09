@@ -49,9 +49,9 @@ export default function Nav() {
           <SignUpCountDown votingDeadline={votingDeadline} signedUp={signedUp} />
           {address && hasEligiblePOAPtokens && signedUp && (
             <>
-              <a className='px-6 border-none cursor-default button' title='Your voice credits'>
+              <span className='px-6 border-none cursor-default button' title='Your voice credits'>
                 {balance} {pluralize('credits', balance)}
-              </a>
+              </span>
               <NominateImageModal trigger={<a className='inline px-6 select-none button'>Nominate an image</a>} />
             </>
           )}

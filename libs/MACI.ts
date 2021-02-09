@@ -33,10 +33,6 @@ export async function calcVotingDeadline(maci: Contract): Promise<number> {
   }
 }
 
-export async function getResults() {
-  // TODO 2 get results from tally.json
-}
-
 export async function signUp(
   maci: Contract,
   keypair: Keypair,
@@ -67,7 +63,7 @@ export async function publish(
   voteWeight: BigInt,
   nonce: BigInt
 ): Promise<any> {
-  // TODO https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
+  // READ https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
   const coordinatorPubKey = PubKey.unserialize(MACI_COORDINATOR_PUBKEY)
   const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
   const signature = command.sign(keypair.privKey)
