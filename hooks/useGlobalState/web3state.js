@@ -141,7 +141,7 @@ export default {
       if (confirm(`This will reset your signup state data. You'll have to sign up again after this. You sure?`)) {
         localStorage.removeItem('userStateIndex')
         localStorage.removeItem('voiceCredits')
-        localStorage.removeItem('HowtoPopUpWasShown')
+        localStorage.removeItem('howtoPopUpWasShown')
         window.location.reload()
       }
     },

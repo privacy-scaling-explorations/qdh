@@ -1,18 +1,25 @@
 import { HiOutlineKey, HiDotsVertical, HiExclamation } from 'react-icons/hi'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from 'components/Modal'
 import Button from 'components/Button'
 
 export default function HowtoPopup({ trigger }) {
-  let HowtoPopUpWasShown = false
-  if (typeof window !== 'undefined') {
-    HowtoPopUpWasShown = Boolean(localStorage.getItem('HowtoPopUpWasShown'))
-  }
-  const [modalOpen, setModalOpen] = useState(!HowtoPopUpWasShown || false)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [howtoPopUpWasShown, setHowtoPopUpWasShown] = useState(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const _howtoPopUpWasShown = Boolean(localStorage.getItem('howtoPopUpWasShown'))
+      if (!_howtoPopUpWasShown) {
+        setModalOpen(true)
+      }
+      setHowtoPopUpWasShown(_howtoPopUpWasShown)
+    }
+  }, [])
 
   const onOpenStateChange = state => {
-    if (state === false && HowtoPopUpWasShown === false) {
-      localStorage.setItem('HowtoPopUpWasShown', true)
+    if (state === false && howtoPopUpWasShown === false) {
+      localStorage.setItem('howtoPopUpWasShown', true)
     }
     setModalOpen(state)
   }
@@ -24,25 +31,25 @@ export default function HowtoPopup({ trigger }) {
       onOpenStateChange={onOpenStateChange}
       trigger={trigger}
       title='How to vote'>
-    <ol className='pl-4 mb-5 text-sm leading-5 text-gray-800 list-decimal list-outside'>
-      <li>
-        <b>Sign up</b> before the deadline.
-      </li>
-      <li>
-        You’ll be asked to perform the initial key change right away. You can also perform a{' '}
-        <HiOutlineKey className='inline text-orange-500' /> key-change any time you want, from the{' '}
-        <HiDotsVertical className='inline w-4 h-4 -mr-1' /> <b>Menu</b>. Changing your voting key allows you to
-        plausibly deny to a briber that you’ve have cast a valid vote.
-      </li>
-      <li>
-        Once you’ve signed up, you can pick any image (or upload one yourself) select how many votes you’d like to
-        cast for it, and add it to your “voting cart”.
-      </li>
-      <li>
-        Once you feel happy with the votes you’ve selected, go ahead click "<b>Vote</b>" to cast all votes at once.
-      </li>
-    </ol>
-        {/* <br />
+      <ol className='pl-4 mb-5 text-sm leading-5 text-gray-800 list-decimal list-outside'>
+        <li>
+          <b>Sign up</b> before the deadline.
+        </li>
+        <li>
+          You’ll be asked to perform the initial key change right away. You can also perform a{' '}
+          <HiOutlineKey className='inline text-orange-500' /> key-change any time you want, from the{' '}
+          <HiDotsVertical className='inline w-4 h-4 -mr-1' /> <b>Menu</b>. Changing your voting key allows you to
+          plausibly deny to a briber that you’ve have cast a valid vote.
+        </li>
+        <li>
+          Once you’ve signed up, you can pick any image (or upload one yourself) select how many votes you’d like to
+          cast for it, and add it to your “voting cart”.
+        </li>
+        <li>
+          Once you feel happy with the votes you’ve selected, go ahead click "<b>Vote</b>" to cast all votes at once.
+        </li>
+      </ol>
+      {/* <br />
     The inspiration for this project is the Million Dollar Homepage. MDH allowed anyone to purchase pixels on an
     image on a website and use said pixels to display anything they wanted.
     <br />
