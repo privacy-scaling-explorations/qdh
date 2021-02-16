@@ -110,6 +110,8 @@ Don't forget to connect your Metamask to your local testnet `locahost:8545` and 
 
 You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
 
+You can also watch & listen to these great in-depth presentations about MACI by Koh Wei Jie: [Making Sense of MACI](https://www.youtube.com/watch?v=ooxgPzdaZ_s), [ZKPodcast: MACI with Koh Wei Jie](https://www.youtube.com/watch?v=f9nUGPD5I3o) and [Minimum Anti-Collusion Infrastructure (MACI)](https://www.youtube.com/watch?v=sKuNj_IQVYI)
+
 
 ## Setting up Admin Dashboard
 
