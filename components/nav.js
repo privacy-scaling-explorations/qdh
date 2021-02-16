@@ -7,6 +7,7 @@ import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 import NominateImageModal from 'components/NominateImage'
 import SignUpPopup from 'components/SignUpPopup'
 import InitialKeyChangePopup from 'components/InitialKeyChangePopup'
+import HowToPopup from 'components/HowToPopup'
 import Loader from 'components/Loader'
 import Countdown from 'react-countdown'
 
@@ -71,6 +72,7 @@ export default function Nav() {
               return <VotingControls />
             }
           })()}
+          <HowToPopup trigger={<></>} />
         </div>
       </ul>
     </nav>

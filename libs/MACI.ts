@@ -50,7 +50,7 @@ export async function signUp(
     const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
     return { userStateIndex, voiceCredits }
   } catch (err) {
-    alert(err.data.message)
+    alert(err.message || err.data.message)
     throw err
   }
 }

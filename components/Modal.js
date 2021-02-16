@@ -87,7 +87,7 @@ function Modal({ trigger, title, children, easyToDismiss = true, onOpenStateChan
                     </svg>
                   </div>
                 )}
-                <div className='w-full mt-3 text-center sm:mt-0 sm:text-left'>
+                <div className='w-full mt-3 sm:mt-0'>
                   <h3 className='text-lg font-medium leading-6 text-gray-900' id='modal-headline'>
                     {title || 'Title goes here'}
                   </h3>

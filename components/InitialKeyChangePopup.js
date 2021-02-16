@@ -19,7 +19,7 @@ export default function InitialKeyChangePopup() {
         easyToDismiss={false}
         onOpenStateChange={state => setModalOpen(state)}
         title={`Perform initial Key-Change`}
-        trigger={<span className='px-6 text-yellow-400 border-yellow-400 button'>Let's sign you up!</span>}>
+        trigger={<span className='px-6 text-yellow-400 border-yellow-400 button'>Perform initial Key-Change</span>}>
         <p className='mt-5 text-sm leading-5 text-gray-900'>
           You'll be able to plausibly deny to a briber that you've cast a valid vote.
         </p>
