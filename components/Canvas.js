@@ -46,35 +46,42 @@ export default function Canvas() {
   const { canvas, boxes } = pack(images, 'maxrects')
 
   return (
-    <div className='relative mx-auto' style={{ width: canvas.w || 600 }}>
-      {_images.map((image, key) => {
-        const { x, y } = find(boxes, ['index', image.index])
-        return (
-          <Box
-            key={image.index}
-            index={image.index}
-            isSelected={selected === image.index}
-            onClick={_ => {
-              if (selected === image.index) {
-                selectImage(null) // unselect
-              } else {
-                selectImage(image.index)
-              }
-            }}
-            squareVote={image.squareVote}
-            style={{
-              height: image.h,
-              width: image.w,
-              top: y,
-              left: x,
-              backgroundColor: image.color,
-              backgroundImage: `url(${image.url})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center center',
-            }}
-          />
-        )
-      })}
+    <div
+      className='relative block max-w-full min-h-full mx-auto'
+      onClick={_ => {
+        selectImage(null)
+      }}>
+      <div className='relative block mx-auto' style={{ width: canvas.w || 600 }}>
+        {_images.map((image, key) => {
+          const { x, y } = find(boxes, ['index', image.index])
+          return (
+            <Box
+              key={image.index}
+              index={image.index}
+              isSelected={selected === image.index}
+              onClick={e => {
+                e.stopPropagation()
+                if (selected === image.index) {
+                  selectImage(null) // unselect
+                } else {
+                  selectImage(image.index)
+                }
+              }}
+              squareVote={image.squareVote}
+              style={{
+                height: image.h,
+                width: image.w,
+                top: y,
+                left: x,
+                backgroundColor: image.color,
+                backgroundImage: `url(${image.url})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+              }}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
