@@ -47,7 +47,8 @@ export default function Canvas() {
 
   return (
     <div
-      className='relative block max-w-full min-h-full mx-auto'
+      className='relative block max-w-full mx-auto'
+      style={{ minHeight: '90vh' }}
       onClick={_ => {
         selectImage(null)
       }}>
