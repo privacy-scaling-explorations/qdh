@@ -140,6 +140,7 @@ export default {
     resetSignupState: _ => {
       if (confirm(`This will reset your signup state data. You'll have to sign up again after this. You sure?`)) {
         localStorage.removeItem('userStateIndex')
+        localStorage.removeItem('committedVotes')
         localStorage.removeItem('voiceCredits')
         localStorage.removeItem('howtoPopUpWasShown')
         window.location.reload()
