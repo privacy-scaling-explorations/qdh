@@ -7,6 +7,8 @@ it also features a space for images on a webpage, it allows users to vote on how
 Moreover, it employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
 Infrastructure (MACI) to prevent bribery and scale images quadratically.
 
+**DEMO**: https://www.youtube.com/watch?v=b6VonnS8e1M
+
 ## How to run QDH locally
 
 Clone this repo. Install dependencies by running `yarn` or `npm install`:
