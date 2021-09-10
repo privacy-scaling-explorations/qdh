@@ -217,3 +217,7 @@ p.s. We'll eventually try to make this project cloud agnostic. Feel free to cont
 - If you are are looking for a free & easy MongoDB hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
 - If you've used [Dokku](https://github.com/dokku/dokku) before, you can deploy mongo instance on it using [dokku-mongo](https://github.com/dokku/dokku-mongo) plugin.
 - You can also deploy MongoDB on your IaaS or PaaS of choice.
+
+## Translation
+
+- [Korean / 한국어](/i18n/README.ko.md)
