@@ -11,7 +11,7 @@
 QDH 레포지토리를 클론하고 `yarn` 이나 `npm install`을 통해 dependency를 설치합니다:
 
 ```bash
-git clone https://github.com/ksaitor/qdh
+git clone https://github.com/appliedzkp/qdh
 cd qdh
 yarn  # or `npm install`
 ```
@@ -115,12 +115,12 @@ Koh Wei Jie의 MACI 영상: [Making Sense of MACI](https://www.youtube.com/watch
 
 관리자 대시보드는 업로드된 이미지를 관리하고, QDH 프론트엔드에 기본 컨피그를 제공합니다. 또한, 투표결과가 집계되면 `tally.json`을 업로드합니다.
 
-[관리자 대시보드](https://github.com/ksaitor/qdh-admin)를 실행하는 것은 필수는 아니지만 권장합니다. 이것은 [Strapi](https://strapi.io/)라고 하는 headless CMS 오픈소스를 기반으로 하고 있습니다. 해당 레포의 README문서에서 자세한 사항을 확인할 수 있습니다.
+[관리자 대시보드](https://github.com/appliedzkp/qdh-admin)를 실행하는 것은 필수는 아니지만 권장합니다. 이것은 [Strapi](https://strapi.io/)라고 하는 headless CMS 오픈소스를 기반으로 하고 있습니다. 해당 레포의 README문서에서 자세한 사항을 확인할 수 있습니다.
 
-[https://github.com/ksaitor/qdh-admin](https://github.com/ksaitor/qdh-admin) 레포를 클론하고 `yarn` (또는 `npm install`)으로 dependency를 설치합니다.
+[https://github.com/appliedzkp/qdh-admin](https://github.com/appliedzkp/qdh-admin) 레포를 클론하고 `yarn` (또는 `npm install`)으로 dependency를 설치합니다.
 
 ```bash
-git clone https://github.com/ksaitor/qdh-admin
+git clone https://github.com/appliedzkp/qdh-admin
 cd qdh-admin
 yarn  # or `npm install`
 ```
@@ -142,7 +142,7 @@ vim .env # set `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`
 
 ## QDH 프로덕션으로 실행
 
-이 레포는 
+이 레포는
 
 이 레포는 [Vercel](https://vercel.io/), [Heroku](https://heroku.com/), [Dokku](https://github.com/dokku/dokku)로 배포가 가능합니다. `.env` 의 환경변수를 배포하려는 플랫폼으로 추출해야합니다.
 

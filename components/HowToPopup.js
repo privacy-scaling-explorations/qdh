@@ -79,7 +79,7 @@ export default function HowtoPopup({ trigger }) {
       <h3 className='mb-2 text-lg font-medium leading-6 text-gray-900'>Learn more</h3>
       <p className='mb-5 text-sm leading-5 text-gray-800'>
         To learn more about how QDH and MACI works{' '}
-        <a href='https://github.com/ksaitor/qdh#quadratic-dollar-homepage' target='_blank'>
+        <a href='https://github.com/appliedzkp/qdh#quadratic-dollar-homepage' target='_blank'>
           click here
         </a>
         .

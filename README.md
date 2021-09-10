@@ -14,7 +14,7 @@ Infrastructure (MACI) to prevent bribery and scale images quadratically.
 Clone this repo. Install dependencies by running `yarn` or `npm install`:
 
 ```bash
-git clone https://github.com/ksaitor/qdh
+git clone https://github.com/appliedzkp/qdh
 cd qdh
 yarn  # or `npm install`
 ```
@@ -119,14 +119,14 @@ You can also watch & listen to these great in-depth presentations about MACI by 
 
 The goal of the Admin Dashboard is to simplify moderation of uploaded images, supply basic initial configuration to the QDH frontend (e.g. MACI contract address on the mainnet) and upload `tally.json` once the vote results are tallied.
 
-Setting up and running [Admin Dashboard](https://github.com/ksaitor/qdh-admin) is not mandatory, but recommended. We've based it on an open source headless
+Setting up and running [Admin Dashboard](https://github.com/appliedzkp/qdh-admin) is not mandatory, but recommended. We've based it on an open source headless
 CMS, called [Strapi](https://strapi.io/).
 
 You'll be able to find detailed instructions on how to run it in the repo's README, but we'll make a short overview here as well.
 
-Clone the repo https://github.com/ksaitor/qdh-admin and install dependencies with `yarn` (or `npm install`)
+Clone the repo https://github.com/appliedzkp/qdh-admin and install dependencies with `yarn` (or `npm install`)
 ```bash
-git clone https://github.com/ksaitor/qdh-admin
+git clone https://github.com/appliedzkp/qdh-admin
 cd qdh-admin
 yarn  # or `npm install`
 ```
