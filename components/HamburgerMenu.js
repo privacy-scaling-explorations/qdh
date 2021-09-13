@@ -57,7 +57,7 @@ export default function HamburgerMenu() {
           </a>
         }
       />
-      <Link href='https://github.com/ksaitor/qdh'>
+      <Link href='https://github.com/appliedzkp/qdh'>
         <a
           target='_blank'
           className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
