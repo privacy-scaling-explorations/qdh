@@ -12,7 +12,7 @@ export function tallyUpload(callback: Callback) {
       try {
         const tallyResult: TallyResult = JSON.parse(String(reader.result)) as TallyResult
         if(!tallyResult.maci || !tallyResult.totalVoiceCredits) {
-          throw new Error(`Dont's look like tally.json format`);
+          throw new Error(`Doesn't look like tally.json format`);
         }
         callback(tallyResult)
         document.dispatchEvent(new Event('mousedown')) // closes the dropdown
