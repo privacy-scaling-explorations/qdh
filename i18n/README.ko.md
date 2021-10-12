@@ -107,7 +107,7 @@ MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
 
 반드시 메타마스크를 로컬테스트넷`locahost:8545`에 연결하고 테스트 지갑을 가져와야합니다.
 
-자세한 방법과 MACI 커멘드는 [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration)문서에서 확인할 수 있습니다.
+자세한 방법과 MACI 커멘드는 [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration)문서에서 확인할 수 있습니다.[ (MACI 명령어 설명서 한국어 버전)](/i18n/maci_cli.ko.md)
 
 Koh Wei Jie의 MACI 영상: [Making Sense of MACI](https://www.youtube.com/watch?v=ooxgPzdaZ_s), [ZKPodcast: MACI with Koh Wei Jie](https://www.youtube.com/watch?v=f9nUGPD5I3o), [Minimum Anti-Collusion Infrastructure (MACI)](https://www.youtube.com/watch?v=sKuNj_IQVYI)
 
