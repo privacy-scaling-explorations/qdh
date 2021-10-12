@@ -189,7 +189,7 @@ node ./build/index.js genMaciKeypair
 Private key: macisk.8715ab59a3e88a7ceec80f214ec24a95287ef2cb399a329b6964a87f85cf51c
 Public key:  macipk.2c93053fcc4dc13dfb1cdd679aea39d1667af3d937e1430766e514fd24043999
 
-개인 키는 안전한 장소에 보관하고 누구에게도 공개하지 마세요.
+Please store your private key in a safe place and do not reveal it to anyone.
 ```
 
 **Alice: 키 쌍 생성**
@@ -198,13 +198,13 @@ Public key:  macipk.2c93053fcc4dc13dfb1cdd679aea39d1667af3d937e1430766e514fd2404
 node ./build/index.js genMaciKeypair
 ```
 
-Example output:
+출력 :
 
 ```
 Private key: macisk.8d9bce75e0053db023ffd26597a4f389b33edd9236998e357cef36d5c978cc8
 gublic key:  macipk.08b869d7dcc59913301478bec3e7020c9ca37d44aae886fa7be118fca34daf06
 
-개인 키는 안전한 장소에 보관하고 누구에게도 공개하지 마세요.
+Please store your private key in a safe place and do not reveal it to anyone.
 ```
 
 **Coordinator: 선거 생성**
@@ -538,7 +538,7 @@ node build/index.js proveOnChain \
 node ./build/index.js verify -t tally.json
 ```
 
-## Demonstration with `prod-medium` settings
+## `prod-medium` 설정 데모
 
 ```bash
 node ./build/index.js create \
@@ -571,7 +571,7 @@ node build/index.js proveOnChain \
 node ./build/index.js verify -t tally.json
 ```
 
-## `prod-large` 설정 시연
+## `prod-large` 설정 
 
 ```bash
 node ./build/index.js create \
@@ -612,7 +612,7 @@ node ./build/index.js verify -t tally.json
 ```
 
 
-## `prod-32` 설정 시연
+## `prod-32` 설정 데모
 
 ```bash
 node ./build/index.js create \
