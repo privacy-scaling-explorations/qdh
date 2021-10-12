@@ -28,30 +28,29 @@ Private key: macisk.8715ab59a3e88a7ceec80f214ec24a95287ef2cb399a329b6964a87f85cf
 Public key:  macipk.2c93053fcc4dc13dfb1cdd679aea39d1667af3d937e1430766e514fd24043999
 ```
 
-### Coordinator: Create election
+### Coordinator: 투표 만들기
 
-This command deploys an instance of a MACI contract.
+이 명령은 MACI계약의 인스턴스를 배포합니다.
 
-Note that all the example commands default to a local Ethereum testnet at
-`http://localhost:8545`. For testing purposes, you can run one using:
+모든 예제 명령은 기본적으로 local 이더리움 테스트넷 `http://localhost:8545`입니다. 테스트 목적으로, 다음을 실행할 수 있습니다:
 
 ```bash
 
-# in maci/contracts
+# maci/contracts에서
 npm run ganache
 ```
 
-Fields that the coordinator has to set:
+Coordinator가 설정해야 하는 필드:
 
 `node build/index.js create <options>`
 
-Example usage:
+사용 예시:
 
 ```
 $ node build/index.js create -sk macisk.23d007423d56475d7e39dcd5053c5aa98f57a69ee85bc7813ccbf4c5e688307  -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 -u 15 -m 15 -s 30 -o 30
 ```
 
-Example output:
+출력 예시:
 
 ```
 MACI: 0xE28158eCFde143e2536761c3254C7C31efd97271
@@ -59,145 +58,141 @@ MACI: 0xE28158eCFde143e2536761c3254C7C31efd97271
 
 | Option | Flags | About |
 |-|-|-|
-| Ethereum provider | `-e` or `--eth-provider` | A connection string to an Ethereum provider. Default: `http://localhost:8545` |
-| Coordinator's MACI private key | `-sk` or `--privkey` | A serialized MACI private key. This is *not* an Ethereum private key. Its big-endian value must be below the snark field size. |
-| Prompt for the coordinator's MACI private key | `-dsk` or `--prompt-for-maci-privkey` | If specified, ignores `-sk / --privkey` and prompts the coordinator to input their MACI private key |
-| Deployer's Ethereum private key | `-d` or `--deployer-privkey` | A private key of the Ethereum account to use to deploy the MACI contract |
-| Prompt for the deployer's Ethereum private key | `-dp` or `--prompt-for-deployer-privkey` | If specified, ignores `-d / --deployer-privkey` and prompts the coordinator to input their Ethereum private key |
-| Maximum number of users | `-u` or `--max-users` | Default: 15 |
-| Maximum number of messages | `-m` or `--max-messages` | Default: 15 |
-| Maximum number of vote options | `-v` or `--max-vote-options` | Default: 25 |
-| Sign-up duration | `-s` or `--signup-duration` | The sign-up duration, in seconds. |
-| Voting duration | `-o` or `--voting-duration` | The voting duration, in seconds. |
-| Initial voice credits | `-c` or `--initial-voice-credits` | Default: 100 |
-| Initial voice credit proxy contract | `-i` or `--initial-vc-proxy` | If specified, deploys the MACI contract with this address as the initial voice credit proxy constructor argument. Otherwise, deploys a ConstantInitialVoiceCreditProxy contract with the above-specified value. |
-| Signup gatekeeper contract | `-g` or `--signup-gatekeeper` | If specified, deploys the MACI contract with this address as the signup gatekeeper constructor argument. Otherwise, deploys a gatekeeper contract which allows any address to sign up. | 
-| Batch size for processing messages | `-bm` or `--message-batch-size` | Default: 4 |
-| Batch size for tallying votes | `-bv` or `--tally-batch-size` | Default: 4 |
+| Ethereum 공급자 | `-e` 또는 `--eth-provider` | Ethereum 공급자에 대한 연결 문자열. 기본: `http://localhost:8545` |
+| Coordinator의 MACI 개인 키 | `-sk` 또는 `--privkey` | 직렬화된 MACI 개인 키입니다. 이것은 이더리움 개인 키가 아닙니다. 빅-엔디안값은 snark 필드 크기보다 작아야만 한다. |
+| Coordinator의 MACI 개인 키에 대한 프롬프트 | `-dsk` 또는 `--prompt-for-maci-privkey` | If specified, ignores `-sk / --privkey` and prompts the coordinator to input their MACI private key |
+| 배포자의 Ethereum 개인 키 | `-d` 또는 `--deployer-privkey` | MACI 계약을 배포하는데 사용할 Ethereum 계정의 개인 키 |
+| 배포자의 Ethereum 개인 키에 대한 프롬프트 | `-dp` 또는 `--prompt-for-deployer-privkey` | 지정된 경우, `-d / --deployer-privkey`를 무시하고 coordinator에게 Ethereum 개인 키를 넣도록 프롬프트 |
+| 최대 사용자 수 | `-u` 또는 `--max-users` | 기본값: 15 |
+| 최대 메시지 수 | `-m` 또는 `--max-messages` | 기본값: 15 |
+| 최대 투표 옵션 수 | `-v` 또는 `--max-vote-options` | 기본값: 25 |
+| 가입 기간 | `-s` 또는 `--signup-duration` | 가입 기간이며, 단위는 초. |
+| 투표 기간 | `-o` 또는 `--voting-duration` | 투표 기간이며, 단위는 초. |
+| 초기 voice  | `-c` 또는 `--initial-voice-credits` | Default: 100 |
+| 초기 voice credit 프록시 계약 | `-i` 또는 `--initial-vc-proxy` | 지정된 경우, 이 주소를 초기 voice credit 프록시 생성자 인수로 사용하여 MACI 계약을 배포합니다. 그렇지 않으면 위에서 지정한 값으로 ConstantInitialVoiceCreditProxy계약을 배포합니다. |
+| 가입 gatekeeper 계약 | `-g` 또는 `--signup-gatekeeper` | 지정된 경우, 이 주소를 가입 gatekeeper 생성자 인수로 사용하여 MACI 계약을 배포합니다. 그렇지 않으면, 어떠한 주소든 등록될 수 있도록 하는 gatekeeper 계약을 배포합니다. | 
+| 메시지 처리를 위한 Batch size | `-bm` 또는 `--message-batch-size` | 기본값: 4 |
+| 투표 집계를 위한 Batch size | `-bv` 또는 `--tally-batch-size` | 기본값: 4 |
 
-### Coordinator: Process, tally and verify outcome
+### Coordinator: 처리, 집계 및 결과 확인
 
 `node build/index.js genProofs <options>`
 
-Fields that the coordinator has to set:
+Coordinator가 설정해야 하는 필드:
 
 | Option | Flags | About |
 |-|-|-|
-| Ethereum provider | `-e` or `--eth-provider` | A connection string to the Ethereum provider. Default: `http://localhost:8545` |
-| MACI contract address | `-x` or `--contract` | The address of the deployed MACI contract |
-| Coordinator's MACI private key | `-sk` or `--privkey` | See above |
-| Coordinator's Ethereum private key | `-d` or `--eth-privkey` | A private key of the Ethereum account to use to perform the transaction |
-| Prompt for the coordinator's Ethereum private key | `-dp` or `--prompt-for-eth-privkey` | If specified, ignores `-d / --eth-privkey` and prompts the coordinator to input their Ethereum private key |
-| The final tally file | `-t` or `--tally-file` | A filepath in which to save the final vote tally and salt. |
+| Ethereum 공급자 | `-e` 또는 `--eth-provider` | Ethereum 공급자에 대한 연결 문자열. 기본: `http://localhost:8545` |
+| MACI 계약 주소 | `-x` 또는 `--contract` | 배포된 MACI 계약 주소 |
+| Coordinator의 MACI 개인 키 | `-sk` 또는 `--privkey` | 위에 참조 |
+| Coordinator의 Ethereum 개인 키 | `-d` 또는 `--eth-privkey` | 트랜잭션을 수행하는 데 사용할 이더리움 계정의 개인 키 |
+| Coordinator의 Ethereum 개인 키를 위한 프롬프트 | `-dp` 또는 `--prompt-for-eth-privkey` | 지정된 경우, `-d / --eth-privkey`를 무시하고 coordinator의 Ethereum 개인키 입력을 위한 프롬프트 |
+| 최종 집계 파일 | `-t` 또는 `--tally-file` | 최종 투표 집계와 salt를 저장할 파일 경로입니다. |
 
-This command does not yet support pausing and restarting the generation of the
-proofs for each batch.
+이 명령은 각 batch에 대한 증명 생성을 일시중지하고 다시 시작하는 것을 아직 지원하지 않습니다.
 
 `node build/index.js proveOnChain <options>`
 
 | Option | Flags | About |
 |-|-|-|
-| Ethereum provider | `-e` or `--eth-provider` | A connection string to the Ethereum provider. Default: `http://localhost:8545` |
-| MACI contract address | `-x` or `--contract` | The address of the deployed MACI contract |
-| Coordinator's MACI private key | `-sk` or `--privkey` | See above |
-| Coordinator's Ethereum private key | `-d` or `--eth-privkey` | A private key of the Ethereum account to use to perform the transaction |
-| Prompt for the coordinator's Ethereum private key | `-dp` or `--prompt-for-eth-privkey` | If specified, ignores `-d / --eth-privkey` and prompts the coordinator to input their Ethereum private key |
+| Ethereum 공급자 | `-e` 또는 `--eth-provider` | Ethereum 공급자에 대한 연결 문자열. 기본: `http://localhost:8545` |
+| MACI 계약 주소 | `-x` 또는 `--contract` | 배포된 MACI 계약 주소 |
+| Coordinator의 MACI 개인 키 | `-sk` 또는 `--privkey` | 위에 참조 |
+| Coordinator의 Ethereum 개인 키 | `-d` 또는 `--eth-privkey` | 트랜잭션을 수행하는 데 사용할 이더리움 계정의 개인 키 |
+| Coordinator의 Ethereum 개인 키를 위한 프롬프트 | `-dp` 또는 `--prompt-for-eth-privkey` | 지정된 경우, `-d / --eth-privkey`를 무시하고 coordinator의 Ethereum 개인키 입력을 위한 프롬프트 |
 
-### User: Generate MACI keypair
+### User: MACI 키 쌍 생성
 
 `node build/index.js genMaciKeypair <options>`
 
-The output of this command is a serialised private key and serialised
-public key.
+이 명령의 출력은 직렬화된 개인 키와 직렬화된 공개 키입니다.
 
-### User: Generate MACI public key
+### User: MACI 공개 키 생성
 
 `node build/index.js genMaciPubkey <options>`
 
 | Option | Flags | About |
 |-|-|-|
-| Private key | `-sk` or `--privKey` | A serialised private key |
+| 개인 키 | `-sk` 또는 `--privKey` | 직렬화된 개인 키 |
 
-The output of this command is a serialised public key derived from the given private key.
+이 명령의 출력은 주어진 개인 키에서 파생된 직렬화된 공개 키입니다.
 
-### User: Sign up
+### User: 가입
 
 `node build/index.js signup <options>`
 
-Fields that the user has to set:
+사용자가 설정해야 하는 필드:
 
 | Option | Flags | About |
 |-|-|-|
-| Ethereum provider | `-e` or `--eth-provider` | A connection string to the Ethereum provider. Default: `http://localhost:8545` |
-| MACI contract address | `-x` or `--contract` | The address of the deployed MACI contract |
-| The user's MACI public key | `-p` or `--pubkey` | This should not be an Ethereum public key. Instead, it should be the user's serialised BabyJub public key (where the x and y values have been concatenated. |
-| User's Ethereum private key | `-d` or `--eth-privkey` | A private key of the Ethereum account to use to sign up |
-| Prompt for the user's Ethereum private key | `-dp` or `--prompt-for-eth-privkey` | If specified, ignores `-d / --eth-privkey` and prompts the user to input their Ethereum private key |
-| Signup gatekeeper proxy data | `-s` or `--sg-data` | A hex string to pass to the sign-up gatekeeper proxy contract which may use it to determine whether to allow the user to sign up. Default: an empty bytestring. |
-| Initial voice credit proxy data | `-v` or `--ivcp-data` | A hex string to pass to the initial voice credit proxy contract which may use it to determine how many voice credits to assign to the user. Default: an empty bytestring. |
+| Ethereum 공급자 | `-e` 또는 `--eth-provider` | Ethereum 공급자에 대한 연결 문자열. 기본: `http://localhost:8545` |
+| MACI 계약 주소 | `-x` 또는 `--contract` | 배포된 MACI 계약 주소 |
+| User의 MACI 공개 키 | `-p` 또는 `--pubkey` | 이것은 이더리움 공개 키가 아니어야 합니다. 대신 사용자의 직렬화된 BabyJub 공개 키여야 합니다(여기서 x 및 y 값은 연결되어 있습니다.) |
+| User의 Ethereum 개인 키 | `-d` 또는 `--eth-privkey` | A private key of the Ethereum account to use to sign up |
+| User의 Ethereum 개인 키를 위한 프롬프트 | `-dp` 또는 `--prompt-for-eth-privkey` | 지정된 경우, `-d / --eth-privkey`를 무시하고 user의 Ethereum 개인키 입력을 위한 프롬프트 |
+| gatekeeper 프록시 데이터 가입 | `-s` 또는 `--sg-data` | 가입 게이트키퍼 프록시 계약에 전달할 16진수 문자열로, 사용자가 가입하도록 허용할지 여부를 결정하는 데 사용할 수 있습니다. 기본 값: an empty bytestring. |
+| 초기 voice credit 프록시 데이터 | `-v` 또는 `--ivcp-data` | 사용자에게 할당할 voice credit 수를 결정하는 데 사용할 수 있는 초기 voice credit 프록시 계약에 전달할 16진수 문자열입니다. 기본 값: an empty bytestring. |
 
-### User: Change key / vote
+### User: 키 변경/투표
 
 `node build/index.js publish <options>`
 
-Fields that the user has to set:
+User가 설정해야 하는 필드:
 
 | Option | Flags | About |
 |-|-|-|
-| Ethereum provider | `-e` or `--eth-provider` | A connection string to the Ethereum provider. Default: `http://localhost:8545` |
-| MACI contract address | `-x` or `--contract` | The address of the deployed MACI contract |
-| The user's MACI private key | `-sk` or `--pubkey` | This should not be an Ethereum private key |
-| Prompt for the user's MACI private key | `-dsk` or `--prompt-for-maci-privkey` | If specified, ignores `-sk / --privkey` and prompts the user to input thier MACI private key |
-| User's Ethereum private key | `-d` or `--eth-privkey` | A private key of the Ethereum account to use to perform the transaction |
-| Prompt for the user's Ethereum private key | `-dp` or `--prompt-for-eth-privkey` | If specified, ignores `-d / --eth-privkey` and prompts the user to input their Ethereum private key |
-| State index | `-i` or `--state-index` | The state index of the user |
-| The user's new or current MACI public key | `-p` or `--pubkey` | This should be a serialised BabyJub public key which should replace the user\'s public key in the state tree if the command is valid|
-| Vote option index | `-v` or `--vote-option-index` | The index of the option to vote for |
-| New vote weight | `-w` or `--new-vote-weight` | The vote weight to assign to said vote option |
-| Nonce | `-n` or `--nonce` | The nonce of the message |
-| Salt | `-s` or `--salt` | The salt of the message. If unspecified, this command will randomly generate a salt |
+| Ethereum 공급자 | `-e` 또는 `--eth-provider` | Ethereum 공급자에 대한 연결 문자열. 기본: `http://localhost:8545` |
+| MACI 계약 주소 | `-x` 또는 `--contract` | 배포된 MACI 계약 주소 |
+| User의 MACI 개인 키 | `-sk` 또는 `--pubkey` | 이더리움 개인 키가 아니어야 합니다. |
+| User의 MACI 개인 키를 위한 프롬프트 | `-dsk` 또는 `--prompt-for-maci-privkey` | 지정된 경우, `-sk / --privkey`를 무시하고 user의 MACI 개인 키 입력을 위한 프롬프트 |
+| User의 Ethereum 개인 키 | `-d` 또는 `--eth-privkey` | 트랜잭션을 수행하는 데 사용할 이더리움 계정의 개인 키 |
+| User의 Ethereum 개인 키를 위한 프롬프트 | `-dp` 또는 `--prompt-for-eth-privkey` | 지정된 경우, `-d / --eth-privkey`를 무시하고 user의 Ethereum 개인키 입력을 위한 프롬프트 |
+| State index | `-i` 또는 `--state-index` | 사용자의 상태 index |
+| User의 새로운 또는 현재 MACI 공개 키 | `-p` 또는 `--pubkey` | 명령이 유효한 경우 상태 트리에서 user의 공개 키를 대체해야 하는 직렬화된 BabyJub 공개 키여야 합니다.|
+| 투표 옵션 index | `-v` 또는 `--vote-option-index` | 투표 옵션 index |
+| 새 투표 가중치 | `-w` 또는 `--new-vote-weight` | 해당 투표 옵션에 할당할 투표 가중치 |
+| Nonce | `-n` or `--nonce` | 메시지의 논스 값 |
+| Salt | `-s` or `--salt` | 메시지의 salt. 지정하지 않으면 이 명령은 무작위로 salt를 생성합니다. |
 
-### Anyone: Verify a vote tally
+### Anyone: 투표 집계 확인
 
 `node build/index.js verify <options>`
 
-Fields to set:
+설정할 필드:
 
 | Option | Flags | About |
 |-|-|-|
-| The final tally file | `-t` or `--tally-file` | The final tally file created by the `tally` subcommand. |
+| 최종 집계 파일 | `-t` 또는 `--tally-file` | `tally`하위 명령에 의해 생성된 최종 집계 파일입니다. |
 
-## Demonstration
+## 데모
 
-This section contains a sequence of commands which will be useful for a live
-demonstration. They simulate the following scenario:
+이 섹션에는 라이브 데모에 유용한 명령 시퀀스가 포함되어 있습니다. 다음 시나리오를 시뮬레이션합니다:
 
-1. Eve tries to bribe Alice to vote for Party B
-2. Alice votes for Party B (`m0`)
-3. Alice changes her key (`m1`)
-4. Alice submits a vote for Party A (`m2`)
-5. The coordinator processes the votes and computes the final tally
-6. The expected result is: Party A has 1 vote and Party B has 0 votes. Alice’s
-   invalid vote was not counted, and Eve had no way to tell.
+1. Eve는 Alice에게 B당에 투표하도록 뇌물을 시도합니다.
+2. Alice는 B당(`m0`)에 투표합니다.
+3. Alice는 그녀의 키를 바꿉니다(`m1`)
+4. Alice가 A당(`m2`)에 대해 투표를 제출합니다.
+5. coordinator는 투표를 처리하고 최종 집계를 계산합니다.
+6. 예상 결과는 A당이 1표, B당이 0표입니다. Alice의 무효표는 집계되지 않았고, Eve는 말할 방법이 없습니다.
 
-Note that since messages are processed in reverse order, message `m0` will be rendered invalid by `m1`.
+메시지는 역순으로 처리되기 때문에 `m1`에 의해 메시지 `m0`가 유효하지 않게 랜더링 됩니다.
 
-**Coordinator: create keypair**
+**Coordinator: 키 쌍 생성**
 
 ```
 node ./build/index.js genMaciKeypair
 ```
 
-Example output:
+출력 예시:
 
 ```
 Private key: macisk.8715ab59a3e88a7ceec80f214ec24a95287ef2cb399a329b6964a87f85cf51c
 Public key:  macipk.2c93053fcc4dc13dfb1cdd679aea39d1667af3d937e1430766e514fd24043999
 
-Please store your private key in a safe place and do not reveal it to anyone.
+개인 키는 안전한 장소에 보관하고 누구에게도 공개하지 마세요.
 ```
 
-**Alice: create keypair**
+**Alice: 키 쌍 생성**
 
 ```
 node ./build/index.js genMaciKeypair
@@ -209,10 +204,10 @@ Example output:
 Private key: macisk.8d9bce75e0053db023ffd26597a4f389b33edd9236998e357cef36d5c978cc8
 gublic key:  macipk.08b869d7dcc59913301478bec3e7020c9ca37d44aae886fa7be118fca34daf06
 
-Please store your private key in a safe place and do not reveal it to anyone.
+개인 키는 안전한 장소에 보관하고 누구에게도 공개하지 마세요.
 ```
 
-**Coordinator: create election**
+**Coordinator: 선거 생성**
 
 ```
 node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -224,13 +219,13 @@ node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e
 	-bv 4
 ```
 
-Example output:
+출력 예시:
 
 ```
 MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
 ```
 
-**Alice: sign up**
+**Alice: 가입**
 
 ```
 node ./build/index.js signup -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -239,14 +234,14 @@ node ./build/index.js signup -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e
 	-x 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
 ```
 
-Example output:
+출력 예시:
 
 ```
 Transaction hash: 0x3cd2e6e805b54a6dfaff840dcf496092447400a1b26ba9f3c31bd78c3fe15723
 State index: 1
 ```
 
-**Alice: vote for party B**
+**Alice: B당에 투표**
 
 ```
 node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -260,20 +255,20 @@ node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241
 	-n 1
 ```
 
-Example output:
+출력 예시:
 
 ```
 Transaction hash: 0xc52ff70c3bbcc91457fd61738cd00d09d8bac96c56094910e275e474132ff741
 Ephemeral private key: macisk.1e3233eec8d0ccf722f2576ba5cb1b361939f0617ac3583a3eb025e4944b0e40
 ```
 
-**Alice: create new key**
+**Alice: 새 키 생성**
 
 ```
 node ./build/index.js genMaciKeypair
 ```
 
-Example output:
+출력 예시:
 
 ```
 Private key: macisk.1c454dfd8d8afabc0955112ef32a665a0c8b85985ad65481bb9612c1ed188d0d
@@ -282,7 +277,7 @@ Public key:  macipk.be34a027c1be52d37646df2d39bcbe824877525838dcbdc4f242666fa9de
 Please store your private key in a safe place and do not reveal it to anyone.
 ```
 
-**Alice: change key**
+**Alice: 키 변경**
 
 ```sh
 node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -296,14 +291,14 @@ node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241
 	-n 1
 ```
 
-Example output:
+출력 예시:
 
 ```
 Transaction hash: 0x812dc6345e2515bced4f15e7ca3842d3d343c22f6729fe3216b946fa97bffc1e
 Ephemeral private key: macisk.24115d8d585b7dd8f7ea1975668b3d4f34dcf8b1bcc6617bdefbed7e41b89846
 ```
 
-**Alice: vote for party A**
+**Alice: A당에 투표**
 
 ```
 node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -317,18 +312,17 @@ node ./build/index.js publish -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241
 	-n 2
 ```
 
-Example output:
+출력 예시:
 
 ```
 Transaction hash: 0x45ae379b056a6fc647a3718bd356268a1bcda35e6645bb7a1aba44cb76418c98
 Ephemeral private key: macisk.2b23e978301d029e46117ef0138f860e277ffed0f008712f3d7ca2c40f1a6768
 ```
 
-**Coordinator: process and tally all messages and votes without producing proofs** 
+**Coordinator: 증명을 생성하지 않고 모든 메시지와 투표를 처리하고 집계합니다.** 
 
-In situations where the coordinator requires results quickly, they can run
-`processAndTallyWithoutProofs` to process all messages and tally all votes
-without producing any proofs.
+Coordinator가 신속하게 결과를 요구하는 상황에서, 
+`processAndTallyWithoutProofs`를 통해 모든 메시지를 처리하고 증거를 생성하지 않고 모든 투표를 집계하기 위해 실행할 수 있습니다.
 
 ```
 node ./build/index.js processAndTallyWithoutProofs \
@@ -339,7 +333,7 @@ node ./build/index.js processAndTallyWithoutProofs \
 	-t preProofTally.json
 ```
 
-**Coordinator: generate proofs** 
+**Coordinator: 증거 생성** 
 
 ```
 node build/index.js genProofs \
@@ -349,7 +343,7 @@ node build/index.js genProofs \
     -t tally.json
 ```
 
-Example output:
+출력 예시:
 
 ```
 Generating proofs of message processing...
@@ -380,7 +374,7 @@ Saved /home/di/t/maci/circuits/params/1615726045769.proof.json and /home/di/t/ma
 Proof is correct
 ```
 
-**Coordinator: submit all proofs**
+**Coordinator: 모든 증거 제출**
 
 ```
 node build/index.js proveOnChain \
@@ -390,7 +384,7 @@ node build/index.js proveOnChain \
     -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3
 ```
 
-Example output:
+출력 예시:
 
 ```
 Submitting proofs of message processing...
@@ -409,7 +403,7 @@ Progress: 2/2
 Transaction hash: 0x0e8405e8c80390508dbd9ed20eef0249574147ab708b06f8d22a9995c70d6869
 ```
 
-The file `tally.json` will now contain something like the following:
+이제 파일 `tally.json`에 다음과 같은 내용이 포함됩니다:
 
 ```json
 {
@@ -485,13 +479,13 @@ The file `tally.json` will now contain something like the following:
 }
 ```
 
-Anyone can now run `verify` to check if the tally is correct:
+이제 누구든지 `verify`를 실행하여 집계가 올바른지 확인할 수 있습니다:
 
 ```bash
 node build/index.js verify -t tally.json
 ```
 
-Example output:
+출력 예시:
 
 ```
 The results commitment in the specified file is correct given the tally and salt
@@ -503,9 +497,9 @@ The per vote option spent voice credit commitment in the MACI contract on-chain 
 The total sum of votes in the MACI contract on-chain is valid.
 ```
 
-## Demonstration with `prod-small` settings
+## `prod-small` 설정 데모
 
-Create a MACI instance:
+MACI 인스턴스 생성:
 
 ```bash
 node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
@@ -577,7 +571,7 @@ node build/index.js proveOnChain \
 node ./build/index.js verify -t tally.json
 ```
 
-## Demonstration with `prod-large` settings
+## `prod-large` 설정 시연
 
 ```bash
 node ./build/index.js create \
@@ -618,7 +612,7 @@ node ./build/index.js verify -t tally.json
 ```
 
 
-## Demonstration with `prod-32` settings
+## `prod-32` 설정 시연
 
 ```bash
 node ./build/index.js create \
